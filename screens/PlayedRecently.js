@@ -9,6 +9,7 @@ export default function PlayedRecently({ navigation }) {
         title="Go back to Home"
         onPress={() => navigation.navigate('Home')}
       />
+
     </View>
   );
 }
