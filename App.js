@@ -20,7 +20,7 @@ export default function App() {
   const Stack = createStackNavigator();
   let handleLogout;
   function handleLout(){
-debugger
+
   }
   return (
 
