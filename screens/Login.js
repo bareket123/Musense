@@ -4,7 +4,7 @@ import { View, Text, Button } from 'react-native';
 export default function Login ({ navigation }) {
     return (
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-            <Text>choose an Atist:</Text>
+            <Text>choose an Artist:</Text>
             <Button
                 title="Go back to Home"
                 onPress={() => navigation.navigate('Home')}
