@@ -10,7 +10,6 @@ import PlayedRecently from './screens/PlayedRecently';
 import MusicByArist from './screens/MusicByArtist';
 import MusicByFriends from './screens/MusicByFriends';
 import Login from './screens/Login'
-import SignIn from "./screens/SignIn";
 import MyPlaylist from './screens/MyPlaylist';
 import { Ionicons } from '@expo/vector-icons';
 
@@ -46,7 +45,6 @@ export default function App() {
         <Stack.Screen name='friends' component={MusicByFriends}/>
         <Stack.Screen name='playlist' component={MyPlaylist}/>
         <Stack.Screen name='login' component={Login}/>
-        <Stack.Screen name='sign-in' component={SignIn}/>
       </Stack.Navigator>
     </NavigationContainer>
 
