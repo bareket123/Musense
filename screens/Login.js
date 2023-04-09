@@ -24,7 +24,7 @@ export default function Login ({ navigation }) {
        let res;
         try {
            if (checked==='signUp'){
-               res = await axios.create({baseURL: 'http://[ip address]:8989'}).post('/sign-up?username=' + username + '&password=' + password+'&email='+email)
+               res = await axios.create({baseURL: 'http://10.0.0.1:8989'}).post('/sign-up?username=' + username + '&password=' + password+'&email='+email)
                if (res.data.success) {
                    alert("sign up successfully");
                    setConfirmPassword("");
@@ -37,7 +37,7 @@ export default function Login ({ navigation }) {
                }
 
            }else if (checked==='login') {
-               res = await axios.create({baseURL: 'http://[ip address]:8989'}).post('/login?username=' + username + '&password=' + password)
+               res = await axios.create({baseURL: 'http://10.0.0.1:8989'}).post('/login?username=' + username + '&password=' + password)
                if (res.data.success){
                    alert("login successfully");
                    navigation.navigate("Home")
@@ -65,8 +65,11 @@ function emailValidation(userEmail){
 
 function checkValidation(){
         let validToPress=true;
-        if ((username.length===0 || password.length===0) && checked!=='' || !emailValidation(email) || password!==confirmPassword ){
+        if ((username.length===0 || password.length===0) && checked!=='' ){
             validToPress=false;
+        }
+        if (checked==='signUp'){
+            validToPress = !(!emailValidation(email) || password !== confirmPassword);
         }
         return validToPress;
 }
