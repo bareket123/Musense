@@ -20,7 +20,7 @@ export default function Login ({ navigation }) {
        let res;
         try {
            if (checked==='signUp'){
-               res = await axios.create({baseURL: 'http://[write your ip adress]:8989'}).post('/sign-up?username=' + username + '&password=' + password+'&email='+email)
+               res = await axios.create({baseURL: 'http://10.0.0.1:8989'}).post('/sign-up?username=' + username + '&password=' + password+'&email='+email)
                if (res.data.success) {
                    alert("sign up successfully");
                    setConfirmPassword("");
@@ -33,7 +33,7 @@ export default function Login ({ navigation }) {
                }
 
            }else if (checked==='login') {
-               res = await axios.create({baseURL: 'http://[write your ip adress]:8989'}).post('/login?username=' + username + '&password=' + password)
+               res = await axios.create({baseURL: 'http://10.0.0.1:8989'}).post('/login?username=' + username + '&password=' + password)
                if (res.data.success){
                    alert("login successfully");
                    navigation.navigate("Home")
@@ -52,18 +52,11 @@ export default function Login ({ navigation }) {
 
 
 }
-// function emailValidation(userEmail){
-//         let valid;
-//         if (isEmail(userEmail)) {
-//             valid=true;
-//             console.log('Valid email address');
-//         } else {
-//             valid=false;
-//             //setEmail("")
-//             console.log('Invalid email address');
-//         }
-//        return valid;
-// }
+function emailValidation(userEmail){
+        let valid;
+        valid = !!isEmail(userEmail);
+       return valid;
+}
 
     function loginButton() {
         setType("login")
@@ -111,7 +104,7 @@ export default function Login ({ navigation }) {
                 secureTextEntry={true}
                 />
                       {
-                          password!==confirmPassword&&
+                          (password!==confirmPassword)&&(password.length!==0)&&
                           <Text style={{ color: 'red' }}>passwords not match</Text>
                       }
                 <TextInput
@@ -121,11 +114,15 @@ export default function Login ({ navigation }) {
                     style={{ borderWidth: 1, borderColor: 'white', padding: 10 }}
                     keyboardType={"email-address"}
                 />
+                      {
+                          !emailValidation(email)&&
+                          <Text>email isn't valid </Text>
+                      }
 
                 </View>
-                    }
+              }
                 <Button title={checked==='login'?"Login":"Sign Up"}
-                disabled={(username.length===0|| password.length===0)&& checked!==''}
+                disabled={(username.length===0|| password.length===0)&& checked!=='' || !emailValidation(email) }
                 onPress={handleButtonPressed}
                 />
                 </View>
