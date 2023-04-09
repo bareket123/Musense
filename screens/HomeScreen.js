@@ -1,12 +1,21 @@
 
 import React from 'react';
-import {ScrollView, SafeAreaView, TouchableOpacity, Text, StyleSheet, Image,Button} from 'react-native';
+import {ScrollView, SafeAreaView, TouchableOpacity, Text, StyleSheet, Image,Button,View} from 'react-native';
+import { Entypo} from '@expo/vector-icons';
 
 
 const HomeScreen = ({ navigation }) => {
     return (
       <ScrollView style={styles.container}>
         <SafeAreaView style={styles.SafeAreaView} >
+            <View style={{flexDirection:'row',left:100}}>
+
+                <Button  color={'green'} title="to Login/SignUp" onPress={() => navigation.navigate('login')}/>
+                <Entypo name="add-user" size={24} color="green" />
+
+
+            </View>
+
             <TouchableOpacity onPress={()=>{ navigation.navigate('Popular')}}>
                 <Image source={require('../images/popular.gif')} style={styles.image}  resizeMode="cover"
                 />
@@ -29,10 +38,6 @@ const HomeScreen = ({ navigation }) => {
                 <Text style={styles.caption}>my playlist</Text>
             </TouchableOpacity>
         </SafeAreaView>
-          <Button
-              title="Login"
-              onPress={() => navigation.navigate('login')}
-          />
 
       </ScrollView>
     );

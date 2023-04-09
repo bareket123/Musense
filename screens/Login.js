@@ -114,7 +114,7 @@ function checkValidation(){
                             value={password}
                             mode={"outlined"}
                             onChangeText={setPassword}
-                            style={styles.textInput}
+                            style={[styles.textInput,checked==='login'&& {marginBottom: 20}]}
                             secureTextEntry={true}
                         />
                 </View>
@@ -136,7 +136,7 @@ function checkValidation(){
 
                         </View>
 
-                    <View style={styles.viewStyle}>
+                    <View style={[styles.viewStyle, {marginBottom:20}]}>
 
                             <MaterialIcons name="mail-outline" size={24} color="black" />
                             <TextInput
@@ -154,11 +154,13 @@ function checkValidation(){
                   </View>
                   </View>
                     }
+                    <View style={{ justifyContent: 'center', alignItems: 'center' }}>
                     <Button style={styles.button} labelStyle={{color:'white',fontSize:21,fontWeight: 'bold'}}
                  mode="contained"
                 disabled={!checkValidation() }
                 onPress={handleButtonPressed}
                     >{checked === 'login' ? "Login" : "Sign Up"}</Button>
+                    </View>
                     {
                         (password !== confirmPassword) && (password.length !== 0) &&(confirmPassword.length!==0)&&
 
@@ -176,8 +178,10 @@ function checkValidation(){
                         <Text style={styles.warningText}>email isn't valid </Text>
                         </View>
                     }
-                    <Button style={styles.button} title={'clear'} labelStyle={{color:'white',fontSize:21,fontWeight: 'bold'}} mode="contained" onPress={clearButton}>Clear</Button>
-                </View>
+                    <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                        <Button style={styles.button} title={'clear'} labelStyle={{color:'white',fontSize:21,fontWeight: 'bold'}} mode="contained" onPress={clearButton}>Clear</Button>
+                    </View>
+                    </View>
             }
         </ImageBackground>
 
@@ -219,10 +223,11 @@ const styles = StyleSheet.create({
         resizeMode: 'cover',
     },
     button:{
-        marginBottom: 20,
+
+        marginBottom: 10,
         alignItems:'center',
         backgroundColor: 'pink',
-        paddingVertical: 12,
+        paddingVertical: 10,
         width:200,
         paddingHorizontal: 0,
         shadowColor: 'black',

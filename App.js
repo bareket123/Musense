@@ -4,6 +4,7 @@ import 'react-native-gesture-handler';
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import { useNavigation } from '@react-navigation/native';
 import HomeScreen from './screens/HomeScreen';
 import PopularNow from './screens/PopularNow';
 import PlayedRecently from './screens/PlayedRecently';
@@ -13,7 +14,6 @@ import Login from './screens/Login'
 import MyPlaylist from './screens/MyPlaylist';
 import { Ionicons } from '@expo/vector-icons';
 
-///vvvjjjj
 
 export default function App() {
   const Stack = createStackNavigator();
@@ -21,6 +21,7 @@ export default function App() {
   function handleLout(){
 
   }
+
   return (
 
      <NavigationContainer>
