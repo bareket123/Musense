@@ -115,8 +115,8 @@ function emailValidation(userEmail){
                     keyboardType={"email-address"}
                 />
                       {
-                          !emailValidation(email)&&
-                          <Text>email isn't valid </Text>
+                          (!emailValidation(email))&&(email.length!==0)&&
+                          <Text style={{ color: 'red' }}>email isn't valid </Text>
                       }
 
                 </View>
