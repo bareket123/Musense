@@ -13,7 +13,6 @@ import Login from './screens/Login'
 import MyPlaylist from './screens/MyPlaylist';
 import { Ionicons } from '@expo/vector-icons';
 
-///vvvjjjj
 
 export default function App() {
   const Stack = createStackNavigator();
