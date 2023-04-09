@@ -1,10 +1,8 @@
 import React, {useState} from 'react';
-import {View, Text,StyleSheet,ImageBackground} from 'react-native';
+import {View, Text, Button, TextInput} from 'react-native';
 import axios from "axios";
-import { RadioButton,TextInput ,Button} from 'react-native-paper';
+import { RadioButton } from 'react-native-paper';
 import isEmail from 'validator/lib/isEmail';
-import { AntDesign,MaterialIcons,MaterialCommunityIcons } from '@expo/vector-icons';
-import image from '../images/musicBackGround.jpg';
 
 
 
@@ -17,6 +15,7 @@ export default function Login ({ navigation }) {
     const [password, setPassword] = useState("");
     const [email,setEmail]=useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
+    const [type, setType] = useState("");
     const [checked, setChecked] = useState('');
 
 
@@ -24,7 +23,7 @@ export default function Login ({ navigation }) {
        let res;
         try {
            if (checked==='signUp'){
-               res = await axios.create({baseURL: 'http://10.0.0.1:8989'}).post('/sign-up?username=' + username + '&password=' + password+'&email='+email)
+               res = await axios.create({baseURL: 'http://192.168.1.178:8989'}).post('/sign-up?username=' + username + '&password=' + password)
                if (res.data.success) {
                    alert("sign up successfully");
                    setConfirmPassword("");
@@ -37,7 +36,7 @@ export default function Login ({ navigation }) {
                }
 
            }else if (checked==='login') {
-               res = await axios.create({baseURL: 'http://10.0.0.1:8989'}).post('/login?username=' + username + '&password=' + password)
+               res = await axios.create({baseURL: 'http://192.168.1.178:8989'}).post('/login?username=' + username + '&password=' + password)
                if (res.data.success){
                    alert("login successfully");
                    navigation.navigate("Home")
@@ -62,177 +61,76 @@ function emailValidation(userEmail){
        return valid;
 }
 
-
-function checkValidation(){
-        let validToPress=true;
-        if ((username.length===0 || password.length===0) && checked!=='' ){
-            validToPress=false;
-        }
-        if (checked==='signUp'){
-            validToPress = !(!emailValidation(email) || password !== confirmPassword);
-        }
-        return validToPress;
-}
-
-    function clearButton() {
-        setUsername("")
-        setPassword("")
-        setConfirmPassword("")
-        setEmail("")
-
+    function loginButton() {
+        setType("login")
+        console.log(type)
+    }
+    function signUpButton() {
+        setType("signUp")
     }
 
     return (
-
-        <View>
-            <ImageBackground source={image} style={styles.background} >
+        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
             <RadioButton.Group onValueChange={value => setChecked(value)} value={checked}>
-                <RadioButton.Item labelStyle={{ color: 'black', fontWeight: 'bold',fontSize:20 }} style={{shadowColor:'white'}} label="Login" value="login" />
-                <RadioButton.Item labelStyle={{ color: 'black', fontWeight: 'bold',fontSize:20 }} style={{shadowColor:'white'}} label="SignUp" value="signUp" />
+                <RadioButton.Item label="Login" value="login" onValueChange={() => loginButton()} />
+                <RadioButton.Item label="SignUp" value="signUp" onValueChange={() => signUpButton()} />
             </RadioButton.Group>
 
             {
 
               checked!==''&&
                 <View>
-                    <Text style={styles.headerText}>Enter your {checked==='login' ? 'username and password' : 'details to sign up'}</Text>
-                    <View style={styles.viewStyle}>
-                        <AntDesign name="user" size={24} color="black" />
-                        <TextInput
-                            placeholder="Username"
-                            value={username}
-                            mode={"outlined"}
-                            onChangeText={setUsername}
-                            style={styles.textInput}
+                <Text>Enter your {checked==='login' ? 'username and password' : 'details to sign up'}</Text>
+                 <TextInput
+                placeholder="Username"
+                value={username}
+                onChangeText={setUsername}
+                style={{ borderWidth: 1, borderColor: 'gray', padding: 10 }}
+                 />
+                <TextInput
+                placeholder="Password"
+                value={password}
+                onChangeText={setPassword}
+                style={{ borderWidth: 1, borderColor: 'white', padding: 10 }}
+                secureTextEntry={true}
+                />
 
-                        />
-                    </View>
-                    <View style={styles.viewStyle}>
-                        <MaterialCommunityIcons name="lock" size={24} color="black" />
-                        <TextInput
-                            placeholder="Password"
-                            value={password}
-                            mode={"outlined"}
-                            onChangeText={setPassword}
-                            style={[styles.textInput,checked==='login'&& {marginBottom: 20}]}
-                            secureTextEntry={true}
-                        />
+
+                    {
+                 checked === 'signUp' &&
+                  <View>
+                <TextInput
+                placeholder="Confirm Password"
+                value={confirmPassword}
+                onChangeText={setConfirmPassword}
+                style={{ borderWidth: 1, borderColor: 'white', padding: 10 }}
+                secureTextEntry={true}
+                />
+                      {
+                          (password!==confirmPassword)&&(password.length!==0)&&
+                          <Text style={{ color: 'red' }}>passwords not match</Text>
+                      }
+                <TextInput
+                    placeholder="Email"
+                    value={email}
+                    onChangeText={setEmail}
+                    style={{ borderWidth: 1, borderColor: 'white', padding: 10 }}
+                    keyboardType={"email-address"}
+                />
+                      {
+                          (!emailValidation(email))&&(email.length!==0)&&
+                          <Text style={{ color: 'red' }}>email isn't valid </Text>
+                      }
+
                 </View>
-
-                    {
-                        checked === 'signUp' &&
-                        <View>
-
-                        <View style={styles.viewStyle}>
-                            <MaterialCommunityIcons name="lock-check" size={24} color="black"/>
-                            <TextInput
-                                placeholder="Confirm Password"
-                                mode={"outlined"}
-                                value={confirmPassword}
-                                onChangeText={setConfirmPassword}
-                                style={[styles.textInput, ((password !== confirmPassword) && (password.length !== 0&& confirmPassword.length!==0)) && { backgroundColor: 'tomato'}] }
-                                secureTextEntry={true}
-                            />
-
-                        </View>
-
-                    <View style={[styles.viewStyle, {marginBottom:20}]}>
-
-                            <MaterialIcons name="mail-outline" size={24} color="black" />
-                            <TextInput
-                            placeholder="Email"
-                            value={email}
-                            mode={"outlined"}
-                            onChangeText={setEmail}
-                            style={[styles.textInput,(!emailValidation(email)&&  email.length!==0)&&  { backgroundColor: 'tomato'}]}
-                            keyboardType={"email-address"}
-                            />
-
-
-
-
-                  </View>
-                  </View>
-                    }
-                    <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                    <Button style={styles.button} labelStyle={{color:'white',fontSize:21,fontWeight: 'bold'}}
-                 mode="contained"
-                disabled={!checkValidation() }
+              }
+                <Button title={checked==='login'?"Login":"Sign Up"}
+                disabled={(username.length===0|| password.length===0)&& checked!=='' ||(checked ==="Sign Up" && !emailValidation(email) )}
                 onPress={handleButtonPressed}
-                    >{checked === 'login' ? "Login" : "Sign Up"}</Button>
-                    </View>
-                    {
-                        (password !== confirmPassword) && (password.length !== 0) &&(confirmPassword.length!==0)&&
-
-                        <View style={styles.viewStyle}>
-                            <MaterialCommunityIcons name="alert-circle" size={24} color="red" />
-                            <View style={{ marginLeft: 5 }}>
-                                <Text style={styles.warningText}>Passwords do not match</Text>
-                            </View>
-                        </View>
-                    }
-                    {
-                        (!emailValidation(email)) && (email.length!==0)&&
-                        <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10  }}>
-                            <MaterialCommunityIcons name="alert-circle" size={24} color="red" />
-                        <Text style={styles.warningText}>email isn't valid </Text>
-                        </View>
-                    }
-                    <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                        <Button style={styles.button} title={'clear'} labelStyle={{color:'white',fontSize:21,fontWeight: 'bold'}} mode="contained" onPress={clearButton}>Clear</Button>
-                    </View>
-                    </View>
+                />
+                </View>
             }
-        </ImageBackground>
 
         </View>
-
     );
-
-
-};
-const styles = StyleSheet.create({
-
-     viewStyle:{
-         justifyContent: 'center',
-        flexDirection: 'row',
-        alignItems: 'center',
-         // flexDirection: 'column'
-     },
-    textInput:{
-        justifyContent: 'center',
-        padding: 10,
-        paddingLeft: 60,
-        width: 300,
-        backgroundColor:'antiquewhite'
-    },
-    warningText:{
-    color:'red',
-    },
-    headerText: {
-        justifyContent: 'center',
-        fontSize: 23,
-        fontWeight: 'bold',
-        marginBottom: 10,
-        color:'indianred',
-        shadowColor:'white'
-    },
-    background: {
-        width: '100%',
-        height: '100%',
-        resizeMode: 'cover',
-    },
-    button:{
-
-        marginBottom: 10,
-        alignItems:'center',
-        backgroundColor: 'pink',
-        paddingVertical: 10,
-        width:200,
-        paddingHorizontal: 0,
-        shadowColor: 'black',
-    }
-
-
-
-});
+}
