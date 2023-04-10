@@ -27,7 +27,6 @@ export default function PlayedRecently ({ navigation }) {
     );
 
     return (
-        <ScrollView>
             <ImageBackground source={image} style={styles.background} >
             <TouchableOpacity style={styles.buttonExit} onPress={() => navigation.navigate('Home')}>
                 <Text style={styles.buttonText}>Go back to Home</Text>
@@ -40,7 +39,6 @@ export default function PlayedRecently ({ navigation }) {
                 keyExtractor={(item) => item.id}
             />
             </ImageBackground>
-        </ScrollView>
 
     );
 };

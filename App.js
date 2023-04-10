@@ -13,12 +13,15 @@ import MusicByFriends from './screens/MusicByFriends';
 import Login from './screens/Login'
 import MyPlaylist from './screens/MyPlaylist';
 import { Ionicons } from '@expo/vector-icons';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 
 export default function App() {
   const Stack = createStackNavigator();
-  let handleLogout;
-  function handleLout(){
+
+  async function handleLout(){
+   await AsyncStorage.removeItem('token')
+    console.log("delete")
 
   }
 
@@ -29,7 +32,7 @@ export default function App() {
         <Stack.Screen name="Home" component={HomeScreen} options={{
           headerTitle: () => (
               <View style={styles.header}>
-                <TouchableOpacity style={styles.button} onPress={handleLogout}>
+                <TouchableOpacity style={styles.button} onPress={handleLout}>
                   <Text>Logout</Text>
                 </TouchableOpacity>
                 <View style={styles.iconContainer}>
