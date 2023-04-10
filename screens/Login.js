@@ -50,7 +50,6 @@ export default function Login ({ navigation }) {
 
 
 
-
 function emailValidation(userEmail){
         let valid;
         valid = !!isEmail(userEmail);
