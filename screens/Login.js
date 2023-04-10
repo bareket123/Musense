@@ -37,7 +37,7 @@ export default function Login ({ navigation }) {
                }
 
            }else if (checked==='login') {
-               res = await axios.create({baseURL: 'http://10.0.0.1:8989'}).post('/login?username=' + username + '&password=' + password)
+               res = await axios.create({baseURL: 'http://[write your ip]:8989'}).post('/login?username=' + username + '&password=' + password)
                if (res.data.success){
                    const token=res.data.token;
                    alert("login successfully");

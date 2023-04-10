@@ -17,7 +17,7 @@ const HomeScreen = ({ navigation }) => {
                    console.log("toke is: " + token)
                    if (token !== null) {
                        console.log("inside the get-username method ")
-                   let response = await axios.get('http://10.0.0.1:8989/get-username-by-token?token=' + token);
+                   let response = await axios.get('http://[write your ip adress]:8989/get-username-by-token?token=' + token);
                    if (response.data != null) {
                        setUsername(response.data);
                    } else {
