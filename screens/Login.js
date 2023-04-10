@@ -17,7 +17,7 @@ export default function Login ({ navigation }) {
        let res;
         try {
            if (checked==='signUp'){
-               res = await axios.create({baseURL: 'http://10.0.0.1:8989'}).post('/sign-up?username=' + username + '&password=' + password+'&email='+email)
+               res = await axios.create({baseURL: 'http://[write your ip]:8989'}).post('/sign-up?username=' + username + '&password=' + password+'&email='+email)
                if (res.data.success) {
                    alert("sign up successfully");
                    setConfirmPassword("");
@@ -30,7 +30,7 @@ export default function Login ({ navigation }) {
                }
 
            }else if (checked==='login') {
-               res = await axios.create({baseURL: 'http://10.0.0.1:8989'}).post('/login?username=' + username + '&password=' + password)
+               res = await axios.create({baseURL: 'http://[write your ip]:8989'}).post('/login?username=' + username + '&password=' + password)
                if (res.data.success){
                    alert("login successfully");
                    navigation.navigate("Home")
@@ -47,6 +47,36 @@ export default function Login ({ navigation }) {
           setUsername("")
           setPassword("")
 }
+
+
+    // // http://192.168.56.1:8989/sign-up?username=f&password=123456&email=ofir123@edu.aac.ac.il
+    // async function handleSignIn() {
+    //     try {
+    //         const res = await axios.create({baseURL: 'http://192.168.56.1:8989'}).post('/sign-up?username='+username+'&password='+password);
+    //         if (res.data.success){
+    //             await CookieManager.set({
+    //                 name: 'token',
+    //                 value: res.data.token,
+    //                 domain: 'http://localhost:19006/',
+    //                 origin: 'http://localhost:19006/',
+    //                 path: '/',
+    //                 version: '1',
+    //                 expiration: '2024-01-01T00:00:00.000Z',
+    //                 secure: true,
+    //                 httpOnly: false,
+    //                 allowSetCookie: true,
+    //             });
+    //             alert("sign up successfully")
+    //             navigation.navigate('Home')
+    //         } else {
+    //             alert(res.data.errorCode)
+    //         }
+    //         setUsername("")
+    //         setPassword("")
+    //     } catch (error) {
+    //         console.log(error)
+    //     }
+    // }
 
 
 
