@@ -6,12 +6,6 @@ import isEmail from 'validator/lib/isEmail';
 import { AntDesign,MaterialIcons,MaterialCommunityIcons } from '@expo/vector-icons';
 import image from '../images/musicBackGround.jpg';
 
-
-
-
-
-
-
 export default function Login ({ navigation }) {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
@@ -19,12 +13,11 @@ export default function Login ({ navigation }) {
     const [confirmPassword, setConfirmPassword] = useState("");
     const [checked, setChecked] = useState('');
 
-
     async function handleButtonPressed() {
        let res;
         try {
            if (checked==='signUp'){
-               res = await axios.create({baseURL: 'http://192.168.1.178:8989'}).post('/sign-up?username=' + username + '&password=' + password+'&email='+email)
+               res = await axios.create({baseURL: 'http://10.0.0.1:8989'}).post('/sign-up?username=' + username + '&password=' + password+'&email='+email)
                if (res.data.success) {
                    alert("sign up successfully");
                    setConfirmPassword("");
@@ -37,7 +30,7 @@ export default function Login ({ navigation }) {
                }
 
            }else if (checked==='login') {
-               res = await axios.create({baseURL: 'http://192.168.1.178:8989'}).post('/login?username=' + username + '&password=' + password)
+               res = await axios.create({baseURL: 'http://10.0.0.1:8989'}).post('/login?username=' + username + '&password=' + password)
                if (res.data.success){
                    alert("login successfully");
                    navigation.navigate("Home")
@@ -53,9 +46,40 @@ export default function Login ({ navigation }) {
             }
           setUsername("")
           setPassword("")
-
-
 }
+
+
+    // // http://192.168.56.1:8989/sign-up?username=f&password=123456&email=ofir123@edu.aac.ac.il
+    // async function handleSignIn() {
+    //     try {
+    //         const res = await axios.create({baseURL: 'http://192.168.56.1:8989'}).post('/sign-up?username='+username+'&password='+password);
+    //         if (res.data.success){
+    //             await CookieManager.set({
+    //                 name: 'token',
+    //                 value: res.data.token,
+    //                 domain: 'http://localhost:19006/',
+    //                 origin: 'http://localhost:19006/',
+    //                 path: '/',
+    //                 version: '1',
+    //                 expiration: '2024-01-01T00:00:00.000Z',
+    //                 secure: true,
+    //                 httpOnly: false,
+    //                 allowSetCookie: true,
+    //             });
+    //             alert("sign up successfully")
+    //             navigation.navigate('Home')
+    //         } else {
+    //             alert(res.data.errorCode)
+    //         }
+    //         setUsername("")
+    //         setPassword("")
+    //     } catch (error) {
+    //         console.log(error)
+    //     }
+    // }
+
+
+
 function emailValidation(userEmail){
         let valid;
         valid = !!isEmail(userEmail);
@@ -114,7 +138,7 @@ function checkValidation(){
                             value={password}
                             mode={"outlined"}
                             onChangeText={setPassword}
-                            style={[styles.textInput, checked==='login'&& {marginBottom: 20}]}
+                            style={styles.textInput}
                             secureTextEntry={true}
                         />
                 </View>
@@ -136,7 +160,7 @@ function checkValidation(){
 
                         </View>
 
-                    <View style={[styles.viewStyle, {marginBottom:20}]}>
+                    <View style={styles.viewStyle}>
 
                             <MaterialIcons name="mail-outline" size={24} color="black" />
                             <TextInput
@@ -154,13 +178,11 @@ function checkValidation(){
                   </View>
                   </View>
                     }
-                    <View style={{ justifyContent: 'center', alignItems: 'center' }}>
                     <Button style={styles.button} labelStyle={{color:'white',fontSize:21,fontWeight: 'bold'}}
                  mode="contained"
                 disabled={!checkValidation() }
                 onPress={handleButtonPressed}
                     >{checked === 'login' ? "Login" : "Sign Up"}</Button>
-                    </View>
                     {
                         (password !== confirmPassword) && (password.length !== 0) &&(confirmPassword.length!==0)&&
 
@@ -178,10 +200,8 @@ function checkValidation(){
                         <Text style={styles.warningText}>email isn't valid </Text>
                         </View>
                     }
-                    <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                        <Button style={styles.button} title={'clear'} labelStyle={{color:'white',fontSize:21,fontWeight: 'bold'}} mode="contained" onPress={clearButton}>Clear</Button>
-                    </View>
-                    </View>
+                    <Button style={styles.button} title={'clear'} labelStyle={{color:'white',fontSize:21,fontWeight: 'bold'}} mode="contained" onPress={clearButton}>Clear</Button>
+                </View>
             }
         </ImageBackground>
 
@@ -191,6 +211,9 @@ function checkValidation(){
 
 
 };
+
+
+
 const styles = StyleSheet.create({
 
      viewStyle:{
@@ -223,11 +246,10 @@ const styles = StyleSheet.create({
         resizeMode: 'cover',
     },
     button:{
-
-        marginBottom: 10,
+        marginBottom: 20,
         alignItems:'center',
         backgroundColor: 'pink',
-        paddingVertical: 10,
+        paddingVertical: 12,
         width:200,
         paddingHorizontal: 0,
         shadowColor: 'black',
