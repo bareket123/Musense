@@ -1,83 +1,97 @@
-import React, {useEffect, useState} from 'react';
-import {
-    View,
-    Text,
-    ScrollView,
-    FlatList,
-    StyleSheet,
-    ImageBackground,
-    TouchableOpacity,
-    SafeAreaView, Image
-} from 'react-native';
-import {Entypo, MaterialCommunityIcons} from "@expo/vector-icons";
-import image from '../images/greenGuitar.jpg';
-import axios from "axios";
-import { RadioButton,TextInput ,Button} from 'react-native-paper';
+import React, {useState,useEffect} from 'react';
+import {ScrollView, View, Text, Button,TouchableOpacity, StyleSheet,FlatList, Image} from 'react-native';
+import {MaterialCommunityIcons} from "@expo/vector-icons";
+import * as ImagePicker from 'expo-image-picker';
+import axios from 'axios';
 
 
 export default function PopularNow ({ navigation }) {
-
-    const [songs, setSongs] = useState([
-        { id: '1', title: 'Song 1' },
-        { id: '2', title: 'Song 2' },
-        { id: '3', title: 'Song 3' },
-        { id: '4', title: 'Song 4' },
+    const [images, setImages] = useState([
     ]);
-    const playlist=useState([]);
 
-    const handlePress = (id) => {
-        console.log(`Song with id ${id} was pressed`);
+    const pickImage = async () => {
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.All,
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 1,
+        });
+
+        if (!result.canceled) {
+            setImage(result.uri);
+        }
     };
 
-
-    useEffect(()=>{
-       fetchPlaylist().then(r => {});
-    },[]);
-
-    const fetchPlaylist=async () => {
-
-
-
-
-    }
-
-
-
-
-    const renderSong = ({ item }) => (
+    const renderImage=(image)=>{
         <View style={{ padding: 20, flexDirection: 'row', alignItems: 'center', left: '20%'}}>
             <MaterialCommunityIcons name="play-box" size={24} color="black"/>
 
-            <Text style={{ fontSize: 16, color:'green' }}>{item.title}</Text>
-            <TouchableOpacity style={styles.Button} onPress={() => handlePress(item.id)}>
-                <Text style={styles.buttonText}>Play</Text>
+
+            <TouchableOpacity style={styles.Button} onPress={() => handlePress(image.getIndex)}>
+                <Text style={styles.buttonText}>play</Text>
+                {  alert(image.getIndex)}
             </TouchableOpacity>
         </View>
-    );
+    };
 
-    const renderArrayItems=()=> {
-        return playlist.map((item, index) => (
-            <Text key={index}>{item}</Text>
-        ));
-    }
+    useEffect(() => {
+        fetchPlaylist();
+    }, []);
+
+    const fetchPlaylist = async () => {
+        try {
+            const response = await axios.get('https://spotify23.p.rapidapi.com/playlist/', {
+                params: {
+                    id: '37i9dQZF1DX4Wsb4d7NKfP'
+                },
+                headers: {
+                    'x-rapidapi-key': 'f7ed7affb4msh7a23d0d54497bbap131941jsna2cddc3200ff',
+                    'x-rapidapi-host': 'spotify23.p.rapidapi.com'
+                }
+            });
+
+            const data = response.data;
+            setImages(data.images);
+        } catch (error) {
+            console.error('Error fetching playlist:', error);
+        }
+    };
+
+
     return (
-       <View>
-           {
-               playlist.length!==0?
-                   <View style={styles.viewStyle}>
-                  {/*<Button onPress={()=>{console.log(playlist)}}>{'array is not empty'}</Button>*/}
+        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+            <Text>choose an Atist:</Text>
+            <Button title="Upload Picture" onPress={pickImage} />
+            {typeof image === 'string' && (
+                <Image
+                    source={{ uri: image }}
+                    style={{ width: 200, height: 200, marginTop: 20 }}
+                />
+            )}
 
-               </View>
-                   :
-                   <Text>{"different"}</Text>
-           }
-       </View>
-
-
-
+            <Button
+                title="Go back to Home"
+                onPress={() => navigation.navigate("Home")}
+            />
+            <FlatList
+                data={images}
+                renderItem={renderImage}
+                keyExtractor={(item) => item.getIndex}
+            />
+        </View>
 
     );
-};
+
+
+
+
+}
+
+
+
+
+
+
 
 const styles = StyleSheet.create({
     viewStyle:{
@@ -131,3 +145,4 @@ const styles = StyleSheet.create({
     },
 
 });
+
