@@ -29,45 +29,16 @@ export default function PopularNow ({ navigation }) {
         console.log(`Song with id ${id} was pressed`);
     };
 
-//     const options = {
-//   method: 'GET',
-//   headers: {
-//     'X-RapidAPI-Key': '29f3773d28msh4005745bd43a895p1a71acjsnc5350d1468dc',
-//     'X-RapidAPI-Host': 'famous-quotes4.p.rapidapi.com'
-//   }
-// };
-//
-// fetch('https://famous-quotes4.p.rapidapi.com/random?category=all&count=2', options)
-//   .then(response => response.json())
-//   .then(response => console.log(response))
-//   .catch(err => console.error(err));
-//
+
     useEffect(()=>{
        fetchPlaylist().then(r => {});
     },[]);
 
     const fetchPlaylist=async () => {
-        const options = {
-            method: 'GET',
-            url: 'https://echo.paw.cloud/',
-            params: {'id:': '37i9dQZF1DX4Wsb4d7NKfP'},
-            headers: {'X-RapidAPI-Host': 'spotify23.p.rapidapi.com'}
-        };
 
-        axios.request(options).then(function (response) {
-            console.log(response.data);
-        }).catch(function (error) {
-            console.error(error);
-        });
 
-        // try {
-        //     const response = await axios.request(options);
-        //     // console.log(response.data);
-        //     playlist.push(options);
-        //     console.log(playlist)
-        // } catch (error) {
-        //     console.error(error);
-        // }
+
+
     }
 
 
@@ -83,28 +54,7 @@ export default function PopularNow ({ navigation }) {
             </TouchableOpacity>
         </View>
     );
-    /*
-    const requestAPI = async () => {
-        try {
-            const res = await axios.get('https://shazam-core.p.rapidapi.com/v1/artists/details', {
-                headers: {
-                    'X-RapidAPI-Key': '29f3773d28msh4005745bd43a895p1a71acjsnc5350d1468dc',
-                    'X-RapidAPI-Host': 'shazam-core.p.rapidapi.com'},
-                params: {
-                    artist_id: '136975'
-                }
-            });
-            console.log(res)
-        } catch (err) {
-            console.log(err);
-        }
-    };
-    */
-    /*
-   useEffect(()=>{
-      // requestAPI().then(r =>{console.log("rr")} )
-   })
-   */
+
     const renderArrayItems=()=> {
         return playlist.map((item, index) => (
             <Text key={index}>{item}</Text>
