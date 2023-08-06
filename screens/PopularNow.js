@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
     View,
     Text,
@@ -6,24 +6,72 @@ import {
     FlatList,
     StyleSheet,
     ImageBackground,
-    Button,
     TouchableOpacity,
     SafeAreaView, Image
 } from 'react-native';
 import {Entypo, MaterialCommunityIcons} from "@expo/vector-icons";
 import image from '../images/greenGuitar.jpg';
+import axios from "axios";
+import { RadioButton,TextInput ,Button} from 'react-native-paper';
+
 
 export default function PopularNow ({ navigation }) {
+
     const [songs, setSongs] = useState([
         { id: '1', title: 'Song 1' },
         { id: '2', title: 'Song 2' },
         { id: '3', title: 'Song 3' },
         { id: '4', title: 'Song 4' },
     ]);
+    const playlist=useState([]);
 
     const handlePress = (id) => {
         console.log(`Song with id ${id} was pressed`);
     };
+
+//     const options = {
+//   method: 'GET',
+//   headers: {
+//     'X-RapidAPI-Key': '29f3773d28msh4005745bd43a895p1a71acjsnc5350d1468dc',
+//     'X-RapidAPI-Host': 'famous-quotes4.p.rapidapi.com'
+//   }
+// };
+//
+// fetch('https://famous-quotes4.p.rapidapi.com/random?category=all&count=2', options)
+//   .then(response => response.json())
+//   .then(response => console.log(response))
+//   .catch(err => console.error(err));
+//
+    useEffect(()=>{
+       fetchPlaylist().then(r => {});
+    },[]);
+
+    const fetchPlaylist=async () => {
+        const options = {
+            method: 'GET',
+            url: 'https://echo.paw.cloud/',
+            params: {'id:': '37i9dQZF1DX4Wsb4d7NKfP'},
+            headers: {'X-RapidAPI-Host': 'spotify23.p.rapidapi.com'}
+        };
+
+        axios.request(options).then(function (response) {
+            console.log(response.data);
+        }).catch(function (error) {
+            console.error(error);
+        });
+
+        // try {
+        //     const response = await axios.request(options);
+        //     // console.log(response.data);
+        //     playlist.push(options);
+        //     console.log(playlist)
+        // } catch (error) {
+        //     console.error(error);
+        // }
+    }
+
+
+
 
     const renderSong = ({ item }) => (
         <View style={{ padding: 20, flexDirection: 'row', alignItems: 'center', left: '20%'}}>
@@ -35,22 +83,48 @@ export default function PopularNow ({ navigation }) {
             </TouchableOpacity>
         </View>
     );
-
-
-
+    /*
+    const requestAPI = async () => {
+        try {
+            const res = await axios.get('https://shazam-core.p.rapidapi.com/v1/artists/details', {
+                headers: {
+                    'X-RapidAPI-Key': '29f3773d28msh4005745bd43a895p1a71acjsnc5350d1468dc',
+                    'X-RapidAPI-Host': 'shazam-core.p.rapidapi.com'},
+                params: {
+                    artist_id: '136975'
+                }
+            });
+            console.log(res)
+        } catch (err) {
+            console.log(err);
+        }
+    };
+    */
+    /*
+   useEffect(()=>{
+      // requestAPI().then(r =>{console.log("rr")} )
+   })
+   */
+    const renderArrayItems=()=> {
+        return playlist.map((item, index) => (
+            <Text key={index}>{item}</Text>
+        ));
+    }
     return (
-            <ImageBackground source={image} style={styles.background} >
-                <TouchableOpacity style={styles.buttonExit} onPress={() => navigation.navigate('Home')}>
-                    <Text style={styles.buttonText}>Go back to Home</Text>
-                </TouchableOpacity>
-                <Text>{"\n"}</Text>
-                <Text style={styles.headerText} >Popular Now:</Text>
-                <FlatList
-                    data={songs}
-                    renderItem={renderSong}
-                    keyExtractor={(item) => item.id}
-                />
-            </ImageBackground>
+       <View>
+           {
+               playlist.length!==0?
+                   <View style={styles.viewStyle}>
+                  {/*<Button onPress={()=>{console.log(playlist)}}>{'array is not empty'}</Button>*/}
+
+               </View>
+                   :
+                   <Text>{"different"}</Text>
+           }
+       </View>
+
+
+
 
     );
 };

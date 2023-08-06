@@ -1,21 +1,41 @@
-import React from 'react';
-import { ScrollView,View, Text, Button,StyleSheet } from 'react-native';
+import React, {useState} from 'react';
+import {ScrollView, View, Text, Button, StyleSheet, Image} from 'react-native';
+import * as ImagePicker from 'expo-image-picker';
 
 export default function MyPlaylist ({ navigation }) {
+    const [image, setImage] = useState(null);
+
+    const pickImage = async () => {
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.All,
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 1,
+        });
+
+        if (!result.canceled) {
+            setImage(result.uri);
+        }
+    };
   return (
-    // <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-    //   <Text>choose an Atist:</Text>
-    //   <Button
-    //     title="Go back to Home"
-    //     onPress={() => navigation.navigate('Home')}
-    //   />
-    // </View>
-      <ScrollView style={styles.container}>
-          <Text style={styles.text}>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed blandit turpis vitae libero congue, eget bibendum nisi bibendum. Nullam et metus in purus vehicula aliquam. Mauris sit amet enim vitae felis tempus hendrerit. Fusce et augue quis nulla malesuada lobortis. Sed ut faucibus velit. Donec imperdiet, lorem ac malesuada pretium, justo dui aliquam ex, a lacinia velit velit vel lacus. Nullam malesuada, mi sed dictum bibendum, tellus nulla finibus nibh, sed ultrices quam magna nec nunc. Maecenas volutpat, ex sit amet dictum eleifend, elit metus blandit enim, sit amet ultricies velit nisi eu nulla. Praesent faucibus, quam eu rutrum mollis, augue tortor dignissim eros, non sodales nibh enim vel libero. Curabitur euismod, odio a dignissim pulvinar, est nunc blandit massa, sed semper justo tortor sit amet nisl. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.
-          </Text>
-      </ScrollView>
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <Text>choose an Atist:</Text>
+        <Button title="Upload Picture" onPress={pickImage} />
+        {typeof image === 'string' && (
+            <Image
+                source={{ uri: image }}
+                style={{ width: 200, height: 200, marginTop: 20 }}
+            />
+        )}
+
+        <Button
+        title="Go back to Home"
+        onPress={() => navigation.navigate("Home")}
+      />
+    </View>
+
   );
+
 
 }
 const styles = StyleSheet.create({

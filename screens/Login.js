@@ -1,11 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text,StyleSheet,ImageBackground} from 'react-native';
+import {View, Text, StyleSheet, ImageBackground, ScrollView} from 'react-native';
 import axios from "axios";
 import { RadioButton,TextInput ,Button} from 'react-native-paper';
 import isEmail from 'validator/lib/isEmail';
 import { AntDesign,MaterialIcons,MaterialCommunityIcons } from '@expo/vector-icons';
 import image from '../images/musicBackGround.jpg';
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as ImagePicker from "expo-image-picker";
 
 
 
@@ -16,15 +17,18 @@ export default function Login ({ navigation }) {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [email,setEmail]=useState("");
+    const [picture,setPicture]=useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [checked, setChecked] = useState('');
 
 
     async function handleButtonPressed() {
+
        let res;
         try {
            if (checked==='signUp'){
-               res = await axios.create({baseURL: 'http://[write your ip]:8989'}).post('/sign-up?username=' + username + '&password=' + password+'&email='+email)
+               console.log("enter sign")
+               res = await axios.create({baseURL: 'http://10.0.0.1:8989'}).post('/sign-up?username=' + username + '&password=' + password+'&email='+email+"&picture="+picture)
                if (res.data.success) {
                    alert("sign up successfully");
                    setConfirmPassword("");
@@ -37,7 +41,10 @@ export default function Login ({ navigation }) {
                }
 
            }else if (checked==='login') {
-               res = await axios.create({baseURL: 'http://[write your ip]:8989'}).post('/login?username=' + username + '&password=' + password)
+               console.log("enter login")
+
+               res = await axios.create({baseURL: 'http://10.0.0.1:8989'}).post('/login?username=' + username + '&password=' + password)
+               console.log(res.data)
                if (res.data.success){
                    const token=res.data.token;
                    alert("login successfully");
@@ -85,10 +92,24 @@ function checkValidation(){
 
     }
 
+    // const pickImage = async () => {
+    //     let result = await ImagePicker.launchImageLibraryAsync({
+    //         mediaTypes: ImagePicker.MediaTypeOptions.All,
+    //         allowsEditing: true,
+    //         aspect: [4, 3],
+    //         quality: 1,
+    //     });
+    //
+    //     if (!result.canceled) {
+    //         setPicture(result.uri);
+    //         console.log(picture)
+    //     }
+    // };
     return (
-
+        <ImageBackground source={image} style={styles.background} >
+        <ScrollView style={styles.container}>
         <View>
-            <ImageBackground source={image} style={styles.background} >
+
             <RadioButton.Group onValueChange={value => setChecked(value)} value={checked}>
                 <RadioButton.Item labelStyle={{ color: 'black', fontWeight: 'bold',fontSize:20 }} style={{shadowColor:'white'}} label="Login" value="login" />
                 <RadioButton.Item labelStyle={{ color: 'black', fontWeight: 'bold',fontSize:20 }} style={{shadowColor:'white'}} label="SignUp" value="signUp" />
@@ -139,7 +160,7 @@ function checkValidation(){
 
                         </View>
 
-                    <View style={[styles.viewStyle, {marginBottom:20}]}>
+                    <View style={[styles.viewStyle]}>
 
                             <MaterialIcons name="mail-outline" size={24} color="black" />
                             <TextInput
@@ -151,10 +172,18 @@ function checkValidation(){
                             keyboardType={"email-address"}
                             />
 
+                    </View>
+                     <View style={[styles.viewStyle,{marginBottom:20}]}>
+                         <MaterialIcons name="image" size={24} color="black" />
+                         <TextInput
+                             placeholder="add link to picture"
+                             value={picture}
+                             mode={"outlined"}
+                             onChangeText={setPicture}
+                             style={styles.textInput}
+                         />
 
-
-
-                  </View>
+                     </View>
                   </View>
                     }
                     <View style={{ justifyContent: 'center', alignItems: 'center' }}>
@@ -186,16 +215,19 @@ function checkValidation(){
                     </View>
                     </View>
             }
-        </ImageBackground>
+
 
         </View>
-
+        </ScrollView>
+</ImageBackground>
     );
 
 
 };
 const styles = StyleSheet.create({
-
+    container: {
+        flex: 1,
+    },
      viewStyle:{
          justifyContent: 'center',
         flexDirection: 'row',

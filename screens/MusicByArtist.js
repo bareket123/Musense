@@ -11,6 +11,8 @@ export default function MusicByArtist ({ navigation }) {
         { id: '4', title: 'Song 4' },
     ]);
 
+
+
     const handlePress = (id) => {
         console.log(`Song with id ${id} was pressed`);
     };
@@ -28,7 +30,7 @@ export default function MusicByArtist ({ navigation }) {
 
     return (
             <ImageBackground source={image} style={styles.background} >
-                <TouchableOpacity style={styles.buttonExit} onPress={() => navigation.navigate('Home')}>
+                <TouchableOpacity style={styles.buttonExit} onPress={() => navigation.navigate("Home")}>
                     <Text style={styles.buttonText}>Go back to Home</Text>
                 </TouchableOpacity>
                 <Text>{"\n"}</Text>

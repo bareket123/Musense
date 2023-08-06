@@ -1,60 +1,80 @@
 
 import React, {useEffect, useState} from 'react';
 import {ScrollView, SafeAreaView, TouchableOpacity, Text, StyleSheet, Image,View} from 'react-native';
-import { Entypo} from '@expo/vector-icons';
+import {FontAwesome} from '@expo/vector-icons';
 import { Button} from 'react-native-paper';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
+import {LinearGradient} from 'expo-linear-gradient';
+
 
 
 const HomeScreen = ({ navigation }) => {
     const [username,setUsername]=useState("");
     const [token,setToken]=useState(null);
 
-    async function getUsername() {
-        try {
-                   setToken(await AsyncStorage.getItem('token'));
-                   console.log("toke is: " + token)
-                   if (token !== null) {
-                       console.log("inside the get-username method ")
-                   let response = await axios.get('http://[write your ip adress]:8989/get-username-by-token?token=' + token);
-                   if (response.data != null) {
-                       setUsername(response.data);
-                   } else {
-                       console.log("response is null")
-                   }
-               } else {
-                   console.log("in the else")
-
-
-
-               }
-
-           }catch (error){
-                   console.log("error in the Home screen " ,error.message)
-               }
-
-
-}
-    useEffect(  () => {
-      getUsername();
-    })
+//
+//     async function getUsername() {
+//         try {
+//                    if (token !== null) {
+//                        console.log("inside the get-username method ")
+//                    let response = await axios.get('http://10.0.0.1:8989/get-username-by-token?token=' + token);
+//                    if (response.data != null) {
+//                        setUsername(response.data);
+//                    } else {
+//                        console.log("response is null")
+//                    }
+//                } else {
+//                        console.log("the token is null")
+//
+//                    }
+//
+//
+//            }catch (error){
+//                    console.log("error in the Home screen " ,error.message)
+//                }
+//
+//
+// }
+//     const getToken = async () => {
+//         try {
+//             const token = await AsyncStorage.getItem('token');
+//             setToken(token);
+//             console.log("token is: " + token);
+//         } catch (error) {
+//             console.log("error in the token Home screen ",error.message);
+//         }
+//     };
+//     useEffect(() => {
+//         getToken().then(r => {console.log("use effect worked")});
+//     });
+//
+//
+//     useEffect(  () => {
+//       getUsername().then(r => {console.log("use effect inside home screen")});
+//     },[token])
 
     return (
       <ScrollView style={styles.container}>
         <SafeAreaView style={styles.SafeAreaView} >
-            <View style={{flexDirection:'row',alignItems: 'center'}}>
-            <Text  style={styles.header}>Hello {username!==""? username:"guest"} </Text>
-              <Button style={styles.loginButton}
-                        labelStyle={{color: 'white', fontWeight: 'bold',fontSize:15}}
-                        onPress={() => navigation.navigate('login')}
-                >
-                    To Login/SignUp
-                </Button>
+            {/*<View style={{flexDirection:'row',alignItems: 'center'}}>*/}
+            {/*<Text  style={styles.header}>Hello {token!==null? username:"guest"} </Text>*/}
+            {/*    /!*<LinearGradient colors={['#9acd32','#3cb371', '#32cd32' ,'#90ee90' ]} style={styles.linearGradient}>*!/*/}
+            {/*    /!*    <Button*!/*/}
+            {/*    /!*        labelStyle={{color: 'white', fontWeight: 'bold',fontSize:15}}*!/*/}
+            {/*    /!*        icon={({ size, color }) => (*!/*/}
+            {/*    /!*            <FontAwesome name="user" size={size} color={color} />*!/*/}
+            {/*    /!*        )}*!/*/}
+            {/*    /!*        onPress={() => navigation.navigate('login')}*!/*/}
+            {/*    /!*    >*!/*/}
+            {/*    /!*        To Login/SignUp*!/*/}
+            {/*    /!*    </Button>*!/*/}
+
+            {/*    /!*</LinearGradient>*!/*/}
 
 
+            {/*</View>*/}
 
-            </View>
             <TouchableOpacity onPress={()=>{ navigation.navigate('Popular')}}>
                 <Image source={require('../images/popular.gif')} style={styles.image}  resizeMode="cover"
                 />
@@ -76,6 +96,8 @@ const HomeScreen = ({ navigation }) => {
                 <Image source={require('../images/playlist2.gif')} style={styles.image}/>
                 <Text style={styles.caption}>my playlist</Text>
             </TouchableOpacity>
+
+
         </SafeAreaView>
 
       </ScrollView>
@@ -132,7 +154,21 @@ const styles = StyleSheet.create({
         left:100,
         backgroundColor:'green',
 
-    }
+
+    },
+    linearGradient: {
+       left:100,
+        paddingLeft: 15,
+        paddingRight: 15,
+        borderRadius: 60
+    },
+    buttonText3: {
+        fontSize: 18,
+        textAlign: 'center',
+        margin: 10,
+        color: '#ffffff',
+        backgroundColor: 'transparent',
+    },
 });
 
 export default HomeScreen;
