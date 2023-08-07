@@ -6,8 +6,33 @@ import axios from 'axios';
 
 
 export default function PopularNow ({ navigation }) {
-    const [images, setImages] = useState([
-    ]);
+    let images=[];
+
+
+    const fetchPlaylist = async () => {
+        try {
+            const response = await axios.get('https://spotify23.p.rapidapi.com/playlist/', {
+                params: {
+                    id: '37i9dQZF1DX4Wsb4d7NKfP'
+
+                },
+                headers: {
+                    'x-rapidapi-key': 'f7ed7affb4msh7a23d0d54497bbap131941jsna2cddc3200ff',
+                    'x-rapidapi-host': 'spotify23.p.rapidapi.com'
+                }
+            });
+
+            const data = response.data;
+            images=data.images;
+            alert(images[0].url)
+
+        } catch (error) {
+            console.error('Error fetching playlist:', error);
+        }
+    };
+    useEffect(() => {
+        fetchPlaylist();
+    }, []);
 
     const pickImage = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
@@ -22,6 +47,7 @@ export default function PopularNow ({ navigation }) {
         }
     };
 
+
     const renderImage=(image)=>{
         <View style={{ padding: 20, flexDirection: 'row', alignItems: 'center', left: '20%'}}>
             <MaterialCommunityIcons name="play-box" size={24} color="black"/>
@@ -34,28 +60,8 @@ export default function PopularNow ({ navigation }) {
         </View>
     };
 
-    useEffect(() => {
-        fetchPlaylist();
-    }, []);
 
-    const fetchPlaylist = async () => {
-        try {
-            const response = await axios.get('https://spotify23.p.rapidapi.com/playlist/', {
-                params: {
-                    id: '37i9dQZF1DX4Wsb4d7NKfP'
-                },
-                headers: {
-                    'x-rapidapi-key': 'f7ed7affb4msh7a23d0d54497bbap131941jsna2cddc3200ff',
-                    'x-rapidapi-host': 'spotify23.p.rapidapi.com'
-                }
-            });
 
-            const data = response.data;
-            setImages(data.images);
-        } catch (error) {
-            console.error('Error fetching playlist:', error);
-        }
-    };
 
 
     return (
@@ -73,17 +79,18 @@ export default function PopularNow ({ navigation }) {
                 title="Go back to Home"
                 onPress={() => navigation.navigate("Home")}
             />
+
+            {     images.length==0  &&      fetchPlaylist }
             <FlatList
                 data={images}
-                renderItem={renderImage}
-                keyExtractor={(item) => item.getIndex}
+                renderItem={({item})=>(
+                    <Text>{item.url}</Text>
+                )
+                }
             />
+
         </View>
-
     );
-
-
-
 
 }
 
@@ -145,4 +152,3 @@ const styles = StyleSheet.create({
     },
 
 });
-
