@@ -1,81 +1,59 @@
 import React, {useEffect, useState} from 'react';
 import {ScrollView, SafeAreaView, TouchableOpacity, Text, StyleSheet, Image,View} from 'react-native';
-import {FontAwesome} from '@expo/vector-icons';
+import { Entypo} from '@expo/vector-icons';
 import { Button} from 'react-native-paper';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
-import {LinearGradient} from 'expo-linear-gradient';
-
 
 
 const HomeScreen = ({ navigation }) => {
     const [username,setUsername]=useState("");
     const [token,setToken]=useState(null);
 
-    //  useEffect(() => {
-    //     const clientId = '5a71da11af7742abb244634ae32e7a96'; // replace with your client ID
-    //     const clientSecret = '60773f44df4a4b14ba5227020827bbc5'; // replace with your client secret
-    //     const encodedCredentials = NWE3MWRhMTFhZjc3NDJhYmIyNDQ2MzRhZTMyZTdhOTY6NjA3NzNmNDRkZjRhNGIxNGJhNTIyNzAyMDgyN2JiYzU= // encode credentials in base64 format
-    //     axios.post('https://accounts.spotify.com/api/token', // endpoint
-    //     'grant_type=client_credentials', // request body
-    //       { // request headers
-    //         headers: {
-    //           'Authorization': 'Basic ' + encodedCredentials, // authorization header
-    //           'Content-Type': 'application/x-www-form-urlencoded' // content type header
-    //         }
-    //       }
-    //     ).then(response => { // handle success response
-    //       alert(response.data); // log the response data
-    //     }).catch(error => { // handle error response
-    //       console.error(error); // log the error
-    //     });
-    // }, []);
+    async function getUsername() {
+        try {
+            setToken(await AsyncStorage.getItem('token'));
+            console.log("toke is: " + token)
+            if (token !== null) {
+                console.log("inside the get-username method ")
+                let response = await axios.get('http://192.168.68.110:8989/get-username-by-token?token=' + token);
+                if (response.data != null) {
+                    setUsername(response.data);
+                } else {
+                    console.log("response is null")
+                }
+            } else {
+                console.log("in the else")
 
-    const clientId = '5a71da11af7742abb244634ae32e7a96'; // replace with your client ID
-    const clientSecret = '60773f44df4a4b14ba5227020827bbc5'; // replace with your client secret
-    const authHeader = 'NWE3MWRhMTFhZjc3NDJhYmIyNDQ2MzRhZTMyZTdhOTY6NjA3NzNmNDRkZjRhNGIxNGJhNTIyNzAyMDgyN2JiYzU=' ;
 
-    useEffect(() => {
-        const requestOptions = {
-            method: 'POST',
-            headers: {
-                'Authorization': `Basic ${authHeader}`,
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: 'grant_type=client_credentials', // Use the appropriate grant type based on your use case
-        };
 
-        fetch('https://accounts.spotify.com/api/token', requestOptions)
-            .then(response =>
-                response.json()
+            }
 
-            )
-            .then(data => setToken(data.access_token) )
-            .catch(error => console.error(error));
-    },[]);
+        }catch (error){
+            console.log("error in the Home screen " ,error.message)
+        }
 
+
+    }
+    useEffect(  () => {
+        getUsername();
+    })
 
     return (
         <ScrollView style={styles.container}>
             <SafeAreaView style={styles.SafeAreaView} >
-                {/*<View style={{flexDirection:'row',alignItems: 'center'}}>*/}
-                {/*<Text  style={styles.header}>Hello {token!==null? username:"guest"} </Text>*/}
-                {/*    /!*<LinearGradient colors={['#9acd32','#3cb371', '#32cd32' ,'#90ee90' ]} style={styles.linearGradient}>*!/*/}
-                {/*    /!*    <Button*!/*/}
-                {/*    /!*        labelStyle={{color: 'white', fontWeight: 'bold',fontSize:15}}*!/*/}
-                {/*    /!*        icon={({ size, color }) => (*!/*/}
-                {/*    /!*            <FontAwesome name="user" size={size} color={color} />*!/*/}
-                {/*    /!*        )}*!/*/}
-                {/*    /!*        onPress={() => navigation.navigate('login')}*!/*/}
-                {/*    /!*    >*!/*/}
-                {/*    /!*        To Login/SignUp*!/*/}
-                {/*    /!*    </Button>*!/*/}
-
-                {/*    /!*</LinearGradient>*!/*/}
+                <View style={{flexDirection:'row',alignItems: 'center'}}>
+                    <Text  style={styles.header}>Hello {username!==""? username:"guest"} </Text>
+                    <Button style={styles.loginButton}
+                            labelStyle={{color: 'white', fontWeight: 'bold',fontSize:15}}
+                            onPress={() => navigation.navigate('login')}
+                    >
+                        To Login/SignUp
+                    </Button>
 
 
-                {/*</View>*/}
 
+                </View>
                 <TouchableOpacity onPress={()=>{ navigation.navigate('Popular')}}>
                     <Image source={require('../images/popular.gif')} style={styles.image}  resizeMode="cover"
                     />
@@ -97,8 +75,6 @@ const HomeScreen = ({ navigation }) => {
                     <Image source={require('../images/playlist2.gif')} style={styles.image}/>
                     <Text style={styles.caption}>my playlist</Text>
                 </TouchableOpacity>
-
-
             </SafeAreaView>
 
         </ScrollView>
@@ -155,21 +131,7 @@ const styles = StyleSheet.create({
         left:100,
         backgroundColor:'green',
 
-
-    },
-    linearGradient: {
-        left:100,
-        paddingLeft: 15,
-        paddingRight: 15,
-        borderRadius: 60
-    },
-    buttonText3: {
-        fontSize: 18,
-        textAlign: 'center',
-        margin: 10,
-        color: '#ffffff',
-        backgroundColor: 'transparent',
-    },
+    }
 });
 
-export default HomeScreen;
+export default HomeScreen;
