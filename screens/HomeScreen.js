@@ -1,4 +1,3 @@
-
 import React, {useEffect, useState} from 'react';
 import {ScrollView, SafeAreaView, TouchableOpacity, Text, StyleSheet, Image,View} from 'react-native';
 import {FontAwesome} from '@expo/vector-icons';
@@ -13,94 +12,96 @@ const HomeScreen = ({ navigation }) => {
     const [username,setUsername]=useState("");
     const [token,setToken]=useState(null);
 
-//
-//     async function getUsername() {
-//         try {
-//                    if (token !== null) {
-//                        console.log("inside the get-username method ")
-//                    let response = await axios.get('http://[write your]:8989/get-username-by-token?token=' + token);
-//                    if (response.data != null) {
-//                        setUsername(response.data);
-//                    } else {
-//                        console.log("response is null")
-//                    }
-//                } else {
-//                        console.log("the token is null")
-//
-//                    }
-//
-//
-//            }catch (error){
-//                    console.log("error in the Home screen " ,error.message)
-//                }
-//
-//
-// }
-//     const getToken = async () => {
-//         try {
-//             const token = await AsyncStorage.getItem('token');
-//             setToken(token);
-//             console.log("token is: " + token);
-//         } catch (error) {
-//             console.log("error in the token Home screen ",error.message);
-//         }
-//     };
-//     useEffect(() => {
-//         getToken().then(r => {console.log("use effect worked")});
-//     });
-//
-//
-//     useEffect(  () => {
-//       getUsername().then(r => {console.log("use effect inside home screen")});
-//     },[token])
+    //  useEffect(() => {
+    //     const clientId = '5a71da11af7742abb244634ae32e7a96'; // replace with your client ID
+    //     const clientSecret = '60773f44df4a4b14ba5227020827bbc5'; // replace with your client secret
+    //     const encodedCredentials = NWE3MWRhMTFhZjc3NDJhYmIyNDQ2MzRhZTMyZTdhOTY6NjA3NzNmNDRkZjRhNGIxNGJhNTIyNzAyMDgyN2JiYzU= // encode credentials in base64 format
+    //     axios.post('https://accounts.spotify.com/api/token', // endpoint
+    //     'grant_type=client_credentials', // request body
+    //       { // request headers
+    //         headers: {
+    //           'Authorization': 'Basic ' + encodedCredentials, // authorization header
+    //           'Content-Type': 'application/x-www-form-urlencoded' // content type header
+    //         }
+    //       }
+    //     ).then(response => { // handle success response
+    //       alert(response.data); // log the response data
+    //     }).catch(error => { // handle error response
+    //       console.error(error); // log the error
+    //     });
+    // }, []);
+
+    const clientId = '5a71da11af7742abb244634ae32e7a96'; // replace with your client ID
+    const clientSecret = '60773f44df4a4b14ba5227020827bbc5'; // replace with your client secret
+    const authHeader = 'NWE3MWRhMTFhZjc3NDJhYmIyNDQ2MzRhZTMyZTdhOTY6NjA3NzNmNDRkZjRhNGIxNGJhNTIyNzAyMDgyN2JiYzU=' ;
+
+    useEffect(() => {
+        const requestOptions = {
+            method: 'POST',
+            headers: {
+                'Authorization': `Basic ${authHeader}`,
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: 'grant_type=client_credentials', // Use the appropriate grant type based on your use case
+        };
+
+        fetch('https://accounts.spotify.com/api/token', requestOptions)
+            .then(response =>
+                response.json()
+
+            )
+            .then(data => setToken(data.access_token) )
+            .catch(error => console.error(error));
+    },[]);
+
 
     return (
-      <ScrollView style={styles.container}>
-        <SafeAreaView style={styles.SafeAreaView} >
-            {/*<View style={{flexDirection:'row',alignItems: 'center'}}>*/}
-            {/*<Text  style={styles.header}>Hello {token!==null? username:"guest"} </Text>*/}
-            {/*    /!*<LinearGradient colors={['#9acd32','#3cb371', '#32cd32' ,'#90ee90' ]} style={styles.linearGradient}>*!/*/}
-            {/*    /!*    <Button*!/*/}
-            {/*    /!*        labelStyle={{color: 'white', fontWeight: 'bold',fontSize:15}}*!/*/}
-            {/*    /!*        icon={({ size, color }) => (*!/*/}
-            {/*    /!*            <FontAwesome name="user" size={size} color={color} />*!/*/}
-            {/*    /!*        )}*!/*/}
-            {/*    /!*        onPress={() => navigation.navigate('login')}*!/*/}
-            {/*    /!*    >*!/*/}
-            {/*    /!*        To Login/SignUp*!/*/}
-            {/*    /!*    </Button>*!/*/}
+        <ScrollView style={styles.container}>
+            <SafeAreaView style={styles.SafeAreaView} >
+                {/*<View style={{flexDirection:'row',alignItems: 'center'}}>*/}
+                {/*<Text  style={styles.header}>Hello {token!==null? username:"guest"} </Text>*/}
+                {/*    /!*<LinearGradient colors={['#9acd32','#3cb371', '#32cd32' ,'#90ee90' ]} style={styles.linearGradient}>*!/*/}
+                {/*    /!*    <Button*!/*/}
+                {/*    /!*        labelStyle={{color: 'white', fontWeight: 'bold',fontSize:15}}*!/*/}
+                {/*    /!*        icon={({ size, color }) => (*!/*/}
+                {/*    /!*            <FontAwesome name="user" size={size} color={color} />*!/*/}
+                {/*    /!*        )}*!/*/}
+                {/*    /!*        onPress={() => navigation.navigate('login')}*!/*/}
+                {/*    /!*    >*!/*/}
+                {/*    /!*        To Login/SignUp*!/*/}
+                {/*    /!*    </Button>*!/*/}
 
-            {/*    /!*</LinearGradient>*!/*/}
-
-
-            {/*</View>*/}
-
-            <TouchableOpacity onPress={()=>{ navigation.navigate('Popular')}}>
-                <Image source={require('../images/popular.gif')} style={styles.image}  resizeMode="cover"
-                />
-                <Text style={styles.caption}>Popular Music</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={()=>{ navigation.navigate('played')}}>
-                <Image source={require('../images/playrecently.gif')} style={styles.image}/>
-                <Text style={styles.caption}>Played Recently</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={()=>{ navigation.navigate('artist')}}>
-                <Image source={require('../images/music.png')} style={styles.image}/>
-                <Text style={styles.caption}> Music by Artist</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={()=>{ navigation.navigate('friends')}}>
-                <Image source={require('../images/friends.gif')} style={styles.image}/>
-                <Text style={styles.caption}>Played Music by Friends</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={()=>{ navigation.navigate('playlist')}}>
-                <Image source={require('../images/playlist2.gif')} style={styles.image}/>
-                <Text style={styles.caption}>my playlist</Text>
-            </TouchableOpacity>
+                {/*    /!*</LinearGradient>*!/*/}
 
 
-        </SafeAreaView>
+                {/*</View>*/}
 
-      </ScrollView>
+                <TouchableOpacity onPress={()=>{ navigation.navigate('Popular')}}>
+                    <Image source={require('../images/popular.gif')} style={styles.image}  resizeMode="cover"
+                    />
+                    <Text style={styles.caption}>Popular Music</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={()=>{ navigation.navigate('played')}}>
+                    <Image source={require('../images/playrecently.gif')} style={styles.image}/>
+                    <Text style={styles.caption}>Played Recently</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={()=>{ navigation.navigate('artist')}}>
+                    <Image source={require('../images/music.png')} style={styles.image}/>
+                    <Text style={styles.caption}> Music by Artist</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={()=>{ navigation.navigate('friends')}}>
+                    <Image source={require('../images/friends.gif')} style={styles.image}/>
+                    <Text style={styles.caption}>Played Music by Friends</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={()=>{ navigation.navigate('playlist')}}>
+                    <Image source={require('../images/playlist2.gif')} style={styles.image}/>
+                    <Text style={styles.caption}>my playlist</Text>
+                </TouchableOpacity>
+
+
+            </SafeAreaView>
+
+        </ScrollView>
     );
 };
 
@@ -157,7 +158,7 @@ const styles = StyleSheet.create({
 
     },
     linearGradient: {
-       left:100,
+        left:100,
         paddingLeft: 15,
         paddingRight: 15,
         borderRadius: 60
@@ -171,4 +172,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default HomeScreen;
+export default HomeScreen;
