@@ -17,6 +17,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import {createDrawerNavigator, DrawerContentScrollView, DrawerItemList} from "@react-navigation/drawer";
 import axios from "axios";
+import PlayingNow from "./screens/PlayingNow";
 
 export default function App() {
     const [username,setUsername]=useState("");
@@ -134,7 +135,7 @@ export default function App() {
             },
             headerTitle: '',
         }}
-                          drawerContent={props => <CustomDrawer {...props} />} >
+           drawerContent={props => <CustomDrawer {...props} />} >
           {/*<Drawer.Screen component={HomeScreen} name={'home'}/>*/}
           {/*<Drawer.Screen component={PlayedRecently} name={'played'}/>*/}
           {/*  <Drawer.Screen name="Home" component={HomeScreen} options={{*/}
@@ -159,6 +160,7 @@ export default function App() {
             <Stack.Screen name='friends' component={MusicByFriends}/>
             <Stack.Screen name='playlist' component={MyPlaylist}/>
             <Drawer.Screen name='login' component={Login}/>
+            <Drawer.Screen name='playing' component={PlayingNow}/>
         </Drawer.Navigator>
     )
   }

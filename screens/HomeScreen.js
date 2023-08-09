@@ -98,6 +98,7 @@ const HomeScreen = ({ navigation }) => {
             </TouchableOpacity>
 
 
+
         </SafeAreaView>
 
       </ScrollView>
