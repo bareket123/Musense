@@ -28,7 +28,7 @@ export default function Login ({ navigation }) {
         try {
            if (checked==='signUp'){
                console.log("enter sign")
-               res = await axios.create({baseURL: 'http://10.0.0.1:8989'}).post('/sign-up?username=' + username + '&password=' + password+'&email='+email+"&picture="+picture)
+               res = await axios.create({baseURL: 'http://[write your]:8989'}).post('/sign-up?username=' + username + '&password=' + password+'&email='+email+"&picture="+picture)
                if (res.data.success) {
                    alert("sign up successfully");
                    setConfirmPassword("");
@@ -43,7 +43,7 @@ export default function Login ({ navigation }) {
            }else if (checked==='login') {
                console.log("enter login")
 
-               res = await axios.create({baseURL: 'http://10.0.0.1:8989'}).post('/login?username=' + username + '&password=' + password)
+               res = await axios.create({baseURL: 'http://[write your]:8989'}).post('/login?username=' + username + '&password=' + password)
                console.log(res.data)
                if (res.data.success){
                    const token=res.data.token;
