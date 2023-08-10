@@ -64,7 +64,7 @@ const PlayedRecently = ({ navigation, playedRecently }) => {
             <FlatList
                 data={playedRecently}
                 renderItem={renderSong}
-                keyExtractor={(item) => item.songIndex.toString()} // Convert index to string
+                keyExtractor={(item) => item.songIndex}
             />
         </View>
     );

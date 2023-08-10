@@ -13,6 +13,10 @@ import React, {useEffect, useState} from 'react';
  } from 'react-native';
 import {AntDesign, FontAwesome, Fontisto} from "@expo/vector-icons";
 import { Audio } from 'expo-av';
+import { useSelector, useDispatch } from 'react-redux'; // Import useSelector and useDispatch from react-redux
+import { addToPlayedRecently } from '../actions/actions'; // Import your action creator
+
+
 
 
 export default function MusicByArtist ({ navigation }) {
@@ -26,7 +30,7 @@ export default function MusicByArtist ({ navigation }) {
     const [searchText, setSearchText] = useState('');
     const [playSong, setPlaySong] = useState();
     const [showSongs, setShowSongs] = useState(false);
-
+    const dispatch = useDispatch();
 
 
     const handleSearch = (text) => {
@@ -36,6 +40,7 @@ export default function MusicByArtist ({ navigation }) {
 
     async function playSound(index) {
         const song = currentArray[index];
+        dispatch(addToPlayedRecently(song));
         if (!song) {
             return; // Handle invalid index
         }
@@ -93,7 +98,7 @@ export default function MusicByArtist ({ navigation }) {
         const songs = {
             method: 'GET',
             headers: {
-                'X-RapidAPI-Key': '29f3773d28msh4005745bd43a895p1a71acjsnc5350d1468dc',
+                'X-RapidAPI-Key': '77f4e88fbcmsh34c35cf21256c6ap1326abjsn36b18c917e58',
                 'X-RapidAPI-Host': 'shazam.p.rapidapi.com'
             }
         };
