@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
+import {View, Text, FlatList, StyleSheet, TouchableOpacity, Button} from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { connect } from 'react-redux';
 import { addToPlayedRecently } from '../actions/actions';
@@ -8,10 +8,9 @@ import { Audio } from 'expo-av';
 const PlayedRecently = ({ navigation, playedRecently }) => {
     const [sound, setSound] = useState(null);
 
-    const playSound = async (index) => {
-        const song = playedRecently[index];
+    const playSound = async (song) => {
         if (!song) {
-            return; // Handle invalid index
+            return; // Handle invalid song
         }
 
         try {
@@ -27,20 +26,20 @@ const PlayedRecently = ({ navigation, playedRecently }) => {
         }
     };
 
-    const pauseSound = async () => {
-        try {
-            if (sound) {
-                await sound.pauseAsync();
-            }
-        } catch (error) {
-            console.error('Error pausing sound:', error);
+    const pauseSound = () => {
+        if (sound) {
+            sound.pauseAsync().catch(error => {
+                console.error('Error pausing sound:', error);
+            });
         }
     };
 
     useEffect(() => {
         return () => {
             if (sound) {
-                sound.unloadAsync();
+                sound.unloadAsync().catch(error => {
+                    console.error('Error unloading sound:', error);
+                });
             }
         };
     }, [sound]);
@@ -49,7 +48,7 @@ const PlayedRecently = ({ navigation, playedRecently }) => {
         <View style={{ padding: 20, flexDirection: 'row', alignItems: 'center', left: '20%' }}>
             <MaterialCommunityIcons name="play-box" size={24} color="black" />
             <Text style={{ fontSize: 16, color: 'purple' }}>{item.title}</Text>
-            <TouchableOpacity style={{ marginLeft: 50 }} onPress={() => playSound(item.songIndex)}>
+            <TouchableOpacity style={{ marginLeft: 50 }} onPress={() => playSound(item)}>
                 <Text>Play</Text>
             </TouchableOpacity>
             <TouchableOpacity style={{ marginLeft: 50 }} onPress={() => pauseSound()}>

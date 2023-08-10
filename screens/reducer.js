@@ -8,13 +8,13 @@ const initialState = {
 export default function playedRecently(state = initialState, action) {
     switch (action.type) {
         case ADD_TO_PLAYED_RECENTLY:
-            if (!(state.cardData.some(song => song.url === action.data.url))) {
+            if (!state.cardData.some(song => song.url === action.data.url)) {
                 return {
                     ...state,
                     cardData: [...state.cardData, action.data]
                 };
             }
-            break;
+            return state; // Return the current state if the song already exists
         default:
             return state;
     }
