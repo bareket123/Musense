@@ -17,7 +17,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import {createDrawerNavigator, DrawerContentScrollView, DrawerItemList} from "@react-navigation/drawer";
 import axios from "axios";
-import PlayingNow from "./screens/PlayingNow";
 import { useContext, useReducer } from 'react';
 import {GlobalStateContext, useGlobalState} from './screens/GlobalStateContext';
 
@@ -165,7 +164,7 @@ export default function App() {
             <Stack.Screen name='playlist' component={MyPlaylist}/>
             <Stack.Screen name='played' component={PlayedRecently}/>
             <Drawer.Screen name='login' component={Login}/>
-            <Drawer.Screen name='playing' component={PlayingNow}/>
+
         </Drawer.Navigator>
 
 
