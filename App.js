@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import 'react-native-gesture-handler';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState,createContext} from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { useNavigation } from '@react-navigation/native';
@@ -18,12 +18,16 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import {createDrawerNavigator, DrawerContentScrollView, DrawerItemList} from "@react-navigation/drawer";
 import axios from "axios";
 import PlayingNow from "./screens/PlayingNow";
+import { useContext, useReducer } from 'react';
+import {GlobalStateContext, useGlobalState} from './screens/GlobalStateContext';
+
 
 export default function App() {
     const [username,setUsername]=useState("");
     const [email,setEmail]=useState("");
     const [image,setImage]=useState('https://cdn-icons-png.flaticon.com/512/3271/3271191.png');
     const [token,setToken]=useState(null);
+    const [myPlaylist,setMyPlaylist]=useState([]);
 
 
   const Stack = createStackNavigator();
@@ -126,6 +130,8 @@ export default function App() {
   const Drawer=createDrawerNavigator();
   const DrawNavigator=()=>{
     return(
+
+
         <Drawer.Navigator screenOptions={{
             headerShown: true,
             headerStyle: {
@@ -153,20 +159,20 @@ export default function App() {
           {/*  }}*/}
           {/*  />*/}
          <Drawer.Screen name="Home" component={HomeScreen} />
-
-            <Stack.Screen name='Popular' component={PopularNow}/>
-            <Stack.Screen name='played' component={PlayedRecently}/>
-            <Stack.Screen name='artist' component={MusicByArist}/>
+           <Stack.Screen name='Popular' component={PopularNow}/>
+           <Stack.Screen name='artist' component={MusicByArist}/>
             <Stack.Screen name='friends' component={MusicByFriends}/>
             <Stack.Screen name='playlist' component={MyPlaylist}/>
+            <Stack.Screen name='played' component={PlayedRecently}/>
             <Drawer.Screen name='login' component={Login}/>
             <Drawer.Screen name='playing' component={PlayingNow}/>
         </Drawer.Navigator>
+
+
     )
   }
 
   return (
-
      <NavigationContainer>
 
          <DrawNavigator />

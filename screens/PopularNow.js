@@ -1,11 +1,15 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {View, Text, TouchableOpacity, StyleSheet, Button, ScrollView, SafeAreaView, FlatList} from 'react-native';
 import { Audio } from 'expo-av';
-import {AntDesign, MaterialCommunityIcons} from "@expo/vector-icons";
+import {AntDesign} from "@expo/vector-icons";
+import {GlobalStateContext} from "./GlobalStateContext";
+
+
+
 
 const PopularNow = () => {
-    const [currentUrl,setCurrentUrl]=useState("");
-    const [playing,setPlaying]=useState();
+    const {setMyPlaylist}=useContext(GlobalStateContext);
+    //const [playing,setPlaying]=useState();
 
     const [sound, setSound] = useState();
     const [songsArray, setSongsArray] = useState([]); // Initialize songsArray as a state
@@ -67,7 +71,6 @@ const PopularNow = () => {
     //
     //
     useEffect(() => {
-        fetchSingleUrl();
         fetchPlaylist();
     }, []);
 
@@ -89,25 +92,21 @@ const PopularNow = () => {
 
     }
 
-   function printArray(){
-       songsArray.map((s) => {
-           console.log(s);
-       });
-   }
-    const fetchSingleUrl =async()=>{
-        const options = {
-            method: 'GET',
-            headers: {
-                'X-RapidAPI-Key': '29f3773d28msh4005745bd43a895p1a71acjsnc5350d1468dc',
-                'X-RapidAPI-Host': 'shazam.p.rapidapi.com'
-            }
-        };
 
-        fetch('https://shazam.p.rapidapi.com/songs/get-details?key=40333609&locale=en-US', options)
-            .then(response => response.json())
-            //.then(response => urlAudio=response.hub.actions[1].uri)
-            .catch(err => console.error(err));
-    }
+    // const fetchSingleUrl =async()=>{
+    //     const options = {
+    //         method: 'GET',
+    //         headers: {
+    //             'X-RapidAPI-Key': '29f3773d28msh4005745bd43a895p1a71acjsnc5350d1468dc',
+    //             'X-RapidAPI-Host': 'shazam.p.rapidapi.com'
+    //         }
+    //     };
+    //
+    //     fetch('https://shazam.p.rapidapi.com/songs/get-details?key=40333609&locale=en-US', options)
+    //         .then(response => response.json())
+    //         //.then(response => urlAudio=response.hub.actions[1].uri)
+    //         .catch(err => console.error(err));
+    // }
 
     const fetchPlaylist=async ()=>{
         const options = {
@@ -123,20 +122,21 @@ const PopularNow = () => {
             .then(response => getSong(response))
             .catch(err => console.error(err));
     }
-    const togglePlaying = () => {
-            console.log('Toggle playing function called');
-            setPlaying(!playing);
 
-
-    };
+    function addLovedSongs(item) {
+       setMyPlaylist(prevItems => [...prevItems, item]);
+    }
 
     const renderSong = ({ item }) => (
         <View style={{ padding: 20, flexDirection: 'row', alignItems: 'center' }}>
-            <Text style={{ fontSize: 16, color: 'orange' }}>{item.title}</Text>
-            <TouchableOpacity style={{flexDirection: 'row'}} onPress={togglePlaying}>
-              <AntDesign onPress={() => {pauseSound(item.songIndex).then(r => {console.log(playing)}) }} name={"pausecircle"} size={60} color="white" />
-              <AntDesign onPress={()=>{playSound(item.songIndex).then(r =>{console.log(playing)})}} name="play" size={60} color="white" />
+            <View>
+                <Text style={{ fontSize: 16, color: 'orange' }}>{item.title}</Text>
+                <AntDesign onPress={()=>{addLovedSongs(item)}} name="heart" size={24} color="red" />
+            </View>
 
+            <TouchableOpacity style={{ flexDirection: 'row' }} >
+                <AntDesign onPress={() => { pauseSound(item.songIndex).then(r => {setPlaying(false)}) }} name={"pausecircle"} size={60} color="white" />
+                <AntDesign onPress={() => { playSound(item.songIndex).then(r => {setPlaying(true)}) }} name="play" size={60} color="white" />
             </TouchableOpacity>
         </View>
     );
@@ -147,6 +147,7 @@ const PopularNow = () => {
         //     <SafeAreaView style={styles.SafeAreaView} >
         <View style={styles.container}>
             <View>
+
                 <FlatList
                     keyExtractor={(item)=>item.songIndex}
                     data={songsArray}

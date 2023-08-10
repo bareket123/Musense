@@ -1,9 +1,16 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {ScrollView, View, Text, Button, StyleSheet, Image} from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
+import { useRoute } from '@react-navigation/native';
+import {GlobalStateContext} from './GlobalStateContext';
+
+
 
 export default function MyPlaylist ({ navigation }) {
     const [image, setImage] = useState(null);
+    const {myPlaylist}=useContext(GlobalStateContext);
+    const route = useRoute();
+    const receivedArray = route.params?.data || [];
 
     const pickImage = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
@@ -32,6 +39,15 @@ export default function MyPlaylist ({ navigation }) {
         title="Go back to Home"
         onPress={() => navigation.navigate("Home")}
       />
+        <View>
+            <Text>Received Array:</Text>
+            {
+                myPlaylist.map((item, index) => {
+                    return(
+                 <Text>{item.title}</Text>
+                )
+            })}
+        </View>
     </View>
 
   );
