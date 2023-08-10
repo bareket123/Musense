@@ -19,7 +19,8 @@ import {createDrawerNavigator, DrawerContentScrollView, DrawerItemList} from "@r
 import axios from "axios";
 import { useContext, useReducer } from 'react';
 import {GlobalStateContext, useGlobalState} from './screens/GlobalStateContext';
-
+import {store} from "./screens/reducer";
+import {Provider} from "react-redux";
 
 export default function App() {
     const [username,setUsername]=useState("");
@@ -141,22 +142,6 @@ export default function App() {
             headerTitle: '',
         }}
            drawerContent={props => <CustomDrawer {...props} />} >
-          {/*<Drawer.Screen component={HomeScreen} name={'home'}/>*/}
-          {/*<Drawer.Screen component={PlayedRecently} name={'played'}/>*/}
-          {/*  <Drawer.Screen name="Home" component={HomeScreen} options={{*/}
-          {/*    headerTitle: () => (*/}
-          {/*        <View style={styles.header}>*/}
-          {/*          <TouchableOpacity style={styles.button} onPress={handleLout}>*/}
-          {/*            <Text>Logout</Text>*/}
-          {/*          </TouchableOpacity>*/}
-          {/*          <View style={styles.iconContainer}>*/}
-          {/*            <Ionicons name="ios-home" size={24} color="black" />*/}
-          {/*          </View>*/}
-          {/*        </View>*/}
-          {/*    ),*/}
-          {/*    headerTitleAlign: 'center',*/}
-          {/*  }}*/}
-          {/*  />*/}
          <Drawer.Screen name="Home" component={HomeScreen} />
            <Stack.Screen name='Popular' component={PopularNow}/>
            <Stack.Screen name='artist' component={MusicByArist}/>
@@ -172,34 +157,14 @@ export default function App() {
   }
 
   return (
+      <Provider store={store} >
      <NavigationContainer>
 
          <DrawNavigator />
 
-        {/*<Stack.Screen name="Home" component={HomeScreen} options={{*/}
-        {/*  headerTitle: () => (*/}
-        {/*      <View style={styles.header}>*/}
-        {/*        <TouchableOpacity style={styles.button} onPress={handleLout}>*/}
-        {/*          <Text>Logout</Text>*/}
-        {/*        </TouchableOpacity>*/}
-        {/*        <View style={styles.iconContainer}>*/}
-        {/*          <Ionicons name="ios-home" size={24} color="black" />*/}
-        {/*        </View>*/}
-        {/*      </View>*/}
-        {/*  ),*/}
-        {/*  headerTitleAlign: 'center',*/}
-        {/*}}*/}
-        {/*/>*/}
-        {/*   <Stack.Screen name="Root" component={Root} />*/}
-        {/*   <Stack.Screen name='Popular' component={PopularNow}/>*/}
-        {/*<Stack.Screen name='played' component={PlayedRecently}/>*/}
-        {/*<Stack.Screen name='artist' component={MusicByArist}/>*/}
-        {/*<Stack.Screen name='friends' component={MusicByFriends}/>*/}
-        {/*/!*<Stack.Screen name='playlist' component={MyPlaylist}/>*!/*/}
-        {/*<Stack.Screen name='login' component={Login}/>*/}
     </NavigationContainer>
 
-
+      </Provider>
   );
 }
 

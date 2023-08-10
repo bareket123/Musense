@@ -3,19 +3,23 @@ import {View, Text, TouchableOpacity, StyleSheet, Button, ScrollView, SafeAreaVi
 import { Audio } from 'expo-av';
 import {AntDesign} from "@expo/vector-icons";
 import {GlobalStateContext} from "./GlobalStateContext";
+import { useSelector, useDispatch } from 'react-redux'; // Import useSelector and useDispatch from react-redux
+import { addToPlayedRecently } from '../actions/actions'; // Import your action creator
 
 
 
 
 const PopularNow = () => {
     const {setMyPlaylist}=useContext(GlobalStateContext);
-    //const [playing,setPlaying]=useState();
-
+    // const [playedRecently,setPlayedRecently]=useState([])
+    const playedRecently = useSelector((state) => state.cardData); // Access the playedRecently state from Redux
+    const dispatch = useDispatch(); // Get the dispatch function
     const [sound, setSound] = useState();
     const [songsArray, setSongsArray] = useState([]); // Initialize songsArray as a state
 
     async function playSound(index) {
         const song = songsArray[index];
+        dispatch(addToPlayedRecently(song)); // Dispatch the action to add the song to playedRecently state in Redux
         if (!song) {
             return; // Handle invalid index
         }
@@ -135,8 +139,8 @@ const PopularNow = () => {
             </View>
 
             <TouchableOpacity style={{ flexDirection: 'row' }} >
-                <AntDesign onPress={() => { pauseSound(item.songIndex).then(r => {setPlaying(false)}) }} name={"pausecircle"} size={60} color="white" />
-                <AntDesign onPress={() => { playSound(item.songIndex).then(r => {setPlaying(true)}) }} name="play" size={60} color="white" />
+                <AntDesign onPress={() => { pauseSound(item.songIndex).then(r => {}) }} name={"pausecircle"} size={60} color="white" />
+                <AntDesign onPress={() => { playSound(item.songIndex).then(r => {}) }} name="play" size={60} color="white" />
             </TouchableOpacity>
         </View>
     );
@@ -154,7 +158,12 @@ const PopularNow = () => {
                     renderItem={renderSong}
 
                 />
-
+                {/*{*/}
+                {/*    playedRecently.length>0&&*/}
+                {/*    playedRecently.map((song)=>{*/}
+                {/*        console.log(song.title+"*****\n")*/}
+                {/*    })*/}
+                {/*}*/}
                 {/*<FlatList*/}
                 {/*    data={songsArray}*/}
                 {/*    renderItem={renderSong}*/}
