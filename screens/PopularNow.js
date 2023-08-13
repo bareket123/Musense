@@ -86,7 +86,8 @@ const PopularNow = () => {
                 title: song.title,
                 artist: song.subtitle,
                 url: song.hub.actions[1].uri,
-                coverImage: song.images.background
+                coverImage: song.images.background,
+                isFavorite: false // Initialize as not favorite//////////////////////////////////
             };
 
             tempArray.push(currentSong);
@@ -127,20 +128,33 @@ const PopularNow = () => {
             .catch(err => console.error(err));
     }
 
+    /////////////////////
+    function toggleFavorite(index) {
+        const updatedArray = songsArray.map((song, i) => {
+            if (i === index) {
+                return { ...song, isFavorite: !song.isFavorite };
+            }
+            return song;
+        });
+        setSongsArray(updatedArray);
+    }
+
     function addLovedSongs(item) {
        setMyPlaylist(prevItems => [...prevItems, item]);
     }
 
     const renderSong = ({ item }) => (
-        <View style={{ padding: 20, flexDirection: 'row', alignItems: 'center' }}>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 10 }}>
             <View>
-                <Text style={{ fontSize: 16, color: 'orange' }}>{item.title}</Text>
-                <AntDesign onPress={()=>{addLovedSongs(item)}} name="heart" size={24} color="red" />
+                <Text style={{ fontSize: 15, color: 'black' }}>{item.title}</Text>
             </View>
-
-            <TouchableOpacity style={{ flexDirection: 'row' }} >
-                <AntDesign onPress={() => { pauseSound(item.songIndex).then(r => {}) }} name={"pausecircle"} size={60} color="white" />
-                <AntDesign onPress={() => { playSound(item.songIndex).then(r => {}) }} name="play" size={60} color="white" />
+            <TouchableOpacity style={{ flexDirection: 'row' }}>
+                <AntDesign onPress={() => pauseSound(item.songIndex).then(r => {})} name={"pausecircle"} size={30} color="black" />
+                <AntDesign onPress={() => playSound(item.songIndex).then(r => {})} name="play" size={30} color="black" />
+                <AntDesign onPress={() => {
+                    toggleFavorite(item.songIndex);
+                    addLovedSongs(item);
+                }} name="heart" size={30} color={item.isFavorite ? 'red' : 'green'} />
             </TouchableOpacity>
         </View>
     );
@@ -231,8 +245,10 @@ const PopularNow = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor:'blue'
+        backgroundColor:'pink',
+
     },
+
     playButton: {
         backgroundColor: 'green',
         padding: 10,

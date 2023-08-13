@@ -21,6 +21,8 @@ import { useContext, useReducer } from 'react';
 import {GlobalStateContext, useGlobalState} from './screens/GlobalStateContext';
 import {store} from "./screens/reducer";
 import {Provider} from "react-redux";
+import SearchFriends from "./screens/SearchFriends";
+import MyFriends from "./screens/MyFriends";
 
 export default function App() {
     const [username,setUsername]=useState("");
@@ -31,7 +33,6 @@ export default function App() {
 
 
   const Stack = createStackNavigator();
-
     async function getUsername() {
         try {
             if (token !== null) {
@@ -148,6 +149,8 @@ export default function App() {
             <Stack.Screen name='friends' component={MusicByFriends}/>
             <Stack.Screen name='playlist' component={MyPlaylist}/>
             <Stack.Screen name='played' component={PlayedRecently}/>
+            <Stack.Screen name='My Friends' component={MyFriends}/>
+            <Stack.Screen name='Search Friends' component={SearchFriends}/>
             <Drawer.Screen name='login' component={Login}/>
 
         </Drawer.Navigator>
