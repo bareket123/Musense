@@ -1,17 +1,29 @@
 
 import React, {useEffect, useState} from 'react';
 import {ScrollView, SafeAreaView, TouchableOpacity, Text, StyleSheet, Image,View} from 'react-native';
-import {FontAwesome} from '@expo/vector-icons';
+import {AntDesign, Entypo, FontAwesome, FontAwesome5, Ionicons, MaterialIcons} from '@expo/vector-icons';
 import { Button} from 'react-native-paper';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import {LinearGradient} from 'expo-linear-gradient';
-
+import {NavigationContainer} from "@react-navigation/native";
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import Login from "./Login";
+import PopularNow from "./PopularNow";
+import MusicByArtist from "./MusicByArtist";
+import SearchFriends from "./SearchFriends"; // Make sure this path is correct
+import MyFriends from "./MyFriends";
 
 
 const HomeScreen = ({ navigation }) => {
     const [username,setUsername]=useState("");
     const [token,setToken]=useState(null);
+    const homeName="home";
+    const loginName="login";
+    const popularName="popular";
+
+    const Tab=createBottomTabNavigator();
+
 
 //
 //     async function getUsername() {
@@ -56,7 +68,7 @@ const HomeScreen = ({ navigation }) => {
 
     return (
       <ScrollView style={styles.container}>
-        <SafeAreaView style={styles.SafeAreaView} >
+        <SafeAreaView>
             {/*<View style={{flexDirection:'row',alignItems: 'center'}}>*/}
             {/*<Text  style={styles.header}>Hello {token!==null? username:"guest"} </Text>*/}
             {/*    /!*<LinearGradient colors={['#9acd32','#3cb371', '#32cd32' ,'#90ee90' ]} style={styles.linearGradient}>*!/*/}
@@ -74,7 +86,7 @@ const HomeScreen = ({ navigation }) => {
 
 
             {/*</View>*/}
-
+            <View style={styles.SafeAreaView}>
             <TouchableOpacity onPress={()=>{ navigation.navigate('Popular')}}>
                 <Image source={require('../images/popular.gif')} style={styles.image}  resizeMode="cover"
                 />
@@ -96,8 +108,53 @@ const HomeScreen = ({ navigation }) => {
                 <Image source={require('../images/playlist2.gif')} style={styles.image}/>
                 <Text style={styles.caption}>my playlist</Text>
             </TouchableOpacity>
+            </View>
+            <NavigationContainer independent={true}>
+                <Tab.Navigator
 
+                    screenOptions={{
+                    tabBarStyle: [
+                        {
+                            display: 'flex', // You can add other styling properties here
+                            backgroundColor:'black'
+                        },
+                        null,
+                    ],
+                }}>
+                    <Tab.Screen
+                        name="SearchFriends" // Make sure the name matches exactly
+                        component={SearchFriends}
+                        options={{
+                            tabBarIcon: ({ color, size }) => (
+                                <MaterialIcons
+                                    name="person-search"
+                                    style={{ left: 0, justifyContent: 'space-around', backgroundColor: 'black' }}
+                                    size={size}
+                                    color='white'
+                                    onPress={() => { navigation.navigate('SearchFriends') }} />
+                            ),
+                        }}
+                    />
 
+                    <Tab.Screen
+                        name={"MF"}
+                    component={MyFriends} // Replace with your component
+                    options={{
+                        tabBarIcon: ({ color, size,style }) => (
+                            <FontAwesome5 name="user-friends" size={24} color="white" />   ),
+                    }}
+
+                />
+                    {/*<Tab.Screen*/}
+                    {/*    name="Search3"*/}
+                    {/*    component={Login} // Replace with your component*/}
+                    {/*    options={{*/}
+                    {/*        tabBarIcon: ({ color, size,style }) => (*/}
+                    {/*            <MaterialIcons name="location-searching" style={{justifyContent: 'space-around'}} size={24} color="white" />                        ),*/}
+                    {/*    }}*/}
+                    {/*/>*/}
+                </Tab.Navigator>
+            </NavigationContainer>
 
         </SafeAreaView>
 
