@@ -15,13 +15,22 @@ function reducer (state = initialState,action){
                 playList: [...state.playList,action.playList]
             }
         case SET_PLAYED_RECENTLY :
-            return {
-                ...state ,
-                playedRecently: [...state.playedRecently,action.playedRecently]
+            // return {
+            //     ...state ,
+            //     playedRecently: [...state.playedRecently,action.playedRecently]
+            // }
+            if (!state.playedRecently.includes(action.playedRecently)) {
+                return {
+                    ...state,
+                    playedRecently: [...state.playedRecently, action.playedRecently]
+                };
             }
+            return state;
+
         default :
             return state ;
     }
 }
 
 export default reducer;
+

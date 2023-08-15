@@ -31,7 +31,7 @@ export default function App() {
     // const [myPlaylist,setMyPlaylist]=useState([]);
 
 
-  const Stack = createStackNavigator();
+    const Stack = createStackNavigator();
     async function getUsername() {
         try {
             if (token !== null) {
@@ -79,13 +79,13 @@ export default function App() {
     })
 
     async function handleLout(){
-   await AsyncStorage.removeItem('token')
+        await AsyncStorage.removeItem('token')
         setUsername("guest")
         setEmail("")
         setImage('https://cdn-icons-png.flaticon.com/512/3271/3271191.png')
-    console.log("delete")
+        console.log("delete")
 
-  }const CustomDrawer = props => {
+    }const CustomDrawer = props => {
         return (
             <View style={{ flex: 1 }}>
                 <DrawerContentScrollView {...props}>
@@ -127,68 +127,70 @@ export default function App() {
             </View>
         );
     };
-  const Drawer=createDrawerNavigator();
-  const DrawNavigator=()=>{
-    return(
+    const Drawer=createDrawerNavigator();
+    const DrawNavigator=()=>{
+        return(
 
 
-        <Drawer.Navigator screenOptions={{
-            headerShown: true,
-            headerStyle: {
-                backgroundColor: 'transparent',
-                elevation: 0,
-                shadowOpacity: 0,
-            },
-            headerTitle: '',
-        }}
-           drawerContent={props => <CustomDrawer {...props} />} >
-         <Drawer.Screen name="Home" component={HomeScreen} />
-           <Stack.Screen name='Popular' component={PopularNow}/>
-           <Stack.Screen name='artist' component={MusicByArist}/>
-            <Stack.Screen name='friends' component={MusicByFriends}/>
-            <Stack.Screen name='playlist' component={MyPlaylist}/>
-            <Stack.Screen name='played' component={PlayedRecently}/>
-            <Stack.Screen name='My Friends' component={MyFriends}/>
-            <Stack.Screen name='Search Friends' component={SearchFriends}/>
-            <Drawer.Screen name='login' component={Login}/>
+            <Drawer.Navigator screenOptions={{
+                headerShown: true,
+                headerStyle: {
+                    backgroundColor: 'transparent',
+                    elevation: 0,
+                    shadowOpacity: 0,
+                },
+                headerTitle: '',
+            }}
+                              drawerContent={props => <CustomDrawer {...props} />} >
+                <Drawer.Screen name="Home" component={HomeScreen} />
+                <Stack.Screen name='Popular' component={PopularNow}/>
+                <Stack.Screen name='artist' component={MusicByArist}/>
+                <Stack.Screen name='friends' component={MusicByFriends}/>
+                <Stack.Screen name='playlist' component={MyPlaylist}/>
+                <Stack.Screen name='played' component={PlayedRecently}/>
+                <Stack.Screen name='My Friends' component={MyFriends}/>
+                <Stack.Screen name='Search Friends' component={SearchFriends}/>
+                <Drawer.Screen name='login' component={Login}/>
 
-        </Drawer.Navigator>
+            </Drawer.Navigator>
 
 
-    )
-  }
+        )
+    }
 
-  return (
-      <Provider store={Store} >
-     <NavigationContainer>
+    return (
+        <Provider store={Store} >
+            <NavigationContainer>
 
-         <DrawNavigator />
+                <DrawNavigator />
 
-    </NavigationContainer>
+            </NavigationContainer>
 
-      </Provider>
-  );
+        </Provider>
+    );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  button: {
-    position: 'absolute',
-    left: 100,
-  },
-  iconContainer: {
-    position: 'absolute',
-    left: '100%',
-    transform: [{ translateX: -12 }],
-  },
+    container: {
+        flex: 1,
+        backgroundColor: '#fff',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    header: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    button: {
+        position: 'absolute',
+        left: 100,
+    },
+    iconContainer: {
+        position: 'absolute',
+        left: '100%',
+        transform: [{ translateX: -12 }],
+    },
 });
+
+

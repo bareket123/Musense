@@ -23,7 +23,7 @@ const PopularNow = () => {
     async function playSound(index) {
         const song = songsArray[index];
         dispatch(setPlayedRecently(song)); // Dispatch the action to add the song to playedRecently state in redux
-                if (!song) {
+        if (!song) {
             return; // Handle invalid index
         }
 
@@ -97,7 +97,7 @@ const PopularNow = () => {
             tempArray.push(currentSong);
         });
 
-       setSongsArray(tempArray)
+        setSongsArray(tempArray)
 
     }
 
@@ -159,7 +159,7 @@ const PopularNow = () => {
                 <AntDesign onPress={() => {
                     toggleFavorite(item.songIndex);
                     addLovedSongs(item.songIndex);
-                }} name="heart" size={30} color={item.isFavorite ? 'red' : 'green'} />
+                }} name="heart" disabled={item.isFavorite} size={30} color={item.isFavorite ? 'red' : 'green'} />
             </TouchableOpacity>
         </View>
     );
@@ -192,41 +192,41 @@ const PopularNow = () => {
                 {/*/>*/}
             </View>
 
-                {/*{songsArray.map((song, index) => (*/}
-                {/*    */}
-                {/*     <TouchableOpacity*/}
-                {/*        onPress={() => togglePlaying}*/}
-                {/*        style={{*/}
-                {/*            width: 80,*/}
-                {/*            height: 80,*/}
-                {/*            borderRadius: 40,*/}
-                {/*            // backgroundColor: 'khaki',*/}
-                {/*            justifyContent: 'center',*/}
-                {/*            alignItems: 'center',*/}
-                {/*            marginRight: 20,*/}
-                {/*            marginLeft: 20,*/}
-                {/*        }}>*/}
+            {/*{songsArray.map((song, index) => (*/}
+            {/*    */}
+            {/*     <TouchableOpacity*/}
+            {/*        onPress={() => togglePlaying}*/}
+            {/*        style={{*/}
+            {/*            width: 80,*/}
+            {/*            height: 80,*/}
+            {/*            borderRadius: 40,*/}
+            {/*            // backgroundColor: 'khaki',*/}
+            {/*            justifyContent: 'center',*/}
+            {/*            alignItems: 'center',*/}
+            {/*            marginRight: 20,*/}
+            {/*            marginLeft: 20,*/}
+            {/*        }}>*/}
 
-                {/*          <Text> song name:{song.title}</Text>*/}
-                {/*        {*/}
-                {/*            playing?*/}
-
-
-                {/*                <AntDesign onPress={()=>{togglePlaying(),playSound(index)}}  name="play" size={60} color="white"   />*/}
-
-                {/*                :*/}
-                {/*                <AntDesign onPress={()=>{togglePlaying(),pauseSound(index)}} name="pausecircle" size={60} color="white" />*/}
+            {/*          <Text> song name:{song.title}</Text>*/}
+            {/*        {*/}
+            {/*            playing?*/}
 
 
-                {/*        }*/}
+            {/*                <AntDesign onPress={()=>{togglePlaying(),playSound(index)}}  name="play" size={60} color="white"   />*/}
 
-                {/*    </TouchableOpacity>*/}
-                {/*    <Button*/}
-                {/*        key={index}*/}
-                {/*        title={`Play ${song.title}`}*/}
-                {/*        onPress={() => playSound(index)}*/}
-                {/*    />*/}
-                {/*))}*/}
+            {/*                :*/}
+            {/*                <AntDesign onPress={()=>{togglePlaying(),pauseSound(index)}} name="pausecircle" size={60} color="white" />*/}
+
+
+            {/*        }*/}
+
+            {/*    </TouchableOpacity>*/}
+            {/*    <Button*/}
+            {/*        key={index}*/}
+            {/*        title={`Play ${song.title}`}*/}
+            {/*        onPress={() => playSound(index)}*/}
+            {/*    />*/}
+            {/*))}*/}
 
 
             {/*{*/}
@@ -272,4 +272,3 @@ const styles = StyleSheet.create({
 });
 
 export default PopularNow;
-

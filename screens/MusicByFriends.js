@@ -27,18 +27,18 @@ export default function MusicByFriends ({ navigation }) {
     );
 
     return (
-            <ImageBackground source={image} style={styles.background} >
-                <TouchableOpacity style={styles.buttonExit} onPress={() => navigation.navigate('Home')}>
-                    <Text style={styles.buttonText}>Go back to Home</Text>
-                </TouchableOpacity>
-                <Text>{"\n"}</Text>
-                <Text style={styles.headerText} >Music By Friends:</Text>
-                <FlatList
-                    data={songs}
-                    renderItem={renderSong}
-                    keyExtractor={(item) => item.id}
-                />
-            </ImageBackground>
+        <ImageBackground source={image} style={styles.background} >
+            <TouchableOpacity style={styles.buttonExit} onPress={() => navigation.navigate('Home')}>
+                <Text style={styles.buttonText}>Go back to Home</Text>
+            </TouchableOpacity>
+            <Text>{"\n"}</Text>
+            <Text style={styles.headerText} >Music By Friends:</Text>
+            <FlatList
+                data={songs}
+                renderItem={renderSong}
+                keyExtractor={(item) => item.id}
+            />
+        </ImageBackground>
 
     );
 };
@@ -95,3 +95,9 @@ const styles = StyleSheet.create({
     },
 
 });
+
+
+
+
+
+

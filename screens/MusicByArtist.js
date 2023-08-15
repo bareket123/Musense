@@ -159,7 +159,7 @@ export default function MusicByArtist ({ navigation }) {
                 <AntDesign onPress={() => {
                     toggleFavorite(item.songIndex);
                     addLovedSongs(item.songIndex);
-                }} name="heart" size={30} color={item.isFavorite ? 'red' : 'green'} />
+                }} name="heart" disabled={item.isFavorite} size={30} color={item.isFavorite ? 'red' : 'green'} />
 
             </TouchableOpacity>
         </View>
@@ -291,3 +291,4 @@ const styles = StyleSheet.create({
     },
 
 });
+
