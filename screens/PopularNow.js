@@ -1,26 +1,29 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, Text, TouchableOpacity, StyleSheet, Button, ScrollView, SafeAreaView, FlatList} from 'react-native';
 import { Audio } from 'expo-av';
 import {AntDesign} from "@expo/vector-icons";
-import {GlobalStateContext} from "./GlobalStateContext";
-import { useSelector, useDispatch } from 'react-redux'; // Import useSelector and useDispatch from react-redux
-import { addToPlayedRecently } from '../actions/actions'; // Import your action creator
+import { useSelector, useDispatch } from 'react-redux';
+import {setPlayedRecently, setPlaylist} from "../redux/actions"; // Import useSelector and useDispatch from react-redux
+// import { addToPlayedRecently } from '../actions/actions'; // Import your action creator
 
 
 
 
 const PopularNow = () => {
-    const {setMyPlaylist}=useContext(GlobalStateContext);
+
+    // const {playList ,playedRecently} = useSelector(state => state.reducer)
+
+    // const {setMyPlaylist}=useContext(GlobalStateContext);
     // const [playedRecently,setPlayedRecently]=useState([])
-    const playedRecently = useSelector((state) => state.cardData); // Access the playedRecently state from Redux
+    // const playedRecently = useSelector((state) => state.cardData); // Access the playedRecently state from redux
     const dispatch = useDispatch(); // Get the dispatch function
     const [sound, setSound] = useState();
     const [songsArray, setSongsArray] = useState([]); // Initialize songsArray as a state
 
     async function playSound(index) {
         const song = songsArray[index];
-        dispatch(addToPlayedRecently(song)); // Dispatch the action to add the song to playedRecently state in Redux
-        if (!song) {
+        dispatch(setPlayedRecently(song)); // Dispatch the action to add the song to playedRecently state in redux
+                if (!song) {
             return; // Handle invalid index
         }
 
@@ -88,6 +91,7 @@ const PopularNow = () => {
                 url: song.hub.actions[1].uri,
                 coverImage: song.images.background,
                 isFavorite: false // Initialize as not favorite//////////////////////////////////
+
             };
 
             tempArray.push(currentSong);
@@ -139,8 +143,9 @@ const PopularNow = () => {
         setSongsArray(updatedArray);
     }
 
-    function addLovedSongs(item) {
-       setMyPlaylist(prevItems => [...prevItems, item]);
+    function addLovedSongs(index) {
+        const song = songsArray[index];
+        dispatch(setPlaylist(song))
     }
 
     const renderSong = ({ item }) => (
@@ -153,11 +158,12 @@ const PopularNow = () => {
                 <AntDesign onPress={() => playSound(item.songIndex).then(r => {})} name="play" size={30} color="black" />
                 <AntDesign onPress={() => {
                     toggleFavorite(item.songIndex);
-                    addLovedSongs(item);
+                    addLovedSongs(item.songIndex);
                 }} name="heart" size={30} color={item.isFavorite ? 'red' : 'green'} />
             </TouchableOpacity>
         </View>
     );
+
 
 
     return (
@@ -245,10 +251,8 @@ const PopularNow = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor:'pink',
-
+        backgroundColor:'blue'
     },
-
     playButton: {
         backgroundColor: 'green',
         padding: 10,
