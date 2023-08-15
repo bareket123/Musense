@@ -117,7 +117,7 @@ const HomeScreen = ({ navigation }) => {
                             ],
                         }}>
                         <Tab.Screen
-                            name="SearchFriends" // Make sure the name matches exactly
+                            name="Search Friends" // Make sure the name matches exactly
                             component={SearchFriends}
                             options={{
                                 tabBarIcon: ({ color, size }) => (
@@ -126,17 +126,17 @@ const HomeScreen = ({ navigation }) => {
                                         style={{ left: 0, justifyContent: 'space-around', backgroundColor: 'black' }}
                                         size={size}
                                         color='white'
-                                        onPress={() => { navigation.navigate('SearchFriends') }} />
+                                        onPress={() => { navigation.navigate('Search Friends') }} />
                                 ),
                             }}
                         />
 
                         <Tab.Screen
-                            name={"MF"}
+                            name={"My Friends"}
                             component={MyFriends} // Replace with your component
                             options={{
                                 tabBarIcon: ({ color, size,style }) => (
-                                    <FontAwesome5 name="user-friends" size={24} color="white" />   ),
+                                    <FontAwesome5 name="user-friends" size={24} color="white"  onPress={() => { navigation.navigate('My Friends') }} />   ),
                             }}
 
                         />

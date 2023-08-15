@@ -32,60 +32,61 @@ export default function App() {
 
 
     const Stack = createStackNavigator();
-    async function getUsername() {
-        try {
-            if (token !== null) {
-                console.log("inside the get-username method ")
-                let response = await axios.get('http://10.0.0.1:8989/get-user-details-by-token?token=' + token);
-                if (response.data != null) {
-                    setUsername(response.data.username);
-                    setEmail(response.data.email)
-                    if (response.data.picture!==""){
-                        setImage(response.data.picture)
-                    }
-
-                    console.log("username is"+ image)
-                } else {
-                    console.log("response is null")
-                }
-            } else {
-                console.log("the token is null")
-
-            }
-
-
-        }catch (error){
-            console.log("error in the Home screen " ,error.message)
-        }
-
-
-    }
-    const getToken = async () => {
-        try {
-            const token = await AsyncStorage.getItem('token');
-            setToken(token);
-            console.log("token is: " + token);
-        } catch (error) {
-            console.log("error in the token Home screen ",error.message);
-        }
-    };
-    useEffect(() => {
-        getToken().then(r => {console.log("use effect worked")});
-    });
-
-
-    useEffect(  () => {
-        getUsername().then(r => {console.log("use effect inside home screen")});
-    })
-
+    // async function getUsername() {
+    //     try {
+    //         if (token !== null) {
+    //             console.log("inside the get-username method ")
+    //             let response = await axios.get('http://10.0.0.1:8989/get-user-details-by-token?token=' + token);
+    //             if (response.data != null) {
+    //                 setUsername(response.data.username);
+    //                 setEmail(response.data.email)
+    //                 if (response.data.picture!==""){
+    //                     setImage(response.data.picture)
+    //                 }
+    //
+    //                 console.log("username is"+ image)
+    //             } else {
+    //                 console.log("response is null")
+    //             }
+    //         } else {
+    //             console.log("the token is null")
+    //
+    //         }
+    //
+    //
+    //     }catch (error){
+    //         console.log("error in the Home screen " ,error.message)
+    //     }
+    //
+    //
+    // }
+    // const getToken = async () => {
+    //     try {
+    //         const token = await AsyncStorage.getItem('token');
+    //         setToken(token);
+    //         console.log("token is: " + token);
+    //     } catch (error) {
+    //         console.log("error in the token Home screen ",error.message);
+    //     }
+    // };
+    // useEffect(() => {
+    //     getToken().then(r => {console.log("use effect worked")});
+    // });
+    //
+    //
+    // useEffect(  () => {
+    //     getUsername().then(r => {console.log("use effect inside home screen")});
+    // })
+    //
     async function handleLout(){
         await AsyncStorage.removeItem('token')
         setUsername("guest")
         setEmail("")
         setImage('https://cdn-icons-png.flaticon.com/512/3271/3271191.png')
         console.log("delete")
+    }
 
-    }const CustomDrawer = props => {
+    const CustomDrawer = props => {
         return (
             <View style={{ flex: 1 }}>
                 <DrawerContentScrollView {...props}>
@@ -143,6 +144,7 @@ export default function App() {
             }}
                               drawerContent={props => <CustomDrawer {...props} />} >
                 <Drawer.Screen name="Home" component={HomeScreen} />
+                <Drawer.Screen name='login' component={Login}/>
                 <Stack.Screen name='Popular' component={PopularNow}/>
                 <Stack.Screen name='artist' component={MusicByArist}/>
                 <Stack.Screen name='friends' component={MusicByFriends}/>
@@ -150,7 +152,7 @@ export default function App() {
                 <Stack.Screen name='played' component={PlayedRecently}/>
                 <Stack.Screen name='My Friends' component={MyFriends}/>
                 <Stack.Screen name='Search Friends' component={SearchFriends}/>
-                <Drawer.Screen name='login' component={Login}/>
+
 
             </Drawer.Navigator>
 

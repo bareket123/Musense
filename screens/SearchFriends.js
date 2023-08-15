@@ -22,7 +22,7 @@ const SearchFriends = ({ navigation }) => {
 
     useEffect(() => {
         getToken().then(r => {console.log("use effect worked")});
-    });
+    },[]);
 
 
 
@@ -31,7 +31,7 @@ const SearchFriends = ({ navigation }) => {
     };
 
     const search = async () => {
-        const response = await axios.create({baseURL: 'http://192.168.68.116:8989'}).post('/search-by-user-username?username=' + searchFriend);
+        const response = await axios.create({baseURL: 'http://10.0.0.1:8989'}).post('/search-by-user-username?username=' + searchFriend);
         if (response.data.success) {
             setFoundUser(response.data.friendsDetailsModel)
 
@@ -42,6 +42,7 @@ const SearchFriends = ({ navigation }) => {
         setSearchFriend("")
     };
     const followingRequest = async ()=>{
+           console.log("inside ")
         if (token!==''){
             const response = await axios.create({baseURL: 'http://10.0.0.1:8989'}).post('/follow-friend?token=' + token +'&friendUsername='+foundUser.username);
             if (response.data.success){
@@ -52,6 +53,8 @@ const SearchFriends = ({ navigation }) => {
         }else {
             console.log("token is empty")
         }
+
+
 
 
     }

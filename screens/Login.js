@@ -1,4 +1,4 @@
-import React, { useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, Text, StyleSheet, ImageBackground, ScrollView} from 'react-native';
 import axios from "axios";
 import { RadioButton,TextInput ,Button} from 'react-native-paper';
@@ -6,6 +6,7 @@ import isEmail from 'validator/lib/isEmail';
 import { AntDesign,MaterialIcons,MaterialCommunityIcons } from '@expo/vector-icons';
 import image from '../images/musicBackGround.jpg';
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as ImagePicker from "expo-image-picker";
 
 
 
@@ -27,7 +28,7 @@ export default function Login ({ navigation }) {
         try {
             if (checked==='signUp'){
                 console.log("enter sign")
-                res = await axios.create({baseURL: 'http://192.168.68.116:8989'}).post('/sign-up?username=' + username + '&password=' + password+'&email='+email+"&picture="+picture)
+                res = await axios.create({baseURL: 'http://10.0.0.1:8989'}).post('/sign-up?username=' + username + '&password=' + password+'&email='+email+"&picture="+picture)
                 if (res.data.success) {
                     alert("sign up successfully");
                     setConfirmPassword("");
@@ -42,7 +43,7 @@ export default function Login ({ navigation }) {
             }else if (checked==='login') {
                 console.log("enter login")
 
-                res = await axios.create({baseURL: 'http://192.168.68.116:8989'}).post('/login?username=' + username + '&password=' + password)
+                res = await axios.create({baseURL: 'http://10.0.0.1:8989'}).post('/login?username=' + username + '&password=' + password)
                 console.log(res.data)
                 if (res.data.success){
                     const token=res.data.token;
@@ -220,6 +221,8 @@ export default function Login ({ navigation }) {
             </ScrollView>
         </ImageBackground>
     );
+
+
 };
 const styles = StyleSheet.create({
     container: {
@@ -255,6 +258,7 @@ const styles = StyleSheet.create({
         resizeMode: 'cover',
     },
     button:{
+
         marginBottom: 10,
         alignItems:'center',
         backgroundColor: 'pink',
@@ -263,4 +267,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 0,
         shadowColor: 'black',
     }
+
+
+
 });

@@ -19,7 +19,7 @@ function reducer (state = initialState,action){
             //     ...state ,
             //     playedRecently: [...state.playedRecently,action.playedRecently]
             // }
-            if (!state.playedRecently.includes(action.playedRecently)) {
+            if (!(state.playedRecently.includes(action.playedRecently))) {
                 return {
                     ...state,
                     playedRecently: [...state.playedRecently, action.playedRecently]
