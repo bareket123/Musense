@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useState} from 'react';
 import {View, Text, StyleSheet, ImageBackground, ScrollView} from 'react-native';
 import axios from "axios";
 import { RadioButton,TextInput ,Button} from 'react-native-paper';
@@ -6,7 +6,6 @@ import isEmail from 'validator/lib/isEmail';
 import { AntDesign,MaterialIcons,MaterialCommunityIcons } from '@expo/vector-icons';
 import image from '../images/musicBackGround.jpg';
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import * as ImagePicker from "expo-image-picker";
 
 
 

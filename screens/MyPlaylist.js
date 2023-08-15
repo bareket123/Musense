@@ -1,14 +1,13 @@
-import React, {useContext, useState} from 'react';
+import React, {useState} from 'react';
 import {ScrollView, View, Text, Button, StyleSheet, Image} from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { useRoute } from '@react-navigation/native';
-import {GlobalStateContext} from './GlobalStateContext';
-
+import { useSelector, useDispatch } from 'react-redux';
 
 
 export default function MyPlaylist ({ navigation }) {
     const [image, setImage] = useState(null);
-    const {myPlaylist}=useContext(GlobalStateContext);
+    const {playList ,playedRecently} = useSelector(state => state.reducer)
     const route = useRoute();
     const receivedArray = route.params?.data || [];
 
@@ -42,7 +41,7 @@ export default function MyPlaylist ({ navigation }) {
         <View>
             <Text>Received Array:</Text>
             {
-                myPlaylist.map((item, index) => {
+                playList.map((item, index) => {
                     return(
                  <Text>{item.title}</Text>
                 )

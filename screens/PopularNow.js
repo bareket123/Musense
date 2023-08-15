@@ -1,26 +1,28 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, Text, TouchableOpacity, StyleSheet, Button, ScrollView, SafeAreaView, FlatList} from 'react-native';
 import { Audio } from 'expo-av';
 import {AntDesign} from "@expo/vector-icons";
-import {GlobalStateContext} from "./GlobalStateContext";
-import { useSelector, useDispatch } from 'react-redux'; // Import useSelector and useDispatch from react-redux
-import { addToPlayedRecently } from '../actions/actions'; // Import your action creator
+import { useSelector, useDispatch } from 'react-redux';
+import {setPlayedRecently, setPlaylist} from "../redux/actions"; // Import useSelector and useDispatch from react-redux
+// import { addToPlayedRecently } from '../actions/actions'; // Import your action creator
 
 
 
 
 const PopularNow = () => {
-    const {setMyPlaylist}=useContext(GlobalStateContext);
+    // const {playList ,playedRecently} = useSelector(state => state.reducer)
+
+    // const {setMyPlaylist}=useContext(GlobalStateContext);
     // const [playedRecently,setPlayedRecently]=useState([])
-    const playedRecently = useSelector((state) => state.cardData); // Access the playedRecently state from Redux
+    // const playedRecently = useSelector((state) => state.cardData); // Access the playedRecently state from redux
     const dispatch = useDispatch(); // Get the dispatch function
     const [sound, setSound] = useState();
     const [songsArray, setSongsArray] = useState([]); // Initialize songsArray as a state
 
     async function playSound(index) {
         const song = songsArray[index];
-        dispatch(addToPlayedRecently(song)); // Dispatch the action to add the song to playedRecently state in Redux
-        if (!song) {
+        dispatch(setPlayedRecently(song)); // Dispatch the action to add the song to playedRecently state in redux
+                if (!song) {
             return; // Handle invalid index
         }
 
@@ -127,15 +129,16 @@ const PopularNow = () => {
             .catch(err => console.error(err));
     }
 
-    function addLovedSongs(item) {
-       setMyPlaylist(prevItems => [...prevItems, item]);
+    function addLovedSongs(index) {
+        const song = songsArray[index];
+        dispatch(setPlaylist(song))
     }
 
     const renderSong = ({ item }) => (
         <View style={{ padding: 20, flexDirection: 'row', alignItems: 'center' }}>
             <View>
                 <Text style={{ fontSize: 16, color: 'orange' }}>{item.title}</Text>
-                <AntDesign onPress={()=>{addLovedSongs(item)}} name="heart" size={24} color="red" />
+                <AntDesign onPress={()=>{addLovedSongs(item.songIndex)}} name="heart" size={24} color="red" />
             </View>
 
             <TouchableOpacity style={{ flexDirection: 'row' }} >

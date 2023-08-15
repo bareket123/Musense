@@ -1,16 +1,10 @@
 
-import React, {useEffect, useState} from 'react';
+import React, { useState} from 'react';
 import {ScrollView, SafeAreaView, TouchableOpacity, Text, StyleSheet, Image,View} from 'react-native';
-import {AntDesign, Entypo, FontAwesome, FontAwesome5, Ionicons, MaterialIcons} from '@expo/vector-icons';
-import { Button} from 'react-native-paper';
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import axios from "axios";
-import {LinearGradient} from 'expo-linear-gradient';
+import { FontAwesome5, MaterialIcons} from '@expo/vector-icons';
+
 import {NavigationContainer} from "@react-navigation/native";
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import Login from "./Login";
-import PopularNow from "./PopularNow";
-import MusicByArtist from "./MusicByArtist";
 import SearchFriends from "./SearchFriends"; // Make sure this path is correct
 import MyFriends from "./MyFriends";
 

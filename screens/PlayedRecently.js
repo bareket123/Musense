@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import {View, Text, FlatList, StyleSheet, TouchableOpacity, Button} from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { connect } from 'react-redux';
-import { addToPlayedRecently } from '../actions/actions';
+import {connect, useSelector} from 'react-redux';
+// import { addToPlayedRecently } from '../actions/actions';
 import { Audio } from 'expo-av';
 
-const PlayedRecently = ({ navigation, playedRecently }) => {
+const PlayedRecently = ( ) => {
     const [sound, setSound] = useState(null);
-
+    const {playList ,playedRecently} = useSelector(state => state.reducer)
     const playSound = async (song) => {
         if (!song) {
             return; // Handle invalid song
@@ -70,8 +70,8 @@ const PlayedRecently = ({ navigation, playedRecently }) => {
     );
 };
 
-const mapStateToProps = (state) => ({
-    playedRecently: state.cardData,
-});
+// const mapStateToProps = (state) => ({
+//     playedRecently: state.cardData,
+// });
 
-export default connect(mapStateToProps)(PlayedRecently);
+export default PlayedRecently;
