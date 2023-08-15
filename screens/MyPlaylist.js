@@ -23,33 +23,33 @@ export default function MyPlaylist ({ navigation }) {
             setImage(result.uri);
         }
     };
-  return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>choose an Atist:</Text>
-        <Button title="Upload Picture" onPress={pickImage} />
-        {typeof image === 'string' && (
-            <Image
-                source={{ uri: image }}
-                style={{ width: 200, height: 200, marginTop: 20 }}
+    return (
+        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+            <Text>choose an Atist:</Text>
+            <Button title="Upload Picture" onPress={pickImage} />
+            {typeof image === 'string' && (
+                <Image
+                    source={{ uri: image }}
+                    style={{ width: 200, height: 200, marginTop: 20 }}
+                />
+            )}
+
+            <Button
+                title="Go back to Home"
+                onPress={() => navigation.navigate("Home")}
             />
-        )}
-
-        <Button
-        title="Go back to Home"
-        onPress={() => navigation.navigate("Home")}
-      />
-        <View>
-            <Text>Received Array:</Text>
-            {
-                playList.map((item, index) => {
-                    return(
-                 <Text>{item.title}</Text>
-                )
-            })}
+            <View>
+                <Text>Received Array:</Text>
+                {
+                    playList.map((item, index) => {
+                        return(
+                            <Text>{item.title}</Text>
+                        )
+                    })}
+            </View>
         </View>
-    </View>
 
-  );
+    );
 
 
 }
@@ -63,5 +63,10 @@ const styles = StyleSheet.create({
         lineHeight: 24,
     },
 });
+
+
+
+
+
 
 

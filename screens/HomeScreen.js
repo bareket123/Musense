@@ -1,4 +1,5 @@
 
+
 import React, { useState} from 'react';
 import {ScrollView, SafeAreaView, TouchableOpacity, Text, StyleSheet, Image,View} from 'react-native';
 import { FontAwesome5, MaterialIcons} from '@expo/vector-icons';
@@ -61,98 +62,98 @@ const HomeScreen = ({ navigation }) => {
 //     },[token])
 
     return (
-      <ScrollView style={styles.container}>
-        <SafeAreaView>
-            {/*<View style={{flexDirection:'row',alignItems: 'center'}}>*/}
-            {/*<Text  style={styles.header}>Hello {token!==null? username:"guest"} </Text>*/}
-            {/*    /!*<LinearGradient colors={['#9acd32','#3cb371', '#32cd32' ,'#90ee90' ]} style={styles.linearGradient}>*!/*/}
-            {/*    /!*    <Button*!/*/}
-            {/*    /!*        labelStyle={{color: 'white', fontWeight: 'bold',fontSize:15}}*!/*/}
-            {/*    /!*        icon={({ size, color }) => (*!/*/}
-            {/*    /!*            <FontAwesome name="user" size={size} color={color} />*!/*/}
-            {/*    /!*        )}*!/*/}
-            {/*    /!*        onPress={() => navigation.navigate('login')}*!/*/}
-            {/*    /!*    >*!/*/}
-            {/*    /!*        To Login/SignUp*!/*/}
-            {/*    /!*    </Button>*!/*/}
+        <ScrollView style={styles.container}>
+            <SafeAreaView>
+                {/*<View style={{flexDirection:'row',alignItems: 'center'}}>*/}
+                {/*<Text  style={styles.header}>Hello {token!==null? username:"guest"} </Text>*/}
+                {/*    /!*<LinearGradient colors={['#9acd32','#3cb371', '#32cd32' ,'#90ee90' ]} style={styles.linearGradient}>*!/*/}
+                {/*    /!*    <Button*!/*/}
+                {/*    /!*        labelStyle={{color: 'white', fontWeight: 'bold',fontSize:15}}*!/*/}
+                {/*    /!*        icon={({ size, color }) => (*!/*/}
+                {/*    /!*            <FontAwesome name="user" size={size} color={color} />*!/*/}
+                {/*    /!*        )}*!/*/}
+                {/*    /!*        onPress={() => navigation.navigate('login')}*!/*/}
+                {/*    /!*    >*!/*/}
+                {/*    /!*        To Login/SignUp*!/*/}
+                {/*    /!*    </Button>*!/*/}
 
-            {/*    /!*</LinearGradient>*!/*/}
+                {/*    /!*</LinearGradient>*!/*/}
 
 
-            {/*</View>*/}
-            <View style={styles.SafeAreaView}>
-            <TouchableOpacity onPress={()=>{ navigation.navigate('Popular')}}>
-                <Image source={require('../images/popular.gif')} style={styles.image}  resizeMode="cover"
-                />
-                <Text style={styles.caption}>Popular Music</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={()=>{ navigation.navigate('played')}}>
-                <Image source={require('../images/playrecently.gif')} style={styles.image}/>
-                <Text style={styles.caption}>Played Recently</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={()=>{ navigation.navigate('artist')}}>
-                <Image source={require('../images/music.png')} style={styles.image}/>
-                <Text style={styles.caption}> Music by Artist</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={()=>{ navigation.navigate('friends')}}>
-                <Image source={require('../images/friends.gif')} style={styles.image}/>
-                <Text style={styles.caption}>Played Music by Friends</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={()=>{ navigation.navigate('playlist')}}>
-                <Image source={require('../images/playlist2.gif')} style={styles.image}/>
-                <Text style={styles.caption}>my playlist</Text>
-            </TouchableOpacity>
-            </View>
-            <NavigationContainer independent={true}>
-                <Tab.Navigator
+                {/*</View>*/}
+                <View style={styles.SafeAreaView}>
+                    <TouchableOpacity onPress={()=>{ navigation.navigate('Popular')}}>
+                        <Image source={require('../images/popular.gif')} style={styles.image}  resizeMode="cover"
+                        />
+                        <Text style={styles.caption}>Popular Music</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={()=>{ navigation.navigate('played')}}>
+                        <Image source={require('../images/playrecently.gif')} style={styles.image}/>
+                        <Text style={styles.caption}>Played Recently</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={()=>{ navigation.navigate('artist')}}>
+                        <Image source={require('../images/music.png')} style={styles.image}/>
+                        <Text style={styles.caption}> Music by Artist</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={()=>{ navigation.navigate('friends')}}>
+                        <Image source={require('../images/friends.gif')} style={styles.image}/>
+                        <Text style={styles.caption}>Played Music by Friends</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={()=>{ navigation.navigate('playlist')}}>
+                        <Image source={require('../images/playlist2.gif')} style={styles.image}/>
+                        <Text style={styles.caption}>my playlist</Text>
+                    </TouchableOpacity>
+                </View>
+                <NavigationContainer independent={true}>
+                    <Tab.Navigator
 
-                    screenOptions={{
-                    tabBarStyle: [
-                        {
-                            display: 'flex', // You can add other styling properties here
-                            backgroundColor:'black'
-                        },
-                        null,
-                    ],
-                }}>
-                    <Tab.Screen
-                        name="SearchFriends" // Make sure the name matches exactly
-                        component={SearchFriends}
-                        options={{
-                            tabBarIcon: ({ color, size }) => (
-                                <MaterialIcons
-                                    name="person-search"
-                                    style={{ left: 0, justifyContent: 'space-around', backgroundColor: 'black' }}
-                                    size={size}
-                                    color='white'
-                                    onPress={() => { navigation.navigate('SearchFriends') }} />
-                            ),
-                        }}
-                    />
+                        screenOptions={{
+                            tabBarStyle: [
+                                {
+                                    display: 'flex', // You can add other styling properties here
+                                    backgroundColor:'black'
+                                },
+                                null,
+                            ],
+                        }}>
+                        <Tab.Screen
+                            name="SearchFriends" // Make sure the name matches exactly
+                            component={SearchFriends}
+                            options={{
+                                tabBarIcon: ({ color, size }) => (
+                                    <MaterialIcons
+                                        name="person-search"
+                                        style={{ left: 0, justifyContent: 'space-around', backgroundColor: 'black' }}
+                                        size={size}
+                                        color='white'
+                                        onPress={() => { navigation.navigate('SearchFriends') }} />
+                                ),
+                            }}
+                        />
 
-                    <Tab.Screen
-                        name={"MF"}
-                    component={MyFriends} // Replace with your component
-                    options={{
-                        tabBarIcon: ({ color, size,style }) => (
-                            <FontAwesome5 name="user-friends" size={24} color="white" />   ),
-                    }}
+                        <Tab.Screen
+                            name={"MF"}
+                            component={MyFriends} // Replace with your component
+                            options={{
+                                tabBarIcon: ({ color, size,style }) => (
+                                    <FontAwesome5 name="user-friends" size={24} color="white" />   ),
+                            }}
 
-                />
-                    {/*<Tab.Screen*/}
-                    {/*    name="Search3"*/}
-                    {/*    component={Login} // Replace with your component*/}
-                    {/*    options={{*/}
-                    {/*        tabBarIcon: ({ color, size,style }) => (*/}
-                    {/*            <MaterialIcons name="location-searching" style={{justifyContent: 'space-around'}} size={24} color="white" />                        ),*/}
-                    {/*    }}*/}
-                    {/*/>*/}
-                </Tab.Navigator>
-            </NavigationContainer>
+                        />
+                        {/*<Tab.Screen*/}
+                        {/*    name="Search3"*/}
+                        {/*    component={Login} // Replace with your component*/}
+                        {/*    options={{*/}
+                        {/*        tabBarIcon: ({ color, size,style }) => (*/}
+                        {/*            <MaterialIcons name="location-searching" style={{justifyContent: 'space-around'}} size={24} color="white" />                        ),*/}
+                        {/*    }}*/}
+                        {/*/>*/}
+                    </Tab.Navigator>
+                </NavigationContainer>
 
-        </SafeAreaView>
+            </SafeAreaView>
 
-      </ScrollView>
+        </ScrollView>
     );
 };
 
@@ -209,7 +210,7 @@ const styles = StyleSheet.create({
 
     },
     linearGradient: {
-       left:100,
+        left:100,
         paddingLeft: 15,
         paddingRight: 15,
         borderRadius: 60
@@ -224,3 +225,4 @@ const styles = StyleSheet.create({
 });
 
 export default HomeScreen;
+

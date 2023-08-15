@@ -14,9 +14,9 @@ const SearchFriends = ({ navigation }) => {
     };
 
     const search = async () => {
-        const response = await axios.create({baseURL: 'http://10.0.0.1:8989'}).post('/search-by-user-username?username=' + searchFriend);
+        const response = await axios.create({baseURL: 'http://192.168.68.116:8989'}).post('/search-by-user-username?username=' + searchFriend);
         if (response.data.success) {
-           setFoundUser(response.data.friendsDetailsModel)
+            setFoundUser(response.data.friendsDetailsModel)
 
         } else {
             alert(response.data.errorCode)
@@ -24,6 +24,7 @@ const SearchFriends = ({ navigation }) => {
         }
         setSearchFriend("")
     };
+
 
     return (
         <View>
@@ -69,7 +70,7 @@ const styles = StyleSheet.create({
         flexDirection:'row',
         justifyContent: 'space-between',
         height: 40,
-         marginBottom:50,
+        marginBottom:50,
         borderColor: 'black',
         borderWidth: 5,
         borderRadius: 20, // Make it circular by setting borderRadius to half of the height
@@ -78,3 +79,12 @@ const styles = StyleSheet.create({
 });
 
 export default SearchFriends;
+
+
+
+
+
+
+
+
+
