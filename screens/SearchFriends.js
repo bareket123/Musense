@@ -1,12 +1,29 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, TextInput, StyleSheet, TouchableOpacity, Text, Image} from 'react-native';
 import {Fontisto, SimpleLineIcons} from '@expo/vector-icons';
 import axios from "axios";
 import {DrawerContentScrollView, DrawerItemList} from "@react-navigation/drawer";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const SearchFriends = ({ navigation }) => {
     const [searchFriend, setSearchFriend] = useState('');
     const [foundUser,setFoundUser]=useState({});
+    const [token,setToken]=useState('');
+
+    const getToken = async () => {
+        try {
+            const token = await AsyncStorage.getItem('token');
+            setToken(token);
+            console.log("token is: " + token);
+        } catch (error) {
+            console.log("error in the token Home screen ",error.message);
+        }
+    };
+
+    useEffect(() => {
+        getToken().then(r => {console.log("use effect worked")});
+    });
+
 
 
     const handleSearch = (text) => {
@@ -24,6 +41,20 @@ const SearchFriends = ({ navigation }) => {
         }
         setSearchFriend("")
     };
+    const followingRequest = async ()=>{
+        if (token!==''){
+            const response = await axios.create({baseURL: 'http://10.0.0.1:8989'}).post('/follow-friend?token=' + token +'&friendUsername='+foundUser.username);
+            if (response.data.success){
+                alert("following")
+            }else {
+                alert(response.data.errorCode)
+            }
+        }else {
+            console.log("token is empty")
+        }
+
+
+    }
 
 
     return (
@@ -41,10 +72,10 @@ const SearchFriends = ({ navigation }) => {
             {
                 foundUser!==null &&
                 <View style={{flexDirection: 'row'}}>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={followingRequest}>
                         <View style={{height: 100, width: 180, alignItems: 'center' }}>
                             <SimpleLineIcons name="user-follow" size={24} color="black" style={{ height: 30, width: 50, marginBottom: 5 }} />
-                            <Text >You can start following</Text>
+                            <Text>You can start following</Text>
                         </View>
                     </TouchableOpacity>
 
