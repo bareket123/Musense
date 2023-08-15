@@ -1,28 +1,26 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {View, Text, TouchableOpacity, StyleSheet, Button, ScrollView, SafeAreaView, FlatList} from 'react-native';
 import { Audio } from 'expo-av';
 import {AntDesign} from "@expo/vector-icons";
-import { useSelector, useDispatch } from 'react-redux';
-import {setPlayedRecently, setPlaylist} from "../redux/actions"; // Import useSelector and useDispatch from react-redux
-// import { addToPlayedRecently } from '../actions/actions'; // Import your action creator
+import {GlobalStateContext} from "./GlobalStateContext";
+import { useSelector, useDispatch } from 'react-redux'; // Import useSelector and useDispatch from react-redux
+import { addToPlayedRecently } from '../actions/actions'; // Import your action creator
 
 
 
 
 const PopularNow = () => {
-    // const {playList ,playedRecently} = useSelector(state => state.reducer)
-
-    // const {setMyPlaylist}=useContext(GlobalStateContext);
+    const {setMyPlaylist}=useContext(GlobalStateContext);
     // const [playedRecently,setPlayedRecently]=useState([])
-    // const playedRecently = useSelector((state) => state.cardData); // Access the playedRecently state from redux
+    const playedRecently = useSelector((state) => state.cardData); // Access the playedRecently state from Redux
     const dispatch = useDispatch(); // Get the dispatch function
     const [sound, setSound] = useState();
     const [songsArray, setSongsArray] = useState([]); // Initialize songsArray as a state
 
     async function playSound(index) {
         const song = songsArray[index];
-        dispatch(setPlayedRecently(song)); // Dispatch the action to add the song to playedRecently state in redux
-                if (!song) {
+        dispatch(addToPlayedRecently(song)); // Dispatch the action to add the song to playedRecently state in Redux
+        if (!song) {
             return; // Handle invalid index
         }
 
@@ -88,7 +86,8 @@ const PopularNow = () => {
                 title: song.title,
                 artist: song.subtitle,
                 url: song.hub.actions[1].uri,
-                coverImage: song.images.background
+                coverImage: song.images.background,
+                isFavorite: false // Initialize as not favorite//////////////////////////////////
             };
 
             tempArray.push(currentSong);
@@ -129,21 +128,33 @@ const PopularNow = () => {
             .catch(err => console.error(err));
     }
 
-    function addLovedSongs(index) {
-        const song = songsArray[index];
-        dispatch(setPlaylist(song))
+    /////////////////////
+    function toggleFavorite(index) {
+        const updatedArray = songsArray.map((song, i) => {
+            if (i === index) {
+                return { ...song, isFavorite: !song.isFavorite };
+            }
+            return song;
+        });
+        setSongsArray(updatedArray);
+    }
+
+    function addLovedSongs(item) {
+       setMyPlaylist(prevItems => [...prevItems, item]);
     }
 
     const renderSong = ({ item }) => (
-        <View style={{ padding: 20, flexDirection: 'row', alignItems: 'center' }}>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 10 }}>
             <View>
-                <Text style={{ fontSize: 16, color: 'orange' }}>{item.title}</Text>
-                <AntDesign onPress={()=>{addLovedSongs(item.songIndex)}} name="heart" size={24} color="red" />
+                <Text style={{ fontSize: 15, color: 'black' }}>{item.title}</Text>
             </View>
-
-            <TouchableOpacity style={{ flexDirection: 'row' }} >
-                <AntDesign onPress={() => { pauseSound(item.songIndex).then(r => {}) }} name={"pausecircle"} size={60} color="white" />
-                <AntDesign onPress={() => { playSound(item.songIndex).then(r => {}) }} name="play" size={60} color="white" />
+            <TouchableOpacity style={{ flexDirection: 'row' }}>
+                <AntDesign onPress={() => pauseSound(item.songIndex).then(r => {})} name={"pausecircle"} size={30} color="black" />
+                <AntDesign onPress={() => playSound(item.songIndex).then(r => {})} name="play" size={30} color="black" />
+                <AntDesign onPress={() => {
+                    toggleFavorite(item.songIndex);
+                    addLovedSongs(item);
+                }} name="heart" size={30} color={item.isFavorite ? 'red' : 'green'} />
             </TouchableOpacity>
         </View>
     );
@@ -234,8 +245,10 @@ const PopularNow = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor:'blue'
+        backgroundColor:'pink',
+
     },
+
     playButton: {
         backgroundColor: 'green',
         padding: 10,
