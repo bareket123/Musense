@@ -141,7 +141,7 @@ export default function MusicByArtist ({ navigation }) {
 
 
     function addLovedSongs(index) {
-        const song = songsArray[index];
+        const song = currentArray[index];
         dispatch(setPlaylist(song))
     }
 

@@ -251,7 +251,7 @@ const PopularNow = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor:'blue'
+        backgroundColor:'pink'
     },
     playButton: {
         backgroundColor: 'green',

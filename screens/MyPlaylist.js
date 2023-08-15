@@ -8,8 +8,8 @@ import { useSelector, useDispatch } from 'react-redux';
 export default function MyPlaylist ({ navigation }) {
     const [image, setImage] = useState(null);
     const {playList ,playedRecently} = useSelector(state => state.reducer)
-    const route = useRoute();
-    const receivedArray = route.params?.data || [];
+    // const route = useRoute();
+    // const receivedArray = route.params?.data || [];
 
     const pickImage = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
