@@ -16,13 +16,12 @@ import { Audio } from 'expo-av';
 import { useSelector, useDispatch } from 'react-redux'; // Import useSelector and useDispatch from react-redux
 import { addToPlayedRecently } from '../actions/actions';
 import {useContext} from "react";
-import {GlobalStateContext} from "./GlobalStateContext"; // Import your action creator
+import {setPlayedRecently, setPlaylist} from "../redux/actions"; // Import useSelector and useDispatch from react-redux
 
 
 
 
 export default function MusicByArtist ({ navigation }) {
-    const {setMyPlaylist}=useContext(GlobalStateContext);
 
     const [currentArray,setCurrentArray]=useState([]);
     const [searchText, setSearchText] = useState('');
@@ -141,8 +140,9 @@ export default function MusicByArtist ({ navigation }) {
     }
 
 
-    function addLovedSongs(item) {
-        setMyPlaylist(prevItems => [...prevItems, item]);
+    function addLovedSongs(index) {
+        const song = songsArray[index];
+        dispatch(setPlaylist(song))
     }
 
     const renderSong = ({ item }) => (
@@ -158,7 +158,7 @@ export default function MusicByArtist ({ navigation }) {
                 <AntDesign onPress={() => playSound(item.songIndex).then(r => {})} name="play" size={30} color="black" />
                 <AntDesign onPress={() => {
                     toggleFavorite(item.songIndex);
-                    addLovedSongs(item);
+                    addLovedSongs(item.songIndex);
                 }} name="heart" size={30} color={item.isFavorite ? 'red' : 'green'} />
 
             </TouchableOpacity>
