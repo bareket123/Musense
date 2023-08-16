@@ -1,10 +1,8 @@
-import { StatusBar } from 'expo-status-bar';
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import 'react-native-gesture-handler';
-import React, {useEffect, useState,createContext} from 'react';
+import React, { useState} from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { useNavigation } from '@react-navigation/native';
 import HomeScreen from './screens/HomeScreen';
 import PopularNow from './screens/PopularNow';
 import PlayedRecently from './screens/PlayedRecently';

@@ -7,6 +7,8 @@ import { AntDesign,MaterialIcons,MaterialCommunityIcons } from '@expo/vector-ico
 import image from '../images/musicBackGround.jpg';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as ImagePicker from "expo-image-picker";
+import { useSelector, useDispatch } from 'react-redux';
+import {setToken, setUsername, setIsLoggedIn, setPlayedRecently} from "../redux/actions"; // Import useSelector and useDispatch from react-redux
 
 
 
@@ -14,13 +16,14 @@ import * as ImagePicker from "expo-image-picker";
 
 
 export default function Login ({ navigation }) {
-    const [username, setUsername] = useState("");
+    const [usernameInput, setUsernameInput] = useState("");
     const [password, setPassword] = useState("");
     const [email,setEmail]=useState("");
     const [picture,setPicture]=useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [checked, setChecked] = useState('');
-
+    const dispatch = useDispatch();
+    const [image, setImage] = useState(null);
 
     async function handleButtonPressed() {
 
@@ -28,7 +31,7 @@ export default function Login ({ navigation }) {
         try {
             if (checked==='signUp'){
                 console.log("enter sign")
-                res = await axios.create({baseURL: 'http://10.0.0.1:8989'}).post('/sign-up?username=' + username + '&password=' + password+'&email='+email+"&picture="+picture)
+                res = await axios.create({baseURL: 'http://192.168.1.178:8989'}).post('/sign-up?username=' + usernameInput + '&password=' + password+'&email='+email+"&picture="+picture)
                 if (res.data.success) {
                     alert("sign up successfully");
                     setConfirmPassword("");
@@ -43,12 +46,15 @@ export default function Login ({ navigation }) {
             }else if (checked==='login') {
                 console.log("enter login")
 
-                res = await axios.create({baseURL: 'http://10.0.0.1:8989'}).post('/login?username=' + username + '&password=' + password)
+                res = await axios.create({baseURL: 'http://192.168.1.178:8989'}).post('/login?username=' + usernameInput + '&password=' + password)
                 console.log(res.data)
                 if (res.data.success){
                     const token=res.data.token;
                     alert("login successfully");
-                    if (token!==null)
+                    if (token!==undefined)
+                        dispatch(setToken(token))
+                        dispatch(setIsLoggedIn(true))
+                        dispatch(setUsername(usernameInput))
                         await AsyncStorage.setItem('token', token);
                     navigation.navigate("Home")
                 }else {
@@ -61,7 +67,7 @@ export default function Login ({ navigation }) {
         } catch (error) {
             console.log(error)
         }
-        setUsername("")
+        setUsernameInput("")
         setPassword("")
 
 
@@ -75,7 +81,7 @@ export default function Login ({ navigation }) {
 
     function checkValidation(){
         let validToPress=true;
-        if ((username.length===0 || password.length===0) && checked!=='' ){
+        if ((usernameInput.length===0 || password.length===0) && checked!=='' ){
             validToPress=false;
         }
         if (checked==='signUp'){
@@ -85,7 +91,7 @@ export default function Login ({ navigation }) {
     }
 
     function clearButton() {
-        setUsername("")
+        setUsernameInput("")
         setPassword("")
         setConfirmPassword("")
         setEmail("")
@@ -105,6 +111,18 @@ export default function Login ({ navigation }) {
     //         console.log(picture)
     //     }
     // };
+    const pickImage = async () => {
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.All,
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 1,
+        });
+
+        if (!result.canceled) {
+            setImage(result.uri);
+        }
+    };
     return (
         <ImageBackground source={image} style={styles.background} >
             <ScrollView style={styles.container}>
@@ -124,9 +142,9 @@ export default function Login ({ navigation }) {
                                 <AntDesign name="user" size={24} color="black" />
                                 <TextInput
                                     placeholder="Username"
-                                    value={username}
+                                    value={usernameInput}
                                     mode={"outlined"}
-                                    onChangeText={setUsername}
+                                    onChangeText={setUsernameInput}
                                     style={styles.textInput}
 
                                 />
@@ -173,17 +191,32 @@ export default function Login ({ navigation }) {
                                         />
 
                                     </View>
-                                    <View style={[styles.viewStyle,{marginBottom:20}]}>
-                                        <MaterialIcons name="image" size={24} color="black" />
-                                        <TextInput
-                                            placeholder="add link to picture"
-                                            value={picture}
-                                            mode={"outlined"}
-                                            onChangeText={setPicture}
-                                            style={styles.textInput}
-                                        />
+                                    {/*<View style={[styles.viewStyle,{marginBottom:20}]}>*/}
+                                    {/*    <MaterialIcons name="image" size={24} color="black" />*/}
+                                    {/*    <TextInput*/}
+                                    {/*        placeholder="add link to picture"*/}
+                                    {/*        value={picture}*/}
+                                    {/*        mode={"outlined"}*/}
+                                    {/*        onChangeText={setPicture}*/}
+                                    {/*        style={styles.textInput}*/}
+                                    {/*    />*/}
 
-                                    </View>
+                                    {/*</View>*/}
+                                    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+                                        <Text>choose an Atist:</Text>
+                                        <Button title="Upload Picture" onPress={pickImage} />
+                                        {typeof image === 'string' && (
+                                            <Image
+                                                source={{ uri: image }}
+                                                style={{ width: 200, height: 200, marginTop: 20 }}
+                                            />
+                                        )}
+
+                                        <Button
+                                            title="Go back to Home"
+                                            onPress={() => navigation.navigate("Home")}
+                                        />
+                                        </View>
                                 </View>
                             }
                             <View style={{ justifyContent: 'center', alignItems: 'center' }}>
