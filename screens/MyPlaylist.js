@@ -1,72 +1,84 @@
-import React, {useState} from 'react';
-import {ScrollView, View, Text, Button, StyleSheet, Image} from 'react-native';
-import * as ImagePicker from 'expo-image-picker';
-import { useRoute } from '@react-navigation/native';
-import { useSelector, useDispatch } from 'react-redux';
+import React, { useState, useEffect } from 'react';
+import {View, Text, FlatList, StyleSheet, TouchableOpacity, Button} from 'react-native';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { useSelector } from 'react-redux';
+import { Audio } from 'expo-av';
 
+export default function MyPlaylist({ navigation }) {
+    const [sound, setSound] = useState(null);
+    const { playList, playedRecently } = useSelector(state => state.reducer);
 
-export default function MyPlaylist ({ navigation }) {
-    const [image, setImage] = useState(null);
-    const {playList ,playedRecently} = useSelector(state => state.reducer)
-    // const route = useRoute();
-    // const receivedArray = route.params?.data || [];
+    const playSound = async (song) => {
+        if (!song) {
+            return;
+        }
 
-    const pickImage = async () => {
-        let result = await ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.All,
-            allowsEditing: true,
-            aspect: [4, 3],
-            quality: 1,
-        });
+        try {
+            if (sound) {
+                await sound.unloadAsync();
+            }
 
-        if (!result.canceled) {
-            setImage(result.uri);
+            const { sound: newSound } = await Audio.Sound.createAsync({ uri: song.url });
+            setSound(newSound);
+            await newSound.playAsync();
+        } catch (error) {
+            console.error('Error playing sound:', error);
         }
     };
-    return (
-        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-            <Text>choose an Atist:</Text>
-            <Button title="Upload Picture" onPress={pickImage} />
-            {typeof image === 'string' && (
-                <Image
-                    source={{ uri: image }}
-                    style={{ width: 200, height: 200, marginTop: 20 }}
-                />
-            )}
 
-            <Button
-                title="Go back to Home"
-                onPress={() => navigation.navigate("Home")}
-            />
-            <View>
-                <Text>Received Array:</Text>
-                {
-                    playList.map((item, index) => {
-                        return(
-                            <Text>{item.title}</Text>
-                        )
-                    })}
-            </View>
+    const pauseSound = () => {
+        if (sound) {
+            sound.pauseAsync().catch(error => {
+                console.error('Error pausing sound:', error);
+            });
+        }
+    };
+
+    useEffect(() => {
+        return () => {
+            if (sound) {
+                sound.unloadAsync().catch(error => {
+                    console.error('Error unloading sound:', error);
+                });
+            }
+        };
+    }, [sound]);
+
+    const renderSong = ({ item }) => (
+        <View style={{ padding: 20, flexDirection: 'row', alignItems: 'center', left: '20%' , backgroundColor:'pink'}}>
+            <MaterialCommunityIcons name="play-box" size={24} color="black" />
+            <Text style={{ fontSize: 16, color: 'purple' }}>{item.title}</Text>
+            <TouchableOpacity style={{ marginLeft: 50 }} onPress={() => playSound(item)}>
+                <Text>Play</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={{ marginLeft: 50 }} onPress={() => pauseSound()}>
+                <Text>Pause</Text>
+            </TouchableOpacity>
         </View>
-
     );
 
-
+    return (
+        <View>
+            <Text>{"\n"}</Text>
+            <Text>My Playlist:</Text>
+            <FlatList
+                data={playList}
+                renderItem={renderSong}
+                keyExtractor={(item) => item.songIndex}
+            />
+        </View>
+    );
 }
+
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 10,
+        backgroundColor:'pink',
     },
     text: {
         fontSize: 16,
         lineHeight: 24,
     },
 });
-
-
-
-
-
-
-
