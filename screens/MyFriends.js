@@ -17,7 +17,7 @@ const MyFriends = ({navigation}) => {
             setToken(token);
             console.log("token is: " + token);
         } catch (error) {
-            console.log("error in the token Home screen ",error.message);
+            console.log("error in the token my friends screen ",error.message);
         }
     };
 
@@ -25,17 +25,16 @@ const MyFriends = ({navigation}) => {
         getToken().then(r => {console.log(" my friends use effect worked")});
 
     },[]);
+
     useEffect(() => {
-        console.log("dd")
         fetchMyFriends().then(r => {});
 
-    },[]);
+    },[myFriends]);
 
    const fetchMyFriends = async ()=>{
        if (token!==''){
            const response = await axios.create({baseURL: 'http://10.0.0.1:8989'}).get('/get-my-friends?token=' + token);
           if (response.data.success){
-              console.log("enter the response")
               setMyFriends(response.data.myFriends);
           }else {
               alert(response.data.errorCode)
