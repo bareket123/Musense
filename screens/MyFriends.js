@@ -31,38 +31,38 @@ const MyFriends = ({navigation}) => {
 
     },[myFriends]);
 
-   const fetchMyFriends = async ()=>{
-       if (token!==''){
-           const response = await axios.create({baseURL: 'http://10.0.0.1:8989'}).get('/get-my-friends?token=' + token);
-          if (response.data.success){
-              setMyFriends(response.data.myFriends);
-          }else {
-              alert(response.data.errorCode)
-          }
-       }else {
-           console.log(" friends: token is empty")
-       }
+    const fetchMyFriends = async ()=>{
+        if (token!==''){
+            const response = await axios.create({baseURL: 'http://10.0.0.1:8989'}).get('/get-my-friends?token=' + token);
+            if (response.data.success){
+                setMyFriends(response.data.myFriends);
+            }else {
+                alert(response.data.errorCode)
+            }
+        }else {
+            console.log(" friends: token is empty")
+        }
 
-   }
-   const renderItem=({item})=>(
-       <View style={{ padding: 20, flexDirection: 'row', alignItems: 'center', left: '20%' }}>
-           <Text style={{marginRight:20}}>{item.username}</Text>
-           <Image
-               source={{
-                   uri: item.picture,
-               }}
-               style={{ width: 60, height: 60, borderRadius: 30 }}
-           />
-       </View>
+    }
+    const renderItem=({item})=>(
+        <View style={{ padding: 20, flexDirection: 'row', alignItems: 'center', left: '20%' }}>
+            <Text style={{marginRight:20}}>{item.username}</Text>
+            <Image
+                source={{
+                    uri: item.picture,
+                }}
+                style={{ width: 60, height: 60, borderRadius: 30 }}
+            />
+        </View>
 
-)
+    )
     return (
         <View>
             {
                 myFriends.length!==0?
                     <View>
                         <Text style={{fontWeight:'bold'}}>my friends: </Text>
-                    <FlatList data={myFriends} renderItem={renderItem}/>
+                        <FlatList data={myFriends} renderItem={renderItem}/>
                     </View>
                     :
                     <View>
@@ -77,4 +77,3 @@ const MyFriends = ({navigation}) => {
 };
 
 export default MyFriends;
-

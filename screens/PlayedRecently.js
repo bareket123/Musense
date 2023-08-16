@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {View, Text, FlatList, StyleSheet, TouchableOpacity, Button} from 'react-native';
-import {AntDesign, MaterialCommunityIcons} from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import {connect, useSelector} from 'react-redux';
 // import { addToPlayedRecently } from '../actions/actions';
 import { Audio } from 'expo-av';
@@ -8,7 +8,6 @@ import { Audio } from 'expo-av';
 const PlayedRecently = ( ) => {
     const [sound, setSound] = useState(null);
     const {playList ,playedRecently} = useSelector(state => state.reducer)
-
     const playSound = async (song) => {
         if (!song) {
             return; // Handle invalid song
@@ -46,7 +45,7 @@ const PlayedRecently = ( ) => {
     }, [sound]);
 
     const renderSong = ({ item }) => (
-        <View style={{ padding: 20, flexDirection: 'row', alignItems: 'center', left: '20%' ,flex: 1 }}>
+        <View style={{ padding: 20, flexDirection: 'row', alignItems: 'center', left: '20%' }}>
             <MaterialCommunityIcons name="play-box" size={24} color="black" />
             <Text style={{ fontSize: 16, color: 'purple' }}>{item.title}</Text>
             <TouchableOpacity style={{ marginLeft: 50 }} onPress={() => playSound(item)}>
@@ -57,8 +56,6 @@ const PlayedRecently = ( ) => {
             </TouchableOpacity>
         </View>
     );
-
-
 
     return (
         <View>
@@ -78,6 +75,7 @@ const PlayedRecently = ( ) => {
 // });
 
 export default PlayedRecently;
+
 
 
 
