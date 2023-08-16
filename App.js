@@ -197,6 +197,6 @@ const styles = StyleSheet.create({
     iconContainer: {
         position: 'absolute',
         left: '100%',
-        transform: [{ translateX: -12 }],
+        transform: [{ translateX: -13 }],
     },
 });
