@@ -1,5 +1,3 @@
-
-
 import React, { useState} from 'react';
 import {ScrollView, SafeAreaView, TouchableOpacity, Text, StyleSheet, Image,View} from 'react-native';
 import { FontAwesome5, MaterialIcons} from '@expo/vector-icons';
@@ -165,8 +163,7 @@ const styles = StyleSheet.create({
     SafeAreaView:{
         justifyContent: 'center',
         alignItems: 'center',
-    }
-    ,
+    },
     TouchableOpacity: {
         backgroundColor: '#2196F3',
         paddingVertical: 10,

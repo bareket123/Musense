@@ -147,7 +147,7 @@ export default function MusicByArtist ({ navigation }) {
 
     const renderSong = ({ item }) => (
         <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 10,backgroundColor:'pink' }}>
-            <View>
+            <View style={{ flex: 1 }}>
                 <Text style={{ fontSize: 15, color: 'black' }}>{item.title}</Text>
                 <Text style={{ fontSize: 15, color: 'green' }}>{item.artist}</Text>
 

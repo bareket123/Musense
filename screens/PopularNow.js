@@ -150,8 +150,8 @@ const PopularNow = () => {
 
     const renderSong = ({ item }) => (
         <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 10 }}>
-            <View>
-                <Text style={{ fontSize: 15, color: 'black' }}>{item.title}</Text>
+            <View style={{ flex: 1 }}>
+                <Text style={{ fontSize: 15, color: 'black' }} >{item.title}</Text>
             </View>
             <TouchableOpacity style={{ flexDirection: 'row' }}>
                 <AntDesign onPress={() => pauseSound(item.songIndex).then(r => {})} name={"pausecircle"} size={30} color="black" />
