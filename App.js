@@ -13,13 +13,11 @@ import MusicByFriends from './screens/MusicByFriends';
 import Login from './screens/Login'
 import MyPlaylist from './screens/MyPlaylist';
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
 import {createDrawerNavigator, DrawerContentScrollView, DrawerItemList} from "@react-navigation/drawer";
 import axios from "axios";
 // import {store} from "./screens/reducer";
 import {Provider} from "react-redux";
 import {Store} from "./redux/store"
-
 import SearchFriends from "./screens/SearchFriends";
 import MyFriends from "./screens/MyFriends";
 
@@ -169,9 +167,7 @@ export default function App() {
     return (
         <Provider store={Store} >
             <NavigationContainer>
-
                 <DrawNavigator />
-
             </NavigationContainer>
 
         </Provider>

@@ -62,23 +62,6 @@ const HomeScreen = ({ navigation }) => {
     return (
         <ScrollView style={styles.container}>
             <SafeAreaView>
-                {/*<View style={{flexDirection:'row',alignItems: 'center'}}>*/}
-                {/*<Text  style={styles.header}>Hello {token!==null? username:"guest"} </Text>*/}
-                {/*    /!*<LinearGradient colors={['#9acd32','#3cb371', '#32cd32' ,'#90ee90' ]} style={styles.linearGradient}>*!/*/}
-                {/*    /!*    <Button*!/*/}
-                {/*    /!*        labelStyle={{color: 'white', fontWeight: 'bold',fontSize:15}}*!/*/}
-                {/*    /!*        icon={({ size, color }) => (*!/*/}
-                {/*    /!*            <FontAwesome name="user" size={size} color={color} />*!/*/}
-                {/*    /!*        )}*!/*/}
-                {/*    /!*        onPress={() => navigation.navigate('login')}*!/*/}
-                {/*    /!*    >*!/*/}
-                {/*    /!*        To Login/SignUp*!/*/}
-                {/*    /!*    </Button>*!/*/}
-
-                {/*    /!*</LinearGradient>*!/*/}
-
-
-                {/*</View>*/}
                 <View style={styles.SafeAreaView}>
                     <TouchableOpacity onPress={()=>{ navigation.navigate('Popular')}}>
                         <Image source={require('../images/popular.gif')} style={styles.image}  resizeMode="cover"
@@ -147,14 +130,6 @@ const HomeScreen = ({ navigation }) => {
                             }}
 
                         />
-                        {/*<Tab.Screen*/}
-                        {/*    name="Search3"*/}
-                        {/*    component={Login} // Replace with your component*/}
-                        {/*    options={{*/}
-                        {/*        tabBarIcon: ({ color, size,style }) => (*/}
-                        {/*            <MaterialIcons name="location-searching" style={{justifyContent: 'space-around'}} size={24} color="white" />                        ),*/}
-                        {/*    }}*/}
-                        {/*/>*/}
                     </Tab.Navigator>
                 </NavigationContainer>
 
