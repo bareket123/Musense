@@ -23,7 +23,7 @@ const HomeScreen = ({ navigation }) => {
 //         try {
 //                    if (token !== null) {
 //                        console.log("inside the get-username method ")
-//                    let response = await axios.get('http://10.0.0.1:8989/get-username-by-token?token=' + token);
+//                    let response = await axios.get('http://192.168.68.116:8989/get-username-by-token?token=' + token);
 //                    if (response.data != null) {
 //                        setUsername(response.data);
 //                    } else {
@@ -102,20 +102,23 @@ const HomeScreen = ({ navigation }) => {
                         <Text style={styles.caption}>my playlist</Text>
                     </TouchableOpacity>
                 </View>
+
+
+
                 <NavigationContainer independent={true}>
                     <Tab.Navigator
 
                         screenOptions={{
                             tabBarStyle: [
                                 {
-                                    display: 'flex', // You can add other styling properties here
+                                    display: 'flex',
                                     backgroundColor:'black'
                                 },
                                 null,
                             ],
                         }}>
                         <Tab.Screen
-                            name="Search Friends" // Make sure the name matches exactly
+                            name="Search Friends"
                             component={SearchFriends}
                             options={{
                                 tabBarIcon: ({ color, size }) => (
@@ -124,17 +127,23 @@ const HomeScreen = ({ navigation }) => {
                                         style={{ left: 0, justifyContent: 'space-around', backgroundColor: 'black' }}
                                         size={size}
                                         color='white'
-                                        onPress={() => { navigation.navigate('Search Friends') }} />
+                                        onPress={() => { navigation.navigate('Search Friends') }}
+                                    />
+
                                 ),
                             }}
                         />
 
                         <Tab.Screen
-                            name={"My Friends"}
-                            component={MyFriends} // Replace with your component
+                            name="My Friends"
+                            component={MyFriends}
                             options={{
                                 tabBarIcon: ({ color, size,style }) => (
-                                    <FontAwesome5 name="user-friends" size={24} color="white"  onPress={() => { navigation.navigate('My Friends') }} />   ),
+                                    <FontAwesome5 name="user-friends"
+                                                  size={24}
+                                                  color="white"
+                                                  onPress={() => { navigation.navigate('My Friends') }} />   ),
+
                             }}
 
                         />
@@ -222,4 +231,229 @@ const styles = StyleSheet.create({
 });
 
 export default HomeScreen;
+
+
+
+//////////////////////////////////////////////////////////////////////////////////
+// import React, { useState } from 'react';
+// import { ScrollView, SafeAreaView, TouchableOpacity, Text, StyleSheet, Image, View } from 'react-native';
+// import { FontAwesome5, MaterialIcons } from '@expo/vector-icons';
+// import { NavigationContainer } from "@react-navigation/native";
+// import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+// import SearchFriends from "./SearchFriends";
+// import MyFriends from "./MyFriends";
+//
+// const HomeScreen = ({ navigation }) => {
+//     const [username,setUsername]=useState("");
+//     const [token,setToken]=useState(null);
+//     const homeName="home";
+//     const loginName="login";
+//     const popularName="popular";
+//
+//     const Tab = createBottomTabNavigator();
+//
+//     return (
+//         <SafeAreaView style={styles.container}>
+//             {/* Your header content */}
+//
+//             <View style={styles.SafeAreaView}>
+//                 <TouchableOpacity onPress={() => { navigation.navigate('Search Friends') }}>
+//                     {/* Your touchable opacity for 'Search Friends' */}
+//                 </TouchableOpacity>
+//
+//                 <TouchableOpacity onPress={() => { navigation.navigate('My Friends') }}>
+//                     {/* Your touchable opacity for 'My Friends' */}
+//                 </TouchableOpacity>
+//             </View>
+//
+//             <NavigationContainer independent={true}>
+//                 <Tab.Navigator
+//                     screenOptions={{
+//                         tabBarStyle: {
+//                             backgroundColor: 'black'
+//                         },
+//                     }}
+//                 >
+//                     <Tab.Screen
+//                         name="Search Friends"
+//                         component={SearchFriends}
+//                         options={{
+//                             tabBarIcon: ({ color, size }) => (
+//                                 <MaterialIcons
+//                                     name="person-search"
+//                                     size={size}
+//                                     color={color}
+//                                 />
+//                             ),
+//                         }}
+//                     />
+//
+//                     <Tab.Screen
+//                         name="My Friends"
+//                         component={MyFriends}
+//                         options={{
+//                             tabBarIcon: ({ color, size }) => (
+//                                 <FontAwesome5
+//                                     name="user-friends"
+//                                     size={size}
+//                                     color={color}
+//                                 />
+//                             ),
+//                         }}
+//                     />
+//                 </Tab.Navigator>
+//             </NavigationContainer>
+//         </SafeAreaView>
+//     );
+// };
+//
+// const styles = StyleSheet.create({
+//     container: {
+//         flex: 1,
+//         backgroundColor: 'black'
+//     },
+//     SafeAreaView: {
+//         flexDirection: 'row', // Align buttons horizontally
+//         justifyContent: 'center',
+//         alignItems: 'center',
+//     },
+//     // ... your other styles ...
+// });
+//
+// export default HomeScreen;
+
+
+
+
+///////////////////////////////////////////////////////////////
+// import React from 'react';
+// import { ScrollView, SafeAreaView, TouchableOpacity, Text, StyleSheet, Image, View } from 'react-native';
+// import { FontAwesome5, MaterialIcons } from '@expo/vector-icons';
+// import { NavigationContainer } from "@react-navigation/native";
+// import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+//
+// import SearchFriends from "./SearchFriends";
+// import MyFriends from "./MyFriends";
+//
+// const HomeScreen = ({ navigation }) => {
+//     const Tab = createBottomTabNavigator();
+//
+//     return (
+//         <SafeAreaView style={styles.container}>
+//             <ScrollView>
+//
+//
+//                 <View style={styles.gridContainer}>
+//                     <TouchableOpacity style={styles.gridItem} onPress={() => { navigation.navigate('Popular') }}>
+//                         <Image source={require('../images/popular.gif')} style={styles.image} resizeMode="cover" />
+//                         <Text style={styles.caption}>Popular Music</Text>
+//                     </TouchableOpacity>
+//
+//                     <TouchableOpacity style={styles.gridItem} onPress={() => { navigation.navigate('played') }}>
+//                         <Image source={require('../images/playrecently.gif')} style={styles.image} resizeMode="cover" />
+//                         <Text style={styles.caption}>Played Recently</Text>
+//                     </TouchableOpacity>
+//
+//                     <TouchableOpacity style={styles.gridItem} onPress={() => { navigation.navigate('artist') }}>
+//                         <Image source={require('../images/music.png')} style={styles.image} resizeMode="cover" />
+//                         <Text style={styles.caption}>Music by Artist</Text>
+//                     </TouchableOpacity>
+//
+//                     <TouchableOpacity style={styles.gridItem} onPress={() => { navigation.navigate('friends') }}>
+//                         <Image source={require('../images/friends.gif')} style={styles.image} resizeMode="cover" />
+//                         <Text style={styles.caption}>Played Music by Friends</Text>
+//                     </TouchableOpacity>
+//
+//                     <TouchableOpacity style={styles.gridItem} onPress={() => { navigation.navigate('playlist') }}>
+//                         <Image source={require('../images/playlist2.gif')} style={styles.image} resizeMode="cover" />
+//                         <Text style={styles.caption}>My Playlist</Text>
+//                     </TouchableOpacity>
+//                 </View>
+//             </ScrollView>
+//
+//             <NavigationContainer independent={true}>
+//                 <Tab.Navigator
+//                     screenOptions={{
+//                         // tabBarStyle: {
+//                         //     backgroundColor: 'black',
+//                         //     flex:1,
+//                         // },
+//                     }}
+//                 >
+//                     <Tab.Screen
+//                         name="Search Friends"
+//                         component={SearchFriends}
+//                         options={{
+//                             tabBarIcon: ({ color, size }) => (
+//                                 <MaterialIcons
+//                                     name="person-search"
+//                                     size={size}
+//                                     color={color}
+//                                 />
+//                             ),
+//                         }}
+//                     />
+//
+//                     <Tab.Screen
+//                         name="My Friends"
+//                         component={MyFriends}
+//                         options={{
+//                             tabBarIcon: ({ color, size }) => (
+//                                 <FontAwesome5
+//                                     name="user-friends"
+//                                     size={size}
+//                                     color={color}
+//                                 />
+//                             ),
+//                         }}
+//                     />
+//                 </Tab.Navigator>
+//             </NavigationContainer>
+//         </SafeAreaView>
+//     );
+// };
+//
+// const styles = StyleSheet.create({
+//     container: {
+//         flex: 1,
+//         backgroundColor: 'black'
+//     },
+//     header: {
+//         alignItems: 'center',
+//         padding: 20,
+//     },
+//     headerText: {
+//         color: 'white',
+//         fontSize: 24,
+//         fontWeight: 'bold',
+//     },
+//     gridContainer: {
+//         flexDirection: 'row',
+//         flexWrap: 'wrap',
+//         justifyContent: 'center',
+//     },
+//     gridItem: {
+//         width: 150,
+//         height: 150,
+//         margin: 10,
+//         alignItems: 'center',
+//         justifyContent: 'center',
+//     },
+//     image: {
+//         width: '100%',
+//         height: '100%',
+//     },
+//     caption: {
+//         position: 'absolute',
+//         top: 0,
+//         left: 0,
+//         backgroundColor: 'rgba(0, 0, 0, 0.5)',
+//         color: 'white',
+//         padding: 5,
+//         fontSize: 16,
+//     },
+// });
+//
+// export default HomeScreen;
+
 

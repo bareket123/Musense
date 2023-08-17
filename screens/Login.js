@@ -31,7 +31,7 @@ export default function Login ({ navigation }) {
         try {
             if (checked==='signUp'){
                 console.log("enter sign")
-                res = await axios.create({baseURL: 'http://192.168.1.178:8989'}).post('/sign-up?username=' + usernameInput + '&password=' + password+'&email='+email+"&picture="+picture)
+                res = await axios.create({baseURL: 'http://192.168.68.116:8989'}).post('/sign-up?username=' + usernameInput + '&password=' + password+'&email='+email+"&picture="+picture)
                 if (res.data.success) {
                     alert("sign up successfully");
                     setConfirmPassword("");
@@ -46,7 +46,7 @@ export default function Login ({ navigation }) {
             }else if (checked==='login') {
                 console.log("enter login")
 
-                res = await axios.create({baseURL: 'http://192.168.1.178:8989'}).post('/login?username=' + usernameInput + '&password=' + password)
+                res = await axios.create({baseURL: 'http://192.168.68.116:8989'}).post('/login?username=' + usernameInput + '&password=' + password)
                 console.log(res.data)
                 if (res.data.success){
                     const token=res.data.token;
