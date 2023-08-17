@@ -111,23 +111,23 @@ export default function App() {
                         />
                     </View>
                     <DrawerItemList {...props} />
+                    <TouchableOpacity
+                        style={{
+                            bottom: 0,
+                            width: '100%',
+                            backgroundColor: '#f6f6f6',
+                            padding: 20,
+                            borderTopWidth: 1,
+                            borderTopColor: '#ddd',
+                        }}
+                        onPress={handleLout}
+                    >
+                        <Text>Log Out</Text>
+                    </TouchableOpacity>
                 </DrawerContentScrollView>
-                <TouchableOpacity
-                    style={{
-                        position: 'absolute',
-                        bottom: 0,
-                        left: 0,
-                        width: '100%',
-                        backgroundColor: '#f6f6f6',
-                        padding: 20,
-                        borderTopWidth: 1,
-                        borderTopColor: '#ddd',
-                    }}
-                    onPress={handleLout}
-                >
-                    <Text>Log Out</Text>
-                </TouchableOpacity>
+
             </ScrollView>
+
         );
     };
 
