@@ -258,7 +258,6 @@ const styles = StyleSheet.create({
         resizeMode: 'cover',
     },
     button:{
-
         marginBottom: 10,
         alignItems:'center',
         backgroundColor: 'pink',

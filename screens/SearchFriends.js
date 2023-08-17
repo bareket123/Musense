@@ -19,7 +19,6 @@ const SearchFriends = ({ navigation }) => {
             console.log("error in the token Home screen ",error.message);
         }
     };
-
     useEffect(() => {
         getToken().then(r => {console.log("use effect worked")});
     },[]);

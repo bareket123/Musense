@@ -10,7 +10,6 @@ const MyFriends = ({navigation}) => {
 
     const [token,setToken]=useState('');
     const [myFriends,setMyFriends]=useState([]);
-
     const getToken = async () => {
         try {
             const token = await AsyncStorage.getItem('token');

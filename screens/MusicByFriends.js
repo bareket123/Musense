@@ -10,7 +10,6 @@ export default function MusicByFriends ({ navigation }) {
         { id: '3', title: 'Song 3' },
         { id: '4', title: 'Song 4' },
     ]);
-
     const handlePress = (id) => {
         console.log(`Song with id ${id} was pressed`);
     };

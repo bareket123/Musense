@@ -7,7 +7,6 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import SearchFriends from "./SearchFriends"; // Make sure this path is correct
 import MyFriends from "./MyFriends";
 
-
 const HomeScreen = ({ navigation }) => {
     const [username,setUsername]=useState("");
     const [token,setToken]=useState(null);

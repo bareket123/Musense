@@ -116,7 +116,6 @@ const PopularNow = () => {
     //         //.then(response => urlAudio=response.hub.actions[1].uri)
     //         .catch(err => console.error(err));
     // }
-
     const fetchPlaylist=async ()=>{
         const options = {
             method: 'GET',

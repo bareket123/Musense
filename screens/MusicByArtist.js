@@ -29,7 +29,6 @@ export default function MusicByArtist ({ navigation }) {
     const [showSongs, setShowSongs] = useState(false);
     const dispatch = useDispatch();
 
-
     const handleSearch = (text) => {
         setSearchText(text);
     };

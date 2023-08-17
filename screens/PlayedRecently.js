@@ -12,7 +12,6 @@ const PlayedRecently = ( ) => {
         if (!song) {
             return; // Handle invalid song
         }
-
         try {
             if (sound) {
                 await sound.unloadAsync();
