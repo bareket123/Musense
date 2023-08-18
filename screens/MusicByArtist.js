@@ -23,15 +23,27 @@ import { useFocusEffect } from '@react-navigation/native';
 
 
 export default function MusicByArtist ({ navigation }) {
+
     const [currentArray,setCurrentArray]=useState([]);
     const [searchText, setSearchText] = useState('');
     const [playSong, setPlaySong] = useState();
     const [showSongs, setShowSongs] = useState(false);
     const dispatch = useDispatch();
 
+
+    useFocusEffect(
+        React.useCallback(() => {
+            setShowSongs(false);
+            setCurrentArray([]);
+            setSearchText('');
+        }, [])
+    );
+
+
     const handleSearch = (text) => {
         setSearchText(text);
     };
+
 
     async function playSound(index) {
         const song = currentArray[index];
@@ -57,7 +69,11 @@ export default function MusicByArtist ({ navigation }) {
                 playSong.unloadAsync();
             }
         };
+
     }, [playSong]);
+
+
+
 
     function getAllSongByName(response) {
         let tempArray=[]
@@ -68,15 +84,19 @@ export default function MusicByArtist ({ navigation }) {
                 artist: song.track.subtitle,
                 url: song.track.hub.actions[1].uri,
                 coverImage:song.track.images.background,
-                isFavorite: false // Initialize as not favorite//////////////////////////////////
+                isFavorite: false ///
+
             };
+
             tempArray.push(currentSong);
         });
         setCurrentArray(tempArray)
         currentArray.map((song,index) =>{
             console.log(song)
         })
+
     }
+
 
     const search= ()=> {
         let currentSongsArray=[];
@@ -88,17 +108,18 @@ export default function MusicByArtist ({ navigation }) {
                 'X-RapidAPI-Host': 'shazam.p.rapidapi.com'
             }
         };
+
         fetch('https://shazam.p.rapidapi.com/search?term='+searchText+'&locale=en-US&offset=0&limit=5', songs)
             .then(response => response.json())
             .then(response => getAllSongByName(response.tracks.hits))
             .catch(err => console.error("There is error in fetching data: "+err));
-
         setShowSongs(true);
-
         setSearchText('');
     }
 
-    ////////////////////////////////
+
+
+    /////////////////////
     function toggleFavorite(index) {
         const updatedArray = currentArray.map((song, i) => {
             if (i === index) {
@@ -108,6 +129,7 @@ export default function MusicByArtist ({ navigation }) {
         });
         setCurrentArray(updatedArray);
     }
+
 
     function addLovedSongs(index) {
         const song = currentArray[index];
@@ -127,6 +149,7 @@ export default function MusicByArtist ({ navigation }) {
                     toggleFavorite(item.songIndex);
                     addLovedSongs(item.songIndex);
                 }} name="heart" disabled={item.isFavorite} size={30} color={item.isFavorite ? 'red' : 'green'} />
+
             </TouchableOpacity>
         </View>
     );
@@ -134,6 +157,7 @@ export default function MusicByArtist ({ navigation }) {
     return (
         <View>
             <View style={styles.searchStyle} >
+
                 <TextInput
                     placeholder="Search song or artist..."
                     onChangeText={handleSearch}
@@ -151,14 +175,6 @@ export default function MusicByArtist ({ navigation }) {
                 />
             }
 
-    
-    useFocusEffect(
-        React.useCallback(() => {
-            setShowSongs(false);
-            setCurrentArray([]);
-            setSearchText('');
-        }, [])
-    );
 
         </View>
         // <View style={styles.viewStyle}>
@@ -187,6 +203,7 @@ export default function MusicByArtist ({ navigation }) {
 
     );
 };
+
 
 const styles = StyleSheet.create({
     viewStyle:{
@@ -249,14 +266,19 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor:'pink',
         flexDirection:'row'
+
     },
     searchStyle: {
         flexDirection:'row',
         justifyContent: 'space-between',
         height: 40,
+
         borderColor: 'black',
         borderWidth: 5,
         borderRadius: 20,
         paddingHorizontal: 10,
     },
+
 });
+
+
