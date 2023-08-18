@@ -2,21 +2,20 @@ import React, { useEffect, useState } from 'react';
 import {View, Text, FlatList, StyleSheet, TouchableOpacity, Button} from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import {connect, useSelector} from 'react-redux';
-// import { addToPlayedRecently } from '../actions/actions';
 import { Audio } from 'expo-av';
 
 const PlayedRecently = ( ) => {
     const [sound, setSound] = useState(null);
     const {playList ,playedRecently} = useSelector(state => state.reducer)
+
     const playSound = async (song) => {
         if (!song) {
-            return; // Handle invalid song
+            return;
         }
         try {
             if (sound) {
                 await sound.unloadAsync();
             }
-
             const { sound: newSound } = await Audio.Sound.createAsync({ uri: song.url });
             setSound(newSound);
             await newSound.playAsync();
@@ -68,15 +67,4 @@ const PlayedRecently = ( ) => {
         </View>
     );
 };
-
-// const mapStateToProps = (state) => ({
-//     playedRecently: state.cardData,
-// });
-
 export default PlayedRecently;
-
-
-
-
-
-
