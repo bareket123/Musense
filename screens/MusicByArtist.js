@@ -13,16 +13,16 @@ import {
 } from 'react-native';
 import {AntDesign, FontAwesome, Fontisto} from "@expo/vector-icons";
 import { Audio } from 'expo-av';
-import { useSelector, useDispatch } from 'react-redux'; // Import useSelector and useDispatch from react-redux
+import { useSelector, useDispatch } from 'react-redux';
 import { addToPlayedRecently } from '../actions/actions';
 import {useContext} from "react";
-import {setPlayedRecently, setPlaylist} from "../redux/actions"; // Import useSelector and useDispatch from react-redux
+import {setPlayedRecently, setPlaylist} from "../redux/actions";
+import { useFocusEffect } from '@react-navigation/native';
 
 
 
 
 export default function MusicByArtist ({ navigation }) {
-
     const [currentArray,setCurrentArray]=useState([]);
     const [searchText, setSearchText] = useState('');
     const [playSong, setPlaySong] = useState();
@@ -33,12 +33,11 @@ export default function MusicByArtist ({ navigation }) {
         setSearchText(text);
     };
 
-
     async function playSound(index) {
         const song = currentArray[index];
         dispatch(addToPlayedRecently(song));
         if (!song) {
-            return; // Handle invalid index
+            return;
         }
 
         const { sound } = await Audio.Sound.createAsync({ uri: song.url });
@@ -60,7 +59,6 @@ export default function MusicByArtist ({ navigation }) {
         };
     }, [playSong]);
 
-
     function getAllSongByName(response) {
         let tempArray=[]
         response.map((song,index) => {
@@ -71,28 +69,18 @@ export default function MusicByArtist ({ navigation }) {
                 url: song.track.hub.actions[1].uri,
                 coverImage:song.track.images.background,
                 isFavorite: false // Initialize as not favorite//////////////////////////////////
-
             };
-
             tempArray.push(currentSong);
         });
-
         setCurrentArray(tempArray)
-
-        //console.log(currentArray)
         currentArray.map((song,index) =>{
             console.log(song)
         })
-
     }
-
-
 
     const search= ()=> {
         let currentSongsArray=[];
-        // if (searchText!==''){
         console.log("this is the text "+searchText)
-
         const songs = {
             method: 'GET',
             headers: {
@@ -100,7 +88,6 @@ export default function MusicByArtist ({ navigation }) {
                 'X-RapidAPI-Host': 'shazam.p.rapidapi.com'
             }
         };
-
         fetch('https://shazam.p.rapidapi.com/search?term='+searchText+'&locale=en-US&offset=0&limit=5', songs)
             .then(response => response.json())
             .then(response => getAllSongByName(response.tracks.hits))
@@ -108,26 +95,10 @@ export default function MusicByArtist ({ navigation }) {
 
         setShowSongs(true);
 
-        // console.log(currentSongsArray.length)
-        //
-        // currentSongsArray.map((c)=>{
-        //     console.log(c.track.title)
-        //
-        // })
-        // }else {
-        //         return;
-        //     }
-
-
-
         setSearchText('');
-
-        // setCurrentArray([]);
     }
 
-
-
-    /////////////////////
+    ////////////////////////////////
     function toggleFavorite(index) {
         const updatedArray = currentArray.map((song, i) => {
             if (i === index) {
@@ -137,7 +108,6 @@ export default function MusicByArtist ({ navigation }) {
         });
         setCurrentArray(updatedArray);
     }
-
 
     function addLovedSongs(index) {
         const song = currentArray[index];
@@ -149,8 +119,6 @@ export default function MusicByArtist ({ navigation }) {
             <View style={{ flex: 1 }}>
                 <Text style={{ fontSize: 15, color: 'black' }}>{item.title}</Text>
                 <Text style={{ fontSize: 15, color: 'green' }}>{item.artist}</Text>
-
-
             </View>
             <TouchableOpacity style={{ flexDirection: 'row' }}>
                 <AntDesign onPress={() => pauseSound(item.songIndex).then(r => {})} name={"pausecircle"} size={30} color="black" />
@@ -159,7 +127,6 @@ export default function MusicByArtist ({ navigation }) {
                     toggleFavorite(item.songIndex);
                     addLovedSongs(item.songIndex);
                 }} name="heart" disabled={item.isFavorite} size={30} color={item.isFavorite ? 'red' : 'green'} />
-
             </TouchableOpacity>
         </View>
     );
@@ -167,7 +134,6 @@ export default function MusicByArtist ({ navigation }) {
     return (
         <View>
             <View style={styles.searchStyle} >
-
                 <TextInput
                     placeholder="Search song or artist..."
                     onChangeText={handleSearch}
@@ -185,6 +151,14 @@ export default function MusicByArtist ({ navigation }) {
                 />
             }
 
+    
+    useFocusEffect(
+        React.useCallback(() => {
+            setShowSongs(false);
+            setCurrentArray([]);
+            setSearchText('');
+        }, [])
+    );
 
         </View>
         // <View style={styles.viewStyle}>
@@ -213,7 +187,6 @@ export default function MusicByArtist ({ navigation }) {
 
     );
 };
-
 
 const styles = StyleSheet.create({
     viewStyle:{
@@ -276,18 +249,14 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor:'pink',
         flexDirection:'row'
-
     },
     searchStyle: {
         flexDirection:'row',
         justifyContent: 'space-between',
         height: 40,
-
         borderColor: 'black',
         borderWidth: 5,
-        borderRadius: 20, // Make it circular by setting borderRadius to half of the height
+        borderRadius: 20,
         paddingHorizontal: 10,
     },
-
 });
-
