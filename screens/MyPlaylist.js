@@ -1,17 +1,15 @@
-
 import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { useDispatch, useSelector } from 'react-redux';
+import {View, Text, FlatList, StyleSheet, TouchableOpacity, Button} from 'react-native';
+import {AntDesign, MaterialCommunityIcons} from '@expo/vector-icons';
+import { useSelector } from 'react-redux';
 import { Audio } from 'expo-av';
+import axios from "axios";
 
 export default function MyPlaylist({ navigation }) {
     const [sound, setSound] = useState(null);
-    const { playList, playedRecently } = useSelector(state => state.reducer);
-    const dispatch = useDispatch();
-
-    const [songs, setSongs] = useState(playList.map(song => ({ ...song, isFavorite: false })));
-
+   // const { playList, playedRecently } = useSelector(state => state.reducer);
+     const {token } = useSelector(state => state.reducer);
+    const [playlist,setPlaylist]=useState([]);
     const playSound = async (song) => {
         if (!song) {
             return;
@@ -37,6 +35,14 @@ export default function MyPlaylist({ navigation }) {
             });
         }
     };
+    const deleteSong=async (song) => {
+        const response = await axios.create({baseURL: 'http://10.0.0.1:8989'}).post('/delete-song?songId=' + song.id);
+       if (response.data.success){
+         alert("delete")
+       }else {
+           alert(response.data.errorCode)
+       }
+    }
 
     useEffect(() => {
         return () => {
@@ -48,23 +54,22 @@ export default function MyPlaylist({ navigation }) {
         };
     }, [sound]);
 
-    function toggleFavorite(index) {
-        const updatedSongs = songs.map((song, i) => {
-            if (i === index) {
-                return { ...song, isFavorite: !song.isFavorite };
-            }
-            return song;
-        });
-        setSongs(updatedSongs);
+    const getPlaylist=async ()=>{
+        const response = await axios.create({baseURL: 'http://10.0.0.1:8989'}).post('/get-playlist?token=' + token);
+        if (response.data.success){
+          setPlaylist(response.data.playlist)
+        }else{
+            alert(response.data.errorCode)
+        }
+
     }
 
-    function removeSong(index) {
-        const updatedSongs = songs.filter((_, i) => i !== index);
-        setSongs(updatedSongs);
-    }
+    useEffect(()=>{
+        getPlaylist().then(r => {});
+    })
 
-    const renderSong = ({ item, index }) => (
-        <View style={{ padding: 20, flexDirection: 'row', alignItems: 'center', left: '20%', backgroundColor: 'pink' }}>
+    const renderSong = ({ item }) => (
+        <View style={{ padding: 20, flexDirection: 'row', alignItems: 'center', left: '20%' , backgroundColor:'pink'}}>
             <MaterialCommunityIcons name="play-box" size={24} color="black" />
             <Text style={{ fontSize: 16, color: 'purple' }}>{item.title}</Text>
             <TouchableOpacity style={{ marginLeft: 50 }} onPress={() => playSound(item)}>
@@ -73,48 +78,42 @@ export default function MyPlaylist({ navigation }) {
             <TouchableOpacity style={{ marginLeft: 50 }} onPress={() => pauseSound()}>
                 <Text>Pause</Text>
             </TouchableOpacity>
-            <TouchableOpacity
-                onPress={() => {
-                    toggleFavorite(index);
-                    removeSong(index);
-                }}
-            >
-                <MaterialCommunityIcons
-                    // name="heart"
-                    // size={30}
-                    // color={item.isFavorite ? 'green' : 'red'}
-                    name="delete"
-                    size={30}
-                    color="black"
-                />
+            <TouchableOpacity style={{ marginLeft: 50 }} onPress={() =>deleteSong(item)}>
+                <AntDesign name="delete" size={24} color="black" />
             </TouchableOpacity>
         </View>
     );
 
     return (
         <View>
+            <Text>{"\n"}</Text>
             <Text>My Playlist:</Text>
-            <FlatList
-                data={songs}
-                renderItem={renderSong}
-                keyExtractor={(item, index) => index.toString()}
-            />
+            {
+                playlist.length>0?
+
+                <FlatList
+                    data={playlist}
+                    renderItem={renderSong}
+                    keyExtractor={(item) => item.id}
+                />
+                    :
+                    <Text>you haven't had songs</Text>
+
+            }
+
         </View>
     );
 }
+
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 10,
-        backgroundColor: 'pink',
+        backgroundColor:'pink',
     },
     text: {
         fontSize: 16,
         lineHeight: 24,
     },
 });
-
-
-
-

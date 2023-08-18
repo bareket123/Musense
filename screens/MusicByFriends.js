@@ -1,43 +1,66 @@
-import React, { useState } from 'react';
-import { View, Text, ScrollView, FlatList, StyleSheet, ImageBackground,Button,TouchableOpacity} from 'react-native';
-import {MaterialCommunityIcons} from "@expo/vector-icons";
-import image from '../images/tiktok.jpg';
+import React, {useEffect, useState} from 'react';
+import {
+    View,
+    Text,
+    ScrollView,
+    FlatList,
+    StyleSheet,
+    ImageBackground,
+    Button,
+    TouchableOpacity,
+    Image
+} from 'react-native';
+import axios from "axios";
+import {useSelector} from "react-redux";
+import Player from "./Player";
 
 export default function MusicByFriends ({ navigation }) {
-    const [songs, setSongs] = useState([
-        { id: '1', title: 'Song 1' },
-        { id: '2', title: 'Song 2' },
-        { id: '3', title: 'Song 3' },
-        { id: '4', title: 'Song 4' },
-    ]);
-    const handlePress = (id) => {
-        console.log(`Song with id ${id} was pressed`);
-    };
+    const [playlistByFriends,setPlaylistByFriends]=useState([]);
+    const {token} = useSelector(state => state.reducer);
 
-    const renderSong = ({ item }) => (
-        <View style={{ padding: 20, flexDirection: 'row', alignItems: 'center', left: '20%'}}>
-            <MaterialCommunityIcons name="play-box" size={24} color="black"/>
 
-            <Text style={{ fontSize: 16, color:'orange' }}>{item.title}</Text>
-            <TouchableOpacity style={styles.Button} onPress={() => handlePress(item.id)}>
-                <Text style={styles.buttonText}>Play</Text>
-            </TouchableOpacity>
-        </View>
-    );
+    const getPlaylistByFriends=async ()=>{
+
+        if (token!==null){
+            const response = await axios.create({baseURL: 'http://10.0.0.1:8989'}).get('/get-friends-playlist?token=' + token);
+            if (response.data.success){
+                setPlaylistByFriends(response.data.playlistByFriends);
+            }else {
+                alert(response.data.errorCode)
+            }
+        }else {
+            console.log(" friends: token is empty")
+        }
+
+    }
+
+    useEffect(()=>{
+        getPlaylistByFriends().then(r => {})
+    })
+
+
+
+
 
     return (
-        <ImageBackground source={image} style={styles.background} >
-            <TouchableOpacity style={styles.buttonExit} onPress={() => navigation.navigate('Home')}>
-                <Text style={styles.buttonText}>Go back to Home</Text>
-            </TouchableOpacity>
-            <Text>{"\n"}</Text>
-            <Text style={styles.headerText} >Music By Friends:</Text>
-            <FlatList
-                data={songs}
-                renderItem={renderSong}
-                keyExtractor={(item) => item.id}
-            />
-        </ImageBackground>
+
+       <View>
+           {
+               playlistByFriends.length>0?
+                   <View>
+                       <Text>listening to songs your friends love</Text>
+                       <Player songList={playlistByFriends}/>
+
+                   </View>
+                   :
+                   <View>
+                       <Text>Looks like no one has added any songs yet </Text>
+                       <Button title={"go search for more friends"} onPress={()=>{navigation.navigate('Search Friends')}}/>
+
+                   </View>
+
+           }
+       </View>
 
     );
 };
@@ -91,6 +114,10 @@ const styles = StyleSheet.create({
         marginBottom: 50,
         color:'orange',
         shadowColor:'white'
+    },
+    text: {
+
+        flexShrink: 1
     },
 
 });
