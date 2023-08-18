@@ -32,7 +32,7 @@ const MyFriends = ({navigation}) => {
 
     const fetchMyFriends = async ()=>{
         if (token!==''){
-            const response = await axios.create({baseURL: 'http://192.168.1.178:8989'}).get('/get-my-friends?token=' + token);
+            const response = await axios.create({baseURL: 'http://10.0.0.1:8989'}).get('/get-my-friends?token=' + token);
             if (response.data.success){
                 setMyFriends(response.data.myFriends);
             }else {
