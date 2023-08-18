@@ -104,7 +104,7 @@ export default function MusicByArtist ({ navigation }) {
         const songs = {
             method: 'GET',
             headers: {
-                'X-RapidAPI-Key': '77f4e88fbcmsh34c35cf21256c6ap1326abjsn36b18c917e58',
+                'X-RapidAPI-Key': '6fda77ecacmshe3aac4f5a1a2d76p1dfc45jsnfc5a2e71d25a',
                 'X-RapidAPI-Host': 'shazam.p.rapidapi.com'
             }
         };
