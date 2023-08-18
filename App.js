@@ -26,8 +26,8 @@ export default function App() {
     const [email,setEmail]=useState("");
     const [image,setImage]=useState('https://cdn-icons-png.flaticon.com/512/3271/3271191.png');
     const [token,setToken]=useState(null);
-    // const [myPlaylist,setMyPlaylist]=useState([]);
     const Stack = createStackNavigator();
+    // const [myPlaylist,setMyPlaylist]=useState([]);
 
     // async function getUsername() {
     //     try {
@@ -123,19 +123,13 @@ export default function App() {
                         <Text>Log Out</Text>
                     </TouchableOpacity>
                 </DrawerContentScrollView>
-
             </ScrollView>
-
         );
     };
-
-
 
     const Drawer=createDrawerNavigator();
     const DrawNavigator=()=>{
         return(
-
-
             <Drawer.Navigator screenOptions={{
                 headerShown: true,
                 headerStyle: {
@@ -155,12 +149,7 @@ export default function App() {
                 <Stack.Screen name='played' component={PlayedRecently}/>
                 <Stack.Screen name='My Friends' component={MyFriends}/>
                 <Stack.Screen name='Search Friends' component={SearchFriends}/>
-
-
-
             </Drawer.Navigator>
-
-
         )
     }
 
@@ -169,7 +158,6 @@ export default function App() {
             <NavigationContainer>
                 <DrawNavigator />
             </NavigationContainer>
-
         </Provider>
     );
 }

@@ -1,10 +1,9 @@
 import React, { useState} from 'react';
 import {ScrollView, SafeAreaView, TouchableOpacity, Text, StyleSheet, Image,View} from 'react-native';
 import { FontAwesome5, MaterialIcons} from '@expo/vector-icons';
-
 import {NavigationContainer} from "@react-navigation/native";
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import SearchFriends from "./SearchFriends"; // Make sure this path is correct
+import SearchFriends from "./SearchFriends";
 import MyFriends from "./MyFriends";
 
 const HomeScreen = ({ navigation }) => {
@@ -85,8 +84,6 @@ const HomeScreen = ({ navigation }) => {
                     </TouchableOpacity>
                 </View>
 
-
-
                 <NavigationContainer independent={true}>
                     <Tab.Navigator
 
@@ -111,7 +108,6 @@ const HomeScreen = ({ navigation }) => {
                                         color='white'
                                         onPress={() => { navigation.navigate('Search Friends') }}
                                     />
-
                                 ),
                             }}
                         />
@@ -125,15 +121,11 @@ const HomeScreen = ({ navigation }) => {
                                                   size={24}
                                                   color="white"
                                                   onPress={() => { navigation.navigate('My Friends') }} />   ),
-
                             }}
-
                         />
                     </Tab.Navigator>
                 </NavigationContainer>
-
             </SafeAreaView>
-
         </ScrollView>
     );
 };
@@ -176,7 +168,6 @@ const styles = StyleSheet.create({
     },
     header:{
         position: 'absolute',
-
         right:150,
         fontSize: 16,
         fontWeight: 'bold',
@@ -186,8 +177,6 @@ const styles = StyleSheet.create({
     loginButton:{
         left:100,
         backgroundColor:'green',
-
-
     },
     linearGradient: {
         left:100,
