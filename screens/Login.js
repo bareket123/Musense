@@ -7,6 +7,8 @@ import { AntDesign,MaterialIcons,MaterialCommunityIcons } from '@expo/vector-ico
 import image from '../images/musicBackGround.jpg';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as ImagePicker from "expo-image-picker";
+import {setToken} from "../redux/actions";
+import {useDispatch} from "react-redux";
 
 
 
@@ -14,6 +16,8 @@ import * as ImagePicker from "expo-image-picker";
 
 
 export default function Login ({ navigation }) {
+    const dispatch = useDispatch(); // Get the dispatch function
+
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [email,setEmail]=useState("");
@@ -28,7 +32,7 @@ export default function Login ({ navigation }) {
         try {
             if (checked==='signUp'){
                 console.log("enter sign")
-                res = await axios.create({baseURL: 'http://10.100.102.7:8989'}).post('/sign-up?username=' + username + '&password=' + password+'&email='+email+"&picture="+picture)
+                res = await axios.create({baseURL: 'http://10.0.0.1:8989'}).post('/sign-up?username=' + username + '&password=' + password+'&email='+email+"&picture="+picture)
                 if (res.data.success) {
                     alert("sign up successfully");
                     setConfirmPassword("");
@@ -43,13 +47,17 @@ export default function Login ({ navigation }) {
             }else if (checked==='login') {
                 console.log("enter login")
 
-                res = await axios.create({baseURL: 'http://10.100.102.7:8989'}).post('/login?username=' + username + '&password=' + password)
+                res = await axios.create({baseURL: 'http://10.0.0.1:8989'}).post('/login?username=' + username + '&password=' + password)
                 console.log(res.data)
                 if (res.data.success){
                     const token=res.data.token;
                     alert("login successfully");
-                    if (token!==null)
+                    if (token!==null){
+                        dispatch(setToken(token));
                         await AsyncStorage.setItem('token', token);
+
+                    }
+
                     navigation.navigate("Home")
                 }else {
                     alert(res.data.errorCode)
