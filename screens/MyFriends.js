@@ -5,25 +5,18 @@ import {NavigationContainer} from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import {MaterialCommunityIcons} from "@expo/vector-icons";
+import {setToken} from "../redux/actions";
+import {useDispatch, useSelector} from "react-redux";
 
 const MyFriends = ({navigation}) => {
-
-    const [token,setToken]=useState('');
     const [myFriends,setMyFriends]=useState([]);
-    const getToken = async () => {
-        try {
-            const token = await AsyncStorage.getItem('token');
-            setToken(token);
-            console.log("token is: " + token);
-        } catch (error) {
-            console.log("error in the token my friends screen ",error.message);
-        }
-    };
+    const dispatch = useDispatch();
+    const {token} = useSelector(state => state.reducer);
 
-    useEffect(() => {
-        getToken().then(r => {console.log(" my friends use effect worked")});
 
-    },[]);
+
+
+
 
     useEffect(() => {
         fetchMyFriends().then(r => {});

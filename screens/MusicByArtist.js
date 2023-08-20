@@ -27,9 +27,7 @@ export default function MusicByArtist ({ navigation }) {
 
     const [currentArray,setCurrentArray]=useState([]);
     const [searchText, setSearchText] = useState('');
-    const [playSong, setPlaySong] = useState();
     const [showSongs, setShowSongs] = useState(false);
-    const dispatch = useDispatch();
 
 
     useFocusEffect(
@@ -44,36 +42,6 @@ export default function MusicByArtist ({ navigation }) {
     const handleSearch = (text) => {
         setSearchText(text);
     };
-
-
-    async function playSound(index) {
-        const song = currentArray[index];
-        dispatch(addToPlayedRecently(song));
-        if (!song) {
-            return;
-        }
-
-        const { sound } = await Audio.Sound.createAsync({ uri: song.url });
-        setPlaySong(sound);
-        await sound.playAsync();
-    }
-
-    async function pauseSound(index) {
-        const song = currentArray[index];
-        if (playSong) {
-            await playSong.pauseAsync();
-        }
-    }
-    useEffect(() => {
-        return () => {
-            if (playSong) {
-                playSong.unloadAsync();
-            }
-        };
-
-    }, [playSong]);
-
-
 
 
     function getAllSongByName(response) {
@@ -100,7 +68,6 @@ export default function MusicByArtist ({ navigation }) {
 
 
     const search= ()=> {
-        let currentSongsArray=[];
         console.log("this is the text "+searchText)
         const songs = {
             method: 'GET',
@@ -119,8 +86,6 @@ export default function MusicByArtist ({ navigation }) {
     }
 
 
-
-    /////////////////////
     function toggleFavorite(index) {
         const updatedArray = currentArray.map((song, i) => {
             if (i === index) {
@@ -131,29 +96,7 @@ export default function MusicByArtist ({ navigation }) {
         setCurrentArray(updatedArray);
     }
 
-    //
-    // function addLovedSongs(index) {
-    //     const song = currentArray[index];
-    //     dispatch(setPlaylist(song))
-    // }
 
-    // const renderSong = ({ item }) => (
-    //     <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 10,backgroundColor:'pink' }}>
-    //         <View style={{ flex: 1 }}>
-    //             <Text style={{ fontSize: 15, color: 'black' }}>{item.title}</Text>
-    //             <Text style={{ fontSize: 15, color: 'green' }}>{item.artist}</Text>
-    //         </View>
-    //         <TouchableOpacity style={{ flexDirection: 'row' }}>
-    //             <AntDesign onPress={() => pauseSound(item.songIndex).then(r => {})} name={"pausecircle"} size={30} color="black" />
-    //             <AntDesign onPress={() => playSound(item.songIndex).then(r => {})} name="play" size={30} color="black" />
-    //             <AntDesign onPress={() => {
-    //                 toggleFavorite(item.songIndex);
-    //                 addLovedSongs(item.songIndex);
-    //             }} name="heart" disabled={item.isFavorite} size={30} color={item.isFavorite ? 'red' : 'green'} />
-    //
-    //         </TouchableOpacity>
-    //     </View>
-    // );
 
     return (
         <View>
@@ -169,39 +112,12 @@ export default function MusicByArtist ({ navigation }) {
             {
                 showSongs&&
                 <Player songList={currentArray} page={'list'} toggleFavorite={toggleFavorite}/>
-                // <FlatList
-                //     keyExtractor={(item)=>item.songIndex}
-                //     data={currentArray}
-                //     renderItem={renderSong}
-                //
-                // />
+
             }
 
 
         </View>
-        // <View style={styles.viewStyle}>
-        //     <TextInput
-        //         placeholder="Search"
-        //         value={searchSong}
-        //         mode={"outlined"}
-        //         onChangeText={setSearchSong}
-        //         style={styles.textInput}
-        //
-        //     />
-        //
-        // </View>
-        // <ImageBackground source={image} style={styles.background} >
-        //     <TouchableOpacity style={styles.buttonExit} onPress={() => navigation.navigate("Home")}>
-        //         <Text style={styles.buttonText}>Go back to Home</Text>
-        //     </TouchableOpacity>
-        //     <Text>{"\n"}</Text>
-        //     <Text style={styles.headerText} >Music By Artist:</Text>
-        //     <FlatList
-        //         data={songs}
-        //         renderItem={renderSong}
-        //         keyExtractor={(item) => item.id}
-        //     />
-        // </ImageBackground>
+
 
     );
 };
