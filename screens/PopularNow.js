@@ -4,7 +4,8 @@ import { Audio } from 'expo-av';
 import {AntDesign} from "@expo/vector-icons";
 import { useSelector, useDispatch } from 'react-redux';
 import {setPlayedRecently, setPlaylist} from "../redux/actions";
-import axios from "axios"; // Import useSelector and useDispatch from react-redux
+import axios from "axios";
+import Player from "./Player"; // Import useSelector and useDispatch from react-redux
 // import { addToPlayedRecently } from '../actions/actions'; // Import your action creator
 
 
@@ -15,32 +16,32 @@ const PopularNow = () => {
     const [songsArray, setSongsArray] = useState([]); // Initialize songsArray as a state
     const {token} = useSelector(state => state.reducer);
 
-    async function playSound(index) {
-        const song = songsArray[index];
-        dispatch(setPlayedRecently(song)); // Dispatch the action to add the song to playedRecently state in redux
-        if (!song) {
-            return; // Handle invalid index
-        }
-
-        const {sound} = await Audio.Sound.createAsync({uri: song.url});
-        setSound(sound);
-        await sound.playAsync();
-    }
-
-    async function pauseSound(index) {
-        const song = songsArray[index];
-        if (sound) {
-            await sound.pauseAsync();
-        }
-    }
-
-    useEffect(() => {
-        return () => {
-            if (sound) {
-                sound.unloadAsync();
-            }
-        };
-    }, [sound]);
+    // async function playSound(index) {
+    //     const song = songsArray[index];
+    //     dispatch(setPlayedRecently(song)); // Dispatch the action to add the song to playedRecently state in redux
+    //     if (!song) {
+    //         return; // Handle invalid index
+    //     }
+    //
+    //     const {sound} = await Audio.Sound.createAsync({uri: song.url});
+    //     setSound(sound);
+    //     await sound.playAsync();
+    // }
+    //
+    // async function pauseSound(index) {
+    //     const song = songsArray[index];
+    //     if (sound) {
+    //         await sound.pauseAsync();
+    //     }
+    // }
+    //
+    // useEffect(() => {
+    //     return () => {
+    //         if (sound) {
+    //             sound.unloadAsync();
+    //         }
+    //     };
+    // }, [sound]);
 
     // Assume you fetch songs and update the songsArray here
     useEffect(() => {
@@ -49,30 +50,30 @@ const PopularNow = () => {
         setSongsArray(fetchedSongs);
     }, []);
 
-
-    const sendPlaylistToServer = async (song) => {
-        if (token !== null) {
-            await axios.post('http://10.0.0.1:8989/add-song', null, {
-                params: {
-                token:token,
-                    title: song.title,
-                    artist: song.artist,
-                    url: song.url,
-                    coverImage: song.coverImage
-                }
-            }).then((res) => {
-                if (res.data.success) {
-                    console.log("updated successfully")
-
-                } else {
-                    alert("something went wrong")
-                }
-
-
-            });
-
-        }
-    }
+    //
+    // const sendPlaylistToServer = async (song) => {
+    //     if (token !== null) {
+    //         await axios.post('http://10.0.0.1:8989/add-song', null, {
+    //             params: {
+    //             token:token,
+    //                 title: song.title,
+    //                 artist: song.artist,
+    //                 url: song.url,
+    //                 coverImage: song.coverImage
+    //             }
+    //         }).then((res) => {
+    //             if (res.data.success) {
+    //                 console.log("updated successfully")
+    //
+    //             } else {
+    //                 alert("something went wrong")
+    //             }
+    //
+    //
+    //         });
+    //
+    //     }
+    // }
         useEffect(() => {
             fetchPlaylist();
         }, []);
@@ -134,23 +135,23 @@ const PopularNow = () => {
 
         }
 
-        const renderSong = ({item}) => (
-            <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 10}}>
-                <View style={{flex: 1}}>
-                    <Text style={{fontSize: 15, color: 'black'}}>{item.title}</Text>
-                </View>
-                <TouchableOpacity style={{flexDirection: 'row'}}>
-                    <AntDesign onPress={() => pauseSound(item.songIndex).then(r => {
-                    })} name={"pausecircle"} size={30} color="black"/>
-                    <AntDesign onPress={() => playSound(item.songIndex).then(r => {
-                    })} name="play" size={30} color="black"/>
-                    <AntDesign onPress={() => {
-                        toggleFavorite(item.songIndex);
-                        addLovedSongs(item.songIndex);
-                    }} name="heart"  size={30} color={item.isFavorite ? 'red' : 'green'}/>
-                </TouchableOpacity>
-            </View>
-        );
+        // const renderSong = ({item}) => (
+        //     <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 10}}>
+        //         <View style={{flex: 1}}>
+        //             <Text style={{fontSize: 15, color: 'black'}}>{item.title}</Text>
+        //         </View>
+        //         <TouchableOpacity style={{flexDirection: 'row'}}>
+        //             <AntDesign onPress={() => pauseSound(item.songIndex).then(r => {
+        //             })} name={"pausecircle"} size={30} color="black"/>
+        //             <AntDesign onPress={() => playSound(item.songIndex).then(r => {
+        //             })} name="play" size={30} color="black"/>
+        //             <AntDesign onPress={() => {
+        //                 toggleFavorite(item.songIndex);
+        //                 addLovedSongs(item.songIndex);
+        //             }} name="heart"  size={30} color={item.isFavorite ? 'red' : 'green'}/>
+        //         </TouchableOpacity>
+        //     </View>
+        // );
 
 
         return (
@@ -158,13 +159,13 @@ const PopularNow = () => {
             //     <SafeAreaView style={styles.SafeAreaView} >
             <View style={styles.container}>
                 <View>
+                   <Player songList={songsArray} page={'list'} toggleFavorite={toggleFavorite}/>
+                    {/*<FlatList*/}
+                    {/*    keyExtractor={(item) => item.songIndex}*/}
+                    {/*    data={songsArray}*/}
+                    {/*    renderItem={renderSong}*/}
 
-                    <FlatList
-                        keyExtractor={(item) => item.songIndex}
-                        data={songsArray}
-                        renderItem={renderSong}
-
-                    />
+                    {/*/>*/}
                     {/*{*/}
                     {/*    playedRecently.length>0&&*/}
                     {/*    playedRecently.map((song)=>{*/}

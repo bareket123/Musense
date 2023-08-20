@@ -1,20 +1,30 @@
-import {setPlayedRecently} from "../redux/actions";
+import {setPlayedRecently, setPlaylist} from "../redux/actions";
 import {Audio} from "expo-av";
 import React, {useEffect, useState} from "react";
-import {FlatList, Image, Text, TouchableOpacity, View} from "react-native";
-import {AntDesign, Feather} from "@expo/vector-icons";
+import {Button, FlatList, Image, Text, TouchableOpacity, View} from "react-native";
+import {AntDesign, Feather, Ionicons} from "@expo/vector-icons";
 import {useSelector,useDispatch} from "react-redux";
 import Slider from '@react-native-community/slider';
+import {useFocusEffect} from "@react-navigation/native";
+import axios from "axios";
 
-export default function Player ({ songList }) {
-    const [sound, setSound] = useState();
-
+export default function Player ({ songList,page,toggleFavorite }) {
+    const dispatch = useDispatch();
+    const [sound, setSound] = useState(null);
     const [currentlyPlaying,setCurrentlyPlaying]=useState({});
     const [pressedPlaying, setPressedPlaying] = useState(false);
-    const dispatch = useDispatch();
+    const [pressedLove, setPressedLove] = useState(false);
+    const [volume, setVolume] = useState(0.5); // Initial volume
+    const {token} = useSelector(state => state.reducer);
+
+    useFocusEffect(
+        React.useCallback(() => {
+       setCurrentlyPlaying(undefined);
+        }, [])
+    );
 
 
-    async function playSound(song) {
+       async function playSound(song) {
         setPressedPlaying(true);
         setCurrentlyPlaying(song);
         dispatch(setPlayedRecently(song)); // Dispatch the action to add the song to playedRecently state in redux
@@ -24,6 +34,7 @@ export default function Player ({ songList }) {
         try {
             const {sound} = await Audio.Sound.createAsync({uri: song.url});
             setSound(sound);
+
             await sound.playAsync();
         }catch (error){
             console.log("error in loading song "+error )
@@ -36,6 +47,7 @@ export default function Player ({ songList }) {
         if (sound) {
             try {
                 await sound.pauseAsync();
+                setSound(null);
             }catch (error){
                 console.log("error pausing song "+ error)
             }
@@ -51,6 +63,19 @@ export default function Player ({ songList }) {
         };
     }, [sound]);
 
+    const handleVolumeChange = async (newVolume) => {
+        if (sound!==null){
+            try {
+                await sound.setVolumeAsync(newVolume);
+                setVolume(newVolume)
+            }catch (error){
+                console.log("error in the volume "+error)
+            }
+
+        }
+    };
+
+
     const playMusic=(song)=>{
         if (pressedPlaying){
           pauseSound()
@@ -59,35 +84,71 @@ export default function Player ({ songList }) {
         }
 
     }
-    const getNextSong=(action)=> {
-        const currentIndex = currentlyPlaying.id;
-        let nextIndex;
-        pauseSound().then(r => {});
-        if (currentIndex === -1) {
-            return null;
-        }
-        if (action==='next'){
-             nextIndex = (currentIndex + 1) % songList.length;
-        }else {
-             nextIndex = (currentIndex -1) % songList.length;
-        }
-        console.log(songList[nextIndex])
+    const replaceSong=(action)=> {
+        const currentIndex = songList.findIndex(song=>song.url ===currentlyPlaying.url);
 
-        setCurrentlyPlaying(songList[nextIndex]);
+        let newIndex;
+
+            sound&&
+            pauseSound().then(r => {});
+
+
+        if (action==='next'){
+             newIndex = (currentIndex+1) % songList.length;
+
+        }else {
+             newIndex = (currentIndex -1) % songList.length;
+        }
+
+        setCurrentlyPlaying(songList[newIndex]);
     }
+
+
     const pressSong=(song)=>{
         setCurrentlyPlaying(song);
-        pauseSound();
+        pauseSound().then(r => {});
+
+    }
+    // function toggleFavorite(index) {
+    //     const updatedArray = songList.map((song, i) => {
+    //                 if (i === index) {
+    //                     return {...song, isFavorite: !song.isFavorite};
+    //                 }
+    //                 return song;
+    //             });
+    //             songList=updatedArray;
+    // }
+
+
+    function addLovedSongs(song) {
+
+        dispatch(setPlaylist(song))
+        if (!song.isFavorite){
+            sendPlaylistToServer(song).then(r => {
+            })
+        }
 
     }
 
     const renderSong = ({ item }) => (
         <View>
             <View style={{ padding: 20, flexDirection: 'row', alignItems: 'center', left: '20%'}}>
-                <TouchableOpacity  onPress={()=>{pressSong(item)}}>
-                    <Text >{item.title}</Text>
+                <TouchableOpacity style={{flex:1}}  onPress={()=>{pressSong(item)}}>
+                    <Text>{item.title}</Text>
                     <Text>{item.artist}</Text>
                 </TouchableOpacity>
+                {
+                    page==='list'?
+                    <AntDesign onPress={() => {
+                        toggleFavorite(item.songIndex);
+                        addLovedSongs(item);
+                    }} name="heart"  size={30} color={item.isFavorite ? 'red' : 'green'}/>
+                        :
+                        <TouchableOpacity style={{ marginLeft: 50 }} onPress={() =>deleteSong(item)}>
+                            <AntDesign name="delete" size={24} color="black" />
+                        </TouchableOpacity>
+
+                }
 
             </View>
             <View style={{ alignItems:'center' }} >
@@ -97,18 +158,73 @@ export default function Player ({ songList }) {
 
         </View>
     )
+    const deleteSong=async (song) => {
+        const response = await axios.create({baseURL: 'http://10.0.0.1:8989'}).post('/delete-song?songId=' + song.id);
+        if (response.data.success){
+            alert("delete")
+        }else {
+            alert(response.data.errorCode)
+        }
+    }
+    const sendPlaylistToServer = async (song) => {
+        if (token !== null) {
+            await axios.post('http://10.0.0.1:8989/add-song', null, {
+                params: {
+                    token:token,
+                    title: song.title,
+                    artist: song.artist,
+                    url: song.url,
+                    coverImage: song.coverImage
+                }
+            }).then((res) => {
+                if (res.data.success) {
+                    console.log("updated successfully")
+
+                } else {
+                    alert("something went wrong")
+                }
+
+
+            });
+
+        }
+    }
 
     return(
         <View>
             {
-                (currentlyPlaying!==undefined )&&
+                (currentlyPlaying!==undefined  ) &&
+
                 <View style={{alignItems:'center'}}>
+                    <View style={{position:'absolute',top:0,right:0}}>
+                        <TouchableOpacity onPress={()=>{setCurrentlyPlaying(undefined),sound&&pauseSound()}} style={{justifyContent:'flex-start',alignItems: 'flex-start'}}>
+                            <Text style={{fontSize:20}}>X</Text>
+                        </TouchableOpacity>
+                    </View>
                     <Text>currently playing</Text>
                   <Image source={{uri:currentlyPlaying.coverImage}} style={{width:200,height:200}}/>
                     <View style={{flexDirection:'row'}}>
-                   <AntDesign name="stepforward" size={30} color="black"  onPress={()=>{getNextSong('next')}} />
+                   <AntDesign name="stepforward" size={30} color="black"  onPress={()=>{replaceSong('next')}} />
                    <AntDesign onPress={() => playMusic(currentlyPlaying)} name={pressedPlaying?"pausecircle":"play"} size={30} color="black"/>
-                   <AntDesign name="stepbackward" size={30} color="black" onPress={()=>{getNextSong('previous')}} />
+                   <AntDesign name="stepbackward" size={30} color="black" onPress={()=>{replaceSong('previous')}} />
+
+
+                    </View>
+                    <View style={{flexDirection:'row'}}>
+                        <Ionicons name="md-volume-high" size={24} color="black" style={{left:5}} />
+                        <Slider
+                            style={{  width: 200, marginLeft: 5,marginTop:5  }}
+                            value={volume}
+                            minimumValue={0}
+                            maximumValue={1}
+                            step={0.05}
+                            onValueChange={handleVolumeChange}
+                            minimumTrackTintColor={'black'}
+                            maximumTrackTintColor={'grey'}
+                            thumbTintColor={"black"}
+                        />
+
+
 
                     </View>
 
@@ -119,7 +235,8 @@ export default function Player ({ songList }) {
             <FlatList
                 data={songList}
                 renderItem={renderSong}
-                keyExtractor={(item)=>{item.url}}/>
+                keyExtractor={(item, index) => index.toString()}
+            />
         </View>
     )
 

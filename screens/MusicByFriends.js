@@ -49,7 +49,7 @@ export default function MusicByFriends ({ navigation }) {
                playlistByFriends.length>0?
                    <View>
                        <Text>listening to songs your friends love</Text>
-                       <Player songList={playlistByFriends}/>
+                       <Player songList={playlistByFriends} page={'playlist'} toggleFavorite={null}/>
 
                    </View>
                    :

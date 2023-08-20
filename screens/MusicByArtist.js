@@ -18,6 +18,7 @@ import { addToPlayedRecently } from '../actions/actions';
 import {useContext} from "react";
 import {setPlayedRecently, setPlaylist} from "../redux/actions";
 import { useFocusEffect } from '@react-navigation/native';
+import Player from "./Player";
 
 
 
@@ -130,29 +131,29 @@ export default function MusicByArtist ({ navigation }) {
         setCurrentArray(updatedArray);
     }
 
+    //
+    // function addLovedSongs(index) {
+    //     const song = currentArray[index];
+    //     dispatch(setPlaylist(song))
+    // }
 
-    function addLovedSongs(index) {
-        const song = currentArray[index];
-        dispatch(setPlaylist(song))
-    }
-
-    const renderSong = ({ item }) => (
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 10,backgroundColor:'pink' }}>
-            <View style={{ flex: 1 }}>
-                <Text style={{ fontSize: 15, color: 'black' }}>{item.title}</Text>
-                <Text style={{ fontSize: 15, color: 'green' }}>{item.artist}</Text>
-            </View>
-            <TouchableOpacity style={{ flexDirection: 'row' }}>
-                <AntDesign onPress={() => pauseSound(item.songIndex).then(r => {})} name={"pausecircle"} size={30} color="black" />
-                <AntDesign onPress={() => playSound(item.songIndex).then(r => {})} name="play" size={30} color="black" />
-                <AntDesign onPress={() => {
-                    toggleFavorite(item.songIndex);
-                    addLovedSongs(item.songIndex);
-                }} name="heart" disabled={item.isFavorite} size={30} color={item.isFavorite ? 'red' : 'green'} />
-
-            </TouchableOpacity>
-        </View>
-    );
+    // const renderSong = ({ item }) => (
+    //     <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 10,backgroundColor:'pink' }}>
+    //         <View style={{ flex: 1 }}>
+    //             <Text style={{ fontSize: 15, color: 'black' }}>{item.title}</Text>
+    //             <Text style={{ fontSize: 15, color: 'green' }}>{item.artist}</Text>
+    //         </View>
+    //         <TouchableOpacity style={{ flexDirection: 'row' }}>
+    //             <AntDesign onPress={() => pauseSound(item.songIndex).then(r => {})} name={"pausecircle"} size={30} color="black" />
+    //             <AntDesign onPress={() => playSound(item.songIndex).then(r => {})} name="play" size={30} color="black" />
+    //             <AntDesign onPress={() => {
+    //                 toggleFavorite(item.songIndex);
+    //                 addLovedSongs(item.songIndex);
+    //             }} name="heart" disabled={item.isFavorite} size={30} color={item.isFavorite ? 'red' : 'green'} />
+    //
+    //         </TouchableOpacity>
+    //     </View>
+    // );
 
     return (
         <View>
@@ -167,12 +168,13 @@ export default function MusicByArtist ({ navigation }) {
             </View>
             {
                 showSongs&&
-                <FlatList
-                    keyExtractor={(item)=>item.songIndex}
-                    data={currentArray}
-                    renderItem={renderSong}
-
-                />
+                <Player songList={currentArray} page={'list'} toggleFavorite={toggleFavorite}/>
+                // <FlatList
+                //     keyExtractor={(item)=>item.songIndex}
+                //     data={currentArray}
+                //     renderItem={renderSong}
+                //
+                // />
             }
 
 

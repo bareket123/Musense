@@ -25,8 +25,8 @@ export default function App() {
     const [username,setUsername]=useState("");
     const [email,setEmail]=useState("");
     const [image,setImage]=useState('https://cdn-icons-png.flaticon.com/512/3271/3271191.png');
-    const [token,setToken]=useState(null);
     const Stack = createStackNavigator();
+
     // const [myPlaylist,setMyPlaylist]=useState([]);
 
     // async function getUsername() {

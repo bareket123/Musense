@@ -1,19 +1,42 @@
-import React, { useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {ScrollView, SafeAreaView, TouchableOpacity, Text, StyleSheet, Image,View} from 'react-native';
 import { FontAwesome5, MaterialIcons} from '@expo/vector-icons';
 import {NavigationContainer} from "@react-navigation/native";
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import SearchFriends from "./SearchFriends";
 import MyFriends from "./MyFriends";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
+import {setToken} from "../redux/actions";
+import {useDispatch} from "react-redux";
+
 
 const HomeScreen = ({ navigation }) => {
+    const dispatch = useDispatch(); // Get the dispatch function
     const [username,setUsername]=useState("");
-    const [token,setToken]=useState(null);
     const homeName="home";
     const loginName="login";
     const popularName="popular";
 
     const Tab=createBottomTabNavigator();
+
+    const getToken = async () => {
+        try {
+            const token = await AsyncStorage.getItem('token');
+            if (token !== undefined) {
+                dispatch(setToken(token));
+            }
+
+        } catch (error) {
+            console.log("error while save a token "+ error)
+        }
+
+    }
+    useEffect(  () => {
+
+       getToken().then(r => {console.log("save the token in state_L")});
+
+    },[])
 
 
 //
@@ -39,20 +62,9 @@ const HomeScreen = ({ navigation }) => {
 //
 //
 // }
-//     const getToken = async () => {
-//         try {
-//             const token = await AsyncStorage.getItem('token');
-//             setToken(token);
-//             console.log("token is: " + token);
-//         } catch (error) {
-//             console.log("error in the token Home screen ",error.message);
-//         }
-//     };
-//     useEffect(() => {
-//         getToken().then(r => {console.log("use effect worked")});
-//     });
-//
-//
+
+
+
 //     useEffect(  () => {
 //       getUsername().then(r => {console.log("use effect inside home screen")});
 //     },[token])
