@@ -17,6 +17,7 @@ import {Provider} from "react-redux";
 import {Store} from "./redux/store"
 import SearchFriends from "./screens/SearchFriends";
 import MyFriends from "./screens/MyFriends";
+import PersonalRecommendations from "./screens/PersonalRecommendations";
 
 
 export default function App() {
@@ -101,6 +102,7 @@ export default function App() {
                 <Stack.Screen name='played' component={PlayedRecently}/>
                 <Stack.Screen name='My Friends' component={MyFriends}/>
                 <Stack.Screen name='Search Friends' component={SearchFriends}/>
+                <Stack.Screen name='Personalized Recommendations' component={PersonalRecommendations}/>
             </Drawer.Navigator>
         )
     }

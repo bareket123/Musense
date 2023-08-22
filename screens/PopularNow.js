@@ -6,22 +6,22 @@ import { useSelector, useDispatch } from 'react-redux';
 import {setPlayedRecently, setPlaylist} from "../redux/actions";
 import axios from "axios";
 import Player from "./Player"; // Import useSelector and useDispatch from react-redux
-// import { addToPlayedRecently } from '../actions/actions'; // Import your action creator
-
 
 const PopularNow = () => {
     const [songsArray, setSongsArray] = useState([]); // Initialize songsArray as a state
+      const dispatch=useDispatch();
+    const {token,currentlyDelete} = useSelector(state => state.reducer)
 
-    // Assume you fetch songs and update the songsArray here
+
+
     useEffect(() => {
-        // Fetch songs from API and update the songsArray state
-        const fetchedSongs = []; // Fetch songs from API
-        setSongsArray(fetchedSongs);
-    }, []);
-
-
-        useEffect(() => {
+        try {
             fetchPlaylist();
+        }catch (error){
+            console.log("error in fetching "+ error)
+        }
+
+
         }, []);
 
         function getSong(response) {
@@ -49,7 +49,7 @@ const PopularNow = () => {
             const options = {
                 method: 'GET',
                 headers: {
-                    'X-RapidAPI-Key': '6fda77ecacmshe3aac4f5a1a2d76p1dfc45jsnfc5a2e71d25a',
+                    'X-RapidAPI-Key': '38fefeb706mshdeefd590dcb5b1fp1a76bdjsn744bb3ebe44f',
                     'X-RapidAPI-Host': 'shazam.p.rapidapi.com'
                 }
             };
@@ -62,6 +62,7 @@ const PopularNow = () => {
 
 
         function toggleFavorite(index) {
+
             const updatedArray = songsArray.map((song, i) => {
                 if (i === index) {
                     return {...song, isFavorite: !song.isFavorite};

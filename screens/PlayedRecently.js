@@ -8,8 +8,6 @@ import Player from "./Player";
 const PlayedRecently = ( ) => {
     const {playList ,playedRecently} = useSelector(state => state.reducer)
 
-
-
     return (
         <View>
             <Text>{"\n"}</Text>

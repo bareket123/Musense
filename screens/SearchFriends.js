@@ -7,7 +7,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const SearchFriends = ({ navigation }) => {
     const [searchFriend, setSearchFriend] = useState('');
-    const [foundUser,setFoundUser]=useState({});
+    const [foundUser,setFoundUser]=useState(null);
     const [token,setToken]=useState('');
 
     const getToken = async () => {

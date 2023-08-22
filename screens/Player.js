@@ -1,4 +1,4 @@
-import {setPlayedRecently, setPlaylist} from "../redux/actions";
+import {setPlayedRecently} from "../redux/actions";
 import {Audio} from "expo-av";
 import React, {useEffect, useState} from "react";
 import {Button, FlatList, Image, Text, TouchableOpacity, View} from "react-native";
@@ -13,18 +13,17 @@ export default function Player ({ songList,page,toggleFavorite }) {
     const [sound, setSound] = useState(null);
     const [currentlyPlaying,setCurrentlyPlaying]=useState({});
     const [pressedPlaying, setPressedPlaying] = useState(false);
-    const [pressedLove, setPressedLove] = useState(false);
     const [volume, setVolume] = useState(0.5); // Initial volume
     const {token} = useSelector(state => state.reducer);
 
     useFocusEffect(
         React.useCallback(() => {
-       setCurrentlyPlaying(undefined);
+            setCurrentlyPlaying(undefined);
         }, [])
     );
 
 
-       async function playSound(song) {
+    async function playSound(song) {
         setPressedPlaying(true);
         setCurrentlyPlaying(song);
         dispatch(setPlayedRecently(song)); // Dispatch the action to add the song to playedRecently state in redux
@@ -78,9 +77,9 @@ export default function Player ({ songList,page,toggleFavorite }) {
 
     const playMusic=(song)=>{
         if (pressedPlaying){
-          pauseSound()
+            pauseSound()
         }else {
-           playSound(song)
+            playSound(song)
         }
 
     }
@@ -89,15 +88,15 @@ export default function Player ({ songList,page,toggleFavorite }) {
 
         let newIndex;
 
-            sound&&
-            pauseSound().then(r => {});
+        sound&&
+        pauseSound().then(r => {});
 
 
         if (action==='next'){
-             newIndex = (currentIndex+1) % songList.length;
+            newIndex = (currentIndex+1) % songList.length;
 
         }else {
-             newIndex = (currentIndex -1) % songList.length;
+            newIndex = (currentIndex -1) % songList.length;
         }
 
         setCurrentlyPlaying(songList[newIndex]);
@@ -109,20 +108,9 @@ export default function Player ({ songList,page,toggleFavorite }) {
         pauseSound().then(r => {});
 
     }
-    // function toggleFavorite(index) {
-    //     const updatedArray = songList.map((song, i) => {
-    //                 if (i === index) {
-    //                     return {...song, isFavorite: !song.isFavorite};
-    //                 }
-    //                 return song;
-    //             });
-    //             songList=updatedArray;
-    // }
 
 
     function addLovedSongs(song) {
-
-        dispatch(setPlaylist(song))
         if (!song.isFavorite){
             sendPlaylistToServer(song).then(r => {
             })
@@ -139,10 +127,10 @@ export default function Player ({ songList,page,toggleFavorite }) {
                 </TouchableOpacity>
                 {
                     page==='list'?
-                    <AntDesign onPress={() => {
-                        toggleFavorite(item.songIndex);
-                        addLovedSongs(item);
-                    }} name="heart"  size={30} color={item.isFavorite ? 'red' : 'green'}/>
+                        <AntDesign onPress={() => {
+                            toggleFavorite(item.songIndex);
+                            addLovedSongs(item);
+                        }} name="heart"  size={30} color={item.isFavorite ? 'red' : 'green'}/>
                         :
                         <TouchableOpacity style={{ marginLeft: 50 }} onPress={() =>deleteSong(item)}>
                             <AntDesign name="delete" size={24} color="black" />
@@ -152,8 +140,7 @@ export default function Player ({ songList,page,toggleFavorite }) {
 
             </View>
             <View style={{ alignItems:'center' }} >
-                {/*<Image source={{uri:item.coverImage}} style={{width:100,height:100,marginBottom:20}}/>*/}
-                {/*<AntDesign onPress={() => playMusic(item)} name={pressedPlaying?"pausecircle":"play"} size={30} color="black"/>*/}
+
             </View>
 
         </View>
@@ -202,11 +189,11 @@ export default function Player ({ songList,page,toggleFavorite }) {
                         </TouchableOpacity>
                     </View>
                     <Text>currently playing</Text>
-                  <Image source={{uri:currentlyPlaying.coverImage}} style={{width:200,height:200}}/>
+                    <Image source={{uri:currentlyPlaying.coverImage}} style={{width:200,height:200}}/>
                     <View style={{flexDirection:'row'}}>
-                   <AntDesign name="stepforward" size={30} color="black"  onPress={()=>{replaceSong('next')}} />
-                   <AntDesign onPress={() => playMusic(currentlyPlaying)} name={pressedPlaying?"pausecircle":"play"} size={30} color="black"/>
-                   <AntDesign name="stepbackward" size={30} color="black" onPress={()=>{replaceSong('previous')}} />
+                        <AntDesign name="stepforward" size={30} color="black"  onPress={()=>{replaceSong('next')}} />
+                        <AntDesign onPress={() => playMusic(currentlyPlaying)} name={pressedPlaying?"pausecircle":"play"} size={30} color="black"/>
+                        <AntDesign name="stepbackward" size={30} color="black" onPress={()=>{replaceSong('previous')}} />
 
 
                     </View>

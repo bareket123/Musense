@@ -34,40 +34,9 @@ const HomeScreen = ({ navigation }) => {
     }
     useEffect(  () => {
 
-       getToken().then(r => {console.log("save the token in state_L")});
+       getToken().then(r => {console.log("save the token in state")});
 
     },[])
-
-
-//
-//     async function getUsername() {
-//         try {
-//                    if (token !== null) {
-//                        console.log("inside the get-username method ")
-//                    let response = await axios.get('http://192.168.68.116:8989/get-username-by-token?token=' + token);
-//                    if (response.data != null) {
-//                        setUsername(response.data);
-//                    } else {
-//                        console.log("response is null")
-//                    }
-//                } else {
-//                        console.log("the token is null")
-//
-//                    }
-//
-//
-//            }catch (error){
-//                    console.log("error in the Home screen " ,error.message)
-//                }
-//
-//
-// }
-
-
-
-//     useEffect(  () => {
-//       getUsername().then(r => {console.log("use effect inside home screen")});
-//     },[token])
 
     return (
         <ScrollView style={styles.container}>

@@ -7,7 +7,7 @@ import { AntDesign,MaterialIcons,MaterialCommunityIcons } from '@expo/vector-ico
 import image from '../images/musicBackGround.jpg';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as ImagePicker from "expo-image-picker";
-import {setToken} from "../redux/actions";
+import {setToken,setUsername} from "../redux/actions";
 import {useDispatch} from "react-redux";
 
 
