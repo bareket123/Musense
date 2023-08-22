@@ -223,6 +223,7 @@ export default function Player ({ songList,page,toggleFavorite }) {
                 data={songList}
                 renderItem={renderSong}
                 keyExtractor={(item, index) => index.toString()}
+
             />
         </View>
     )

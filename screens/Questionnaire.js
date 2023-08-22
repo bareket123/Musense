@@ -5,7 +5,7 @@ import {RadioButton,TextInput,Button,Checkbox} from "react-native-paper";
 import  questionnaireStyle from '../styles/questionnaireStyle'
 import axios from "axios";
 
-const Questionnaire = () => {
+const Questionnaire = ({onSubmit}) => {
     const {token} = useSelector(state => state.reducer);
     const [genre, setGenre] = useState("");
     const [artist1,setArtist1]=useState("");
@@ -20,6 +20,7 @@ const Questionnaire = () => {
                     "&artist2=" + artist2 +'&favoriteSong='+ favoriteSong)
                 if (response.data.success){
                     alert("update")
+                    onSubmit(true)
                 }else {
                     alert(response.data.errorCode)
                 }
@@ -58,7 +59,7 @@ const Questionnaire = () => {
 
                      <View style={questionnaireStyle.cardContainer}>
                          <Text style={questionnaireStyle.title}>a special song you can't go without</Text>
-                         <TextInput style={questionnaireStyle.answerInput} placeholder={"song"} value={favoriteSong} onChangeText={setFavoriteSong}/>
+                         <TextInput style={questionnaireStyle.answerInput} placeholder={"name and artist"} value={favoriteSong} onChangeText={setFavoriteSong}/>
                      </View>
                      <TouchableOpacity style={{alignItems:'center'}}>
                          <Text style={questionnaireStyle.title} onPress={handleSubmit}>Submit</Text>
