@@ -16,7 +16,6 @@ export default function MyPlaylist({ navigation }) {
         const response = await axios.create({baseURL: LOCAL_SERVER_URL}).post('/get-playlist?token=' + token);
         if (response.data.success){
           setMyPlaylist(response.data.playlist)
-
         }else{
             alert(response.data.errorCode)
         }
@@ -28,7 +27,7 @@ export default function MyPlaylist({ navigation }) {
 
     useEffect(()=>{
         getPlaylist().then(r => {});
-    })
+    },[])
 
 
     return (

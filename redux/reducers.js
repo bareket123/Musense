@@ -3,8 +3,8 @@ import {SET_USERNAME,SET_IS_LOGGED_IN,SET_TOKEN,SET_PLAYLIST,SET_PLAYED_RECENTLY
 
 
 const initialState = {
-    username:"",
-    token:"",
+    // username:'guest',
+    // token:null,
     isLoggedIn : false ,
     playList : [],
     playedRecently: [],

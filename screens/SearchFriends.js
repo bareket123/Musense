@@ -4,43 +4,51 @@ import {Fontisto, SimpleLineIcons} from '@expo/vector-icons';
 import axios from "axios";
 import {DrawerContentScrollView, DrawerItemList} from "@react-navigation/drawer";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import {LOCAL_SERVER_URL} from "../redux/actions";
+import {LOCAL_SERVER_URL, setToken} from "../redux/actions";
+import {useSelector} from "react-redux";
 
 const SearchFriends = ({ navigation }) => {
     const [searchFriend, setSearchFriend] = useState('');
     const [foundUser,setFoundUser]=useState(null);
-    const [token,setToken]=useState('');
+    const {token} = useSelector(state => state.reducer);
+    const [allUsers, setAllUsers] = useState([]);
+    const [filteredUsers,setFilteredUsers]=useState([]);
 
-    const getToken = async () => {
-        try {
-            const token = await AsyncStorage.getItem('token');
-            setToken(token);
-            console.log("token is: " + token);
-        } catch (error) {
-            console.log("error in the token Home screen ",error.message);
-        }
-    };
     useEffect(() => {
-        getToken().then(r => {console.log("use effect worked")});
-    },[]);
+        if (token!==null)
+        setUsersFromServer().then(r => {})
+    },[token]);
 
 
 
     const handleSearch = (text) => {
         setSearchFriend(text);
-    };
-
-    const search = async () => {
-        const response = await axios.create({baseURL: LOCAL_SERVER_URL}).post('/search-by-user-username?username=' + searchFriend);
-        if (response.data.success) {
-            setFoundUser(response.data.friendsDetailsModel)
-
+        if (text !== '') {
+            const tempFilteredUsers = allUsers.filter((user) => {
+                return user.username.includes(text);
+            });
+            setFilteredUsers(tempFilteredUsers);
         } else {
-            alert(response.data.errorCode)
-
+            setFilteredUsers(allUsers);
         }
-        setSearchFriend("")
+        console.log(token);
+        console.log(filteredUsers);
     };
+
+
+
+    // const search = async () => {
+    //     // const response = await axios.create({baseURL: LOCAL_SERVER_URL}).post('/search-by-user-username?username=' + searchFriend);
+    //     // if (response.data.success) {
+    //     //     setFoundUser(response.data.friendsDetailsModel)
+    //     //
+    //     // } else {
+    //     //     alert(response.data.errorCode)
+    //     //
+    //     // }
+    //     // setSearchFriend("")
+    //
+    // };
     const followingRequest = async ()=>{
            console.log("inside ")
         if (token!==''){
@@ -54,11 +62,21 @@ const SearchFriends = ({ navigation }) => {
             console.log("token is empty")
         }
 
-
-
-
     }
 
+    const setUsersFromServer = async ()=>{
+            if (token!==''){
+            const response = await axios.create({baseURL: LOCAL_SERVER_URL}).post('/get-all-Users-without-current?token=' + token);
+            if (response.data.success){
+                setAllUsers(response.data.myFriends);
+            }else {
+                alert(response.data.errorCode)
+            }
+        }else {
+            console.log("token is empty")
+        }
+
+    }
 
     return (
         <View>
@@ -68,9 +86,20 @@ const SearchFriends = ({ navigation }) => {
                     onChangeText={handleSearch}
                     value={searchFriend}
                 />
-                <TouchableOpacity onPress={search}>
-                    <Fontisto name="search" size={30} color="black" />
-                </TouchableOpacity>
+
+                {/*<TouchableOpacity onPress={search}>*/}
+                {/*    <Fontisto name="search" size={30} color="black" />*/}
+                {/*</TouchableOpacity>*/}
+            </View>
+            <View>
+                {
+
+                    filteredUsers.map((user)=>{
+                        return (
+                            <Text>{user.username}</Text>
+                        )
+                    })
+                }
             </View>
             {
                 foundUser!==null &&
@@ -82,9 +111,9 @@ const SearchFriends = ({ navigation }) => {
                         </View>
                     </TouchableOpacity>
 
-                    <View style={{marginLeft:100}}>
-                        <Text style={{height:50, width:50}}> {foundUser.username}</Text>
-                    </View>
+                    {/*<View style={{marginLeft:100}}>*/}
+                    {/*    <Text style={{height:50, width:50}}> {foundUser.username}</Text>*/}
+                    {/*</View>*/}
                     <Image
                         source={{
                             uri: foundUser.picture,

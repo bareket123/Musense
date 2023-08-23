@@ -1,16 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import {View, Text, TouchableOpacity, StyleSheet, Button, ScrollView, SafeAreaView, FlatList} from 'react-native';
-import { Audio } from 'expo-av';
-import {AntDesign} from "@expo/vector-icons";
-import { useSelector, useDispatch } from 'react-redux';
-import {setPlayedRecently, setPlaylist} from "../redux/actions";
-import axios from "axios";
+
 import Player from "./Player"; // Import useSelector and useDispatch from react-redux
 
 const PopularNow = () => {
     const [songsArray, setSongsArray] = useState([]); // Initialize songsArray as a state
-      const dispatch=useDispatch();
-    const {token,currentlyDelete} = useSelector(state => state.reducer)
 
 
 
