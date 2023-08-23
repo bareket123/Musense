@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import { Audio } from 'expo-av';
 import axios from "axios";
 import Player from "./Player";
-import {setPlaylist} from "../redux/actions";
+import {LOCAL_SERVER_URL, setPlaylist} from "../redux/actions";
 import {useDispatch} from "react-redux";
 
 export default function MyPlaylist({ navigation }) {
@@ -13,7 +13,7 @@ export default function MyPlaylist({ navigation }) {
     const [myPlaylist,setMyPlaylist]=useState([]);
     const dispatch=useDispatch();
     const getPlaylist=async ()=>{
-        const response = await axios.create({baseURL: 'http://10.0.0.1:8989'}).post('/get-playlist?token=' + token);
+        const response = await axios.create({baseURL: LOCAL_SERVER_URL}).post('/get-playlist?token=' + token);
         if (response.data.success){
           setMyPlaylist(response.data.playlist)
 

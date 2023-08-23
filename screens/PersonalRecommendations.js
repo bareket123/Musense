@@ -9,6 +9,7 @@ import Questionnaire from "./Questionnaire";
 import axios from "axios";
 import Player from "./Player";
 import {useFocusEffect} from "@react-navigation/native";
+import {LOCAL_SERVER_URL} from "../redux/actions";
 
 
 const PersonalRecommendations = ({onSubmit}) => {
@@ -35,7 +36,7 @@ useEffect(()=>{
 
 
     const getAnswers =async () => {
-        const response = await axios.create({baseURL: 'http://10.0.0.1:8989'}).get('/get-user-preferences?token=' + token)
+        const response = await axios.create({baseURL: LOCAL_SERVER_URL}).get('/get-user-preferences?token=' + token)
         if(response.data.success){
            setAllAnswers(response.data.userPreferences)
 

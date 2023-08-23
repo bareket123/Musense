@@ -4,6 +4,7 @@ import {ImageBackground, ScrollView, Text, TouchableOpacity, View} from "react-n
 import {RadioButton,TextInput,Button,Checkbox} from "react-native-paper";
 import  questionnaireStyle from '../styles/questionnaireStyle'
 import axios from "axios";
+import {LOCAL_SERVER_URL} from "../redux/actions";
 
 const Questionnaire = ({onSubmit}) => {
     const {token} = useSelector(state => state.reducer);
@@ -16,7 +17,7 @@ const Questionnaire = ({onSubmit}) => {
     const handleSubmit = async () => {
         if (token!==""){
             if (genre!==""&&artist1!==""&&artist2!==""&&favoriteSong!==""){
-                const response = await axios.create({baseURL: 'http://10.0.0.1:8989'}).post('/send-user-preferences?token=' + token + '&genre=' + genre + '&artist1=' + artist1 +
+                const response = await axios.create({baseURL: LOCAL_SERVER_URL}).post('/send-user-preferences?token=' + token + '&genre=' + genre + '&artist1=' + artist1 +
                     "&artist2=" + artist2 +'&favoriteSong='+ favoriteSong)
                 if (response.data.success){
                     alert("update")

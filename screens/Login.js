@@ -7,7 +7,7 @@ import { AntDesign,MaterialIcons,MaterialCommunityIcons } from '@expo/vector-ico
 import image from '../images/musicBackGround.jpg';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as ImagePicker from "expo-image-picker";
-import {setToken,setUsername} from "../redux/actions";
+import {LOCAL_SERVER_URL, setToken, setUsername} from "../redux/actions";
 import {useDispatch} from "react-redux";
 
 
@@ -25,14 +25,13 @@ export default function Login ({ navigation,refresh }) {
     const [confirmPassword, setConfirmPassword] = useState("");
     const [checked, setChecked] = useState('');
 
-
     async function handleButtonPressed() {
 
         let res;
         try {
             if (checked==='signUp'){
                 console.log("enter sign")
-                res = await axios.create({baseURL: 'http://10.0.0.1:8989'}).post('/sign-up?username=' + username + '&password=' + password+'&email='+email+"&picture="+picture)
+                res = await axios.create({baseURL: LOCAL_SERVER_URL}).post('/sign-up?username=' + username + '&password=' + password+'&email='+email+"&picture="+picture)
                 if (res.data.success) {
                     alert("sign up successfully");
                     setConfirmPassword("");
@@ -47,7 +46,7 @@ export default function Login ({ navigation,refresh }) {
             }else if (checked==='login') {
                 console.log("enter login")
 
-                res = await axios.create({baseURL: 'http://10.0.0.1:8989'}).post('/login?username=' + username + '&password=' + password)
+                res = await axios.create({baseURL: LOCAL_SERVER_URL}).post('/login?username=' + username + '&password=' + password)
                 console.log(res.data)
                 if (res.data.success){
                     const token=res.data.token;

@@ -13,6 +13,7 @@ import {
 import axios from "axios";
 import {useSelector} from "react-redux";
 import Player from "./Player";
+import {LOCAL_SERVER_URL} from "../redux/actions";
 
 export default function MusicByFriends ({ navigation }) {
     const [playlistByFriends,setPlaylistByFriends]=useState([]);
@@ -22,7 +23,7 @@ export default function MusicByFriends ({ navigation }) {
     const getPlaylistByFriends=async ()=>{
 
         if (token!==null){
-            const response = await axios.create({baseURL: 'http://10.0.0.1:8989'}).get('/get-friends-playlist?token=' + token);
+            const response = await axios.create({baseURL: LOCAL_SERVER_URL}).get('/get-friends-playlist?token=' + token);
             if (response.data.success){
                 setPlaylistByFriends(response.data.playlistByFriends);
             }else {
