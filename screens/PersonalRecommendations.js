@@ -59,14 +59,13 @@ useEffect(()=>{
                     }
                 };
 
-                fetch('https://shazam-api7.p.rapidapi.com/charts/get-top-songs-in_world_by_genre?genre='+allAnswers.genre+'&limit=5', options)
+                fetch('https://shazam-api7.p.rapidapi.com/charts/get-top-songs-in_world_by_genre?genre='+allAnswers.genre+'&limit=10', options)
                     .then(response => response.json())
                     .then(response => setSongs(response))
-                    .catch(err => console.error(err));
-
+                    .catch(err => console.error("from genre "+ err));
             }
         }catch (error){
-            console.log("error from playlist by genre "+ error)
+            console.log("error from playlist by genre "+ error);
         }
 
     }

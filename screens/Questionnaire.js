@@ -43,11 +43,11 @@ const Questionnaire = ({onSubmit}) => {
                          <Text style={questionnaireStyle.title} >Favorite music style  </Text>
 
                          <RadioButton.Group onValueChange={value => setGenre(value)} value={genre}>
-                             <RadioButton.Item  labelStyle={questionnaireStyle.radioButtonLabel} style={questionnaireStyle.radioButton} label="POP" value="pop" />
-                             <RadioButton.Item   labelStyle={questionnaireStyle.radioButtonLabel} style={questionnaireStyle.radioButton} label="ELECTRONIC" value="electronic" />
-                             <RadioButton.Item  labelStyle={questionnaireStyle.radioButtonLabel} style={questionnaireStyle.radioButton} label="ROCK" value="rock" />
-                             <RadioButton.Item  labelStyle={questionnaireStyle.radioButtonLabel} style={questionnaireStyle.radioButton} label="RNB" value="rnb" />
-                             <RadioButton.Item   labelStyle={questionnaireStyle.radioButtonLabel} style={questionnaireStyle.radioButton} label="DANCE" value="dance" />
+                             <RadioButton.Item  labelStyle={questionnaireStyle.radioButtonLabel} style={questionnaireStyle.radioButton} label="POP" value="POP" />
+                             <RadioButton.Item   labelStyle={questionnaireStyle.radioButtonLabel} style={questionnaireStyle.radioButton} label="ELECTRONIC" value="ELECTRONIC" />
+                             <RadioButton.Item  labelStyle={questionnaireStyle.radioButtonLabel} style={questionnaireStyle.radioButton} label="ROCK" value="ROCK" />
+                             <RadioButton.Item  labelStyle={questionnaireStyle.radioButtonLabel} style={questionnaireStyle.radioButton} label="RNB" value="RNB" />
+                             <RadioButton.Item   labelStyle={questionnaireStyle.radioButtonLabel} style={questionnaireStyle.radioButton} label="DANCE" value="DANCE" />
                          </RadioButton.Group>
                      </View>
 

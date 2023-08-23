@@ -15,7 +15,7 @@ import {useDispatch} from "react-redux";
 
 
 
-export default function Login ({ navigation }) {
+export default function Login ({ navigation,refresh }) {
     const dispatch = useDispatch(); // Get the dispatch function
 
     const [username, setUsername] = useState("");
@@ -55,10 +55,12 @@ export default function Login ({ navigation }) {
                     if (token!==null){
                         dispatch(setToken(token));
                         await AsyncStorage.setItem('token', token);
+                        await AsyncStorage.setItem('username', username);
 
                     }
 
-                    navigation.navigate("Home")
+                    refresh=true;
+                    navigation.navigate('Home');
                 }else {
                     alert(res.data.errorCode)
 

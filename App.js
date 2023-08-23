@@ -1,9 +1,8 @@
-import { StatusBar } from 'expo-status-bar';
-import {Image, StyleSheet, Text, TouchableOpacity, View,ScrollView} from 'react-native';
+import {Image, ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import 'react-native-gesture-handler';
-import React, { useState} from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+import React, {useEffect, useState} from 'react';
+import {NavigationContainer} from '@react-navigation/native';
+import {createStackNavigator} from '@react-navigation/stack';
 import HomeScreen from './screens/HomeScreen';
 import PopularNow from './screens/PopularNow';
 import PlayedRecently from './screens/PlayedRecently';
@@ -21,17 +20,29 @@ import PersonalRecommendations from "./screens/PersonalRecommendations";
 
 
 export default function App() {
-
-
-    const [username,setUsername]=useState("");
+    const [username,setUsername]=useState('');
     const [email,setEmail]=useState("");
     const [image,setImage]=useState('https://cdn-icons-png.flaticon.com/512/3271/3271191.png');
     const Stack = createStackNavigator();
 
+    useEffect(() => {
+        getUsername().then(r => {});
+    },[])
+
+    useEffect(() => {
+        console.log("Username changed:", username);
+    }, [username]);
+
+    const getUsername=async ()=>{
+      let value=await AsyncStorage.getItem('username')
+        console.log("username:"+value)
+       setUsername(value)
+    }
 
     async function handleLout(){
         await AsyncStorage.removeItem('token')
-        setUsername("guest")
+        await AsyncStorage.removeItem('username')
+       setUsername('guest')
         setEmail("")
         setImage('https://cdn-icons-png.flaticon.com/512/3271/3271191.png')
         console.log("delete")
