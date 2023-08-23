@@ -37,7 +37,7 @@ export const setUsername = username => dispatch => {
 
 export const setIsLoggedIn = isLogged => dispatch => {
     dispatch({
-        type: SET_USERNAME,
+        type: SET_IS_LOGGED_IN,
         payload: isLogged
     });
 }

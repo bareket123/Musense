@@ -7,8 +7,8 @@ import { AntDesign,MaterialIcons,MaterialCommunityIcons } from '@expo/vector-ico
 import image from '../images/musicBackGround.jpg';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as ImagePicker from "expo-image-picker";
-import {LOCAL_SERVER_URL, setToken, setUsername} from "../redux/actions";
-import {useDispatch} from "react-redux";
+import {LOCAL_SERVER_URL, setIsLoggedIn, setToken, setUsername} from "../redux/actions";
+import {useDispatch, useSelector} from "react-redux";
 
 
 
@@ -18,12 +18,23 @@ import {useDispatch} from "react-redux";
 export default function Login ({ navigation,refresh }) {
     const dispatch = useDispatch(); // Get the dispatch function
 
-    const [username, setUsername] = useState("");
+    const [usernameInput, setUsernameInput] = useState("");
     const [password, setPassword] = useState("");
     const [email,setEmail]=useState("");
     const [picture,setPicture]=useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [checked, setChecked] = useState('');
+    const {isLoggedIn}= useSelector(state => state.reducer);
+
+
+
+    useEffect(() => {
+        console.log('isLoggedIn has changed:', isLoggedIn);
+        if (isLoggedIn){
+            dispatch(setUsername(usernameInput))
+        }
+    }, [isLoggedIn]);
+
 
     async function handleButtonPressed() {
 
@@ -31,7 +42,7 @@ export default function Login ({ navigation,refresh }) {
         try {
             if (checked==='signUp'){
                 console.log("enter sign")
-                res = await axios.create({baseURL: LOCAL_SERVER_URL}).post('/sign-up?username=' + username + '&password=' + password+'&email='+email+"&picture="+picture)
+                res = await axios.create({baseURL: LOCAL_SERVER_URL}).post('/sign-up?username=' + usernameInput + '&password=' + password+'&email='+email+"&picture="+picture)
                 if (res.data.success) {
                     alert("sign up successfully");
                     setConfirmPassword("");
@@ -46,19 +57,18 @@ export default function Login ({ navigation,refresh }) {
             }else if (checked==='login') {
                 console.log("enter login")
 
-                res = await axios.create({baseURL: LOCAL_SERVER_URL}).post('/login?username=' + username + '&password=' + password)
+                res = await axios.create({baseURL: LOCAL_SERVER_URL}).post('/login?username=' + usernameInput + '&password=' + password)
                 console.log(res.data)
                 if (res.data.success){
                     const token=res.data.token;
-                    alert("login successfully");
-                    if (token!==null){
-                        dispatch(setToken(token));
+                    dispatch(setToken(token));
+                       dispatch(setIsLoggedIn(true))
+                        dispatch(setUsername(usernameInput))
+                        console.log("is logged in :" + isLoggedIn)
                         await AsyncStorage.setItem('token', token);
-                        await AsyncStorage.setItem('username', username);
-
-                    }
-
+                        await AsyncStorage.setItem('username', usernameInput);
                     refresh=true;
+                    alert("login successfully");
                     navigation.navigate('Home');
                 }else {
                     alert(res.data.errorCode)
@@ -70,7 +80,7 @@ export default function Login ({ navigation,refresh }) {
         } catch (error) {
             console.log(error)
         }
-        setUsername("")
+        setUsernameInput("")
         setPassword("")
 
 
@@ -84,7 +94,7 @@ export default function Login ({ navigation,refresh }) {
 
     function checkValidation(){
         let validToPress=true;
-        if ((username.length===0 || password.length===0) && checked!=='' ){
+        if ((usernameInput.length===0 || password.length===0) && checked!=='' ){
             validToPress=false;
         }
         if (checked==='signUp'){
@@ -94,7 +104,7 @@ export default function Login ({ navigation,refresh }) {
     }
 
     function clearButton() {
-        setUsername("")
+        setUsernameInput("")
         setPassword("")
         setConfirmPassword("")
         setEmail("")
@@ -133,9 +143,9 @@ export default function Login ({ navigation,refresh }) {
                                 <AntDesign name="user" size={24} color="black" />
                                 <TextInput
                                     placeholder="Username"
-                                    value={username}
+                                    value={usernameInput}
                                     mode={"outlined"}
-                                    onChangeText={setUsername}
+                                    onChangeText={setUsernameInput}
                                     style={styles.textInput}
 
                                 />
