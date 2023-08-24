@@ -95,7 +95,11 @@ const CustomDrawer = props => {
                     }}
                     onPress={handleLout}
                 >
-                    <Text>Log Out</Text>
+                    {
+                        isLoggedIn &&
+                        <Text>Log Out</Text>
+                    }
+
                 </TouchableOpacity>
             </DrawerContentScrollView>
         </ScrollView>
