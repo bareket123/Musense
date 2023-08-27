@@ -1,10 +1,17 @@
-import {SET_USERNAME,SET_IS_LOGGED_IN,SET_TOKEN,SET_PLAYLIST,SET_PLAYED_RECENTLY,SET_CURRENTLY_DELETE} from "./actions";
+import {
+    SET_USERNAME,
+    SET_TOKEN,
+    SET_PLAYLIST,
+    SET_PLAYED_RECENTLY,
+    SET_CURRENTLY_DELETE,
+    SET_IS_LOGGED_IN, RESET_STATE
+} from "./actions";
 
 
 
 const initialState = {
-    username:"",
-    token:"",
+    username:'guest',
+    token:'',
     isLoggedIn : false ,
     playList : [],
     playedRecently: [],
@@ -20,13 +27,14 @@ function reducer (state = initialState,action){
             }
         case SET_TOKEN:
             return {
-                ...state ,
-                token: action.payload
+                ...state,
+                token: action.payload,
+                isLoggedIn: !!action.payload,
             }
         case SET_IS_LOGGED_IN:
             return {
-                ...state ,
-                isLoggedIn: action.payload
+                ...state,
+                isLoggedIn: action.payload,
             }
         case SET_PLAYLIST :
             return{
@@ -48,7 +56,8 @@ function reducer (state = initialState,action){
                 };
             }
             return state;
-
+        case RESET_STATE:
+            return initialState;
         default :
             return state ;
     }

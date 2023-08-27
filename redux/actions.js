@@ -6,6 +6,7 @@ export const SET_IS_LOGGED_IN = 'SET_IS_LOGGED_IN'
 export const SET_CURRENTLY_DELETE = 'SET_CURRENTLY_DELETE'
 
 export const LOCAL_SERVER_URL='http://192.168.1.178:8989';
+export const RESET_STATE = 'RESET_STATE';
 
 export const setPlaylist = newSong => dispatch => {
     dispatch({
@@ -35,18 +36,23 @@ export const setUsername = username => dispatch => {
     });
 }
 
-export const setIsLoggedIn = isLogged => dispatch => {
-    dispatch({
-        type: SET_IS_LOGGED_IN,
-        payload: isLogged
-    });
-}
+// export const setIsLoggedIn = isLogged => dispatch => {
+//     dispatch({
+//         type: SET_IS_LOGGED_IN,
+//         payload: isLogged
+//     });
+// }
     export const setCurrentlyDelete = song => dispatch => {
         dispatch({
             type: SET_CURRENTLY_DELETE,
             payload: song
         })
     }
+export const resetState = () => {
+    return {
+        type: RESET_STATE
+    }
+}
 
 
 

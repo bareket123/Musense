@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, { useState} from "react";
 import {createStackNavigator} from "@react-navigation/stack";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {Image, ScrollView, Text, TouchableOpacity, View} from "react-native";
@@ -14,49 +14,31 @@ import MyFriends from "./MyFriends";
 import SearchFriends from "./SearchFriends";
 import PersonalRecommendations from "./PersonalRecommendations";
 import {useDispatch, useSelector} from "react-redux";
-import {setIsLoggedIn, setToken, setUsername} from "../redux/actions";
-import {useNavigation} from "@react-navigation/native";
+import { resetState} from "../redux/actions";
 
 
 
 export default function StackNav (){
     const {username}= useSelector(state => state.reducer);
+    const dispatch = useDispatch(); // Get the dispatch function
 
 const {isLoggedIn}= useSelector(state => state.reducer);
 const [image,setImage]=useState('https://cdn-icons-png.flaticon.com/512/3271/3271191.png');
 const Stack = createStackNavigator();
-const dispatch = useDispatch(); // Get the dispatch function
-const navigation = useNavigation();
 
 
-    useEffect(()=>{
 
-
-    },[isLoggedIn])
-
-    useEffect(()=>{
-        setTokenAndUsername().then(r => {});
-
-    },[])
 
 async function handleLout(){
     await AsyncStorage.removeItem('token')
     await AsyncStorage.removeItem('username')
-    setUsername('guest')
-    dispatch(setIsLoggedIn(false))
     setImage('https://cdn-icons-png.flaticon.com/512/3271/3271191.png')
+    dispatch(resetState());
     console.log("delete")
+    console.log(isLoggedIn)
 }
 
-    async function setTokenAndUsername(){
-        await AsyncStorage.getItem('token').
-       then(res => dispatch(setToken(res)))
-        await AsyncStorage.getItem('username').
-        then(res => dispatch(setUsername(res)))
-        if (username!==null){
-            dispatch(setIsLoggedIn(true))
-        }
-    }
+
 const CustomDrawer = props => {
     return (
         <ScrollView style={{ flex: 1 }}>
@@ -108,36 +90,6 @@ const Drawer=createDrawerNavigator();
 
     return(
 
-        // <Drawer.Navigator screenOptions={{
-        //     headerShown: true,
-        //     headerStyle: {
-        //         backgroundColor: 'transparent',
-        //         elevation: 0,
-        //         shadowOpacity: 0,
-        //     },
-        //     headerTitle: '',
-        // }}
-        //                   drawerContent={props => <CustomDrawer {...props} />} >
-        //     {
-        //         !isLoggedIn ?
-        //         <Drawer.Navigator>
-        //         <Drawer.Screen name='login' component={Login}/>
-        //         </Drawer.Navigator>
-        //             :
-        //             <Drawer.Navigator>
-        //                 <Drawer.Screen name="Home" component={HomeScreen} />
-        //                 <Stack.Screen name='Popular' component={PopularNow}/>
-        //                 <Stack.Screen name='artist' component={MusicByArist}/>
-        //                 <Stack.Screen name='friends' component={MusicByFriends}/>
-        //                 <Stack.Screen name='playlist' component={MyPlaylist}/>
-        //                 <Stack.Screen name='played' component={PlayedRecently}/>
-        //                 <Stack.Screen name='My Friends' component={MyFriends}/>
-        //                 <Stack.Screen name='Search Friends' component={SearchFriends}/>
-        //                 <Stack.Screen name='Personalized Recommendations' component={PersonalRecommendations}/>
-        //             </Drawer.Navigator>
-        //     }
-        //
-        // </Drawer.Navigator>
     <Drawer.Navigator
         screenOptions={{
             headerShown: true,
@@ -151,13 +103,10 @@ const Drawer=createDrawerNavigator();
         drawerContent={props => <CustomDrawer {...props} />}
     >
         {
-
-            !isLoggedIn  ? (
-            <Drawer.Screen name='login' component={Login} />
-        ) : (
+            isLoggedIn &&
             <>
-                <Drawer.Screen name='Home' component={HomeScreen} />
-                <Drawer.Screen name='Popular' component={PopularNow} />
+                <Stack.Screen name='Home' component={HomeScreen} />
+                <Stack.Screen name='Popular' component={PopularNow} />
                 <Stack.Screen name='artist' component={MusicByArist}/>
                 <Stack.Screen name='friends' component={MusicByFriends}/>
                 <Stack.Screen name='playlist' component={MyPlaylist}/>
@@ -166,7 +115,15 @@ const Drawer=createDrawerNavigator();
                 <Stack.Screen name='Search Friends' component={SearchFriends}/>
                 <Stack.Screen name='Personalized Recommendations' component={PersonalRecommendations}/>
             </>
-        )}
+        }
+
+        {
+
+            !isLoggedIn &&
+                // ? (
+            <Stack.Screen name='login' component={Login} />
+        }
+
     </Drawer.Navigator>
 
 

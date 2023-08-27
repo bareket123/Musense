@@ -7,13 +7,27 @@ import {Provider, useSelector} from "react-redux";
 import {Store} from "./redux/store"
 
 import StackNav from "./screens/StackNav";
-import Login from "./screens/Login";
-import HomeScreen from "./screens/HomeScreen";
-
+import {setToken, setUsername} from "./redux/actions";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 
 export default function App() {
 
+    useEffect(() => {
+    const initializeApp = async () => {
+        try {
+            const tokenFromStorage = await AsyncStorage.getItem('token');
+            const usernameFromStorage = await AsyncStorage.getItem('username');
+            if (tokenFromStorage) {
+                Store.dispatch(setToken(tokenFromStorage));
+                Store.dispatch(setUsername(usernameFromStorage));
+            }
+        } catch (error) {
+            console.error('Error initializing app:', error);
+        }
+    };
+    initializeApp().then(r => {});
+}, []);
 
     return (
 

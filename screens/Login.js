@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useState} from 'react';
 import {View, Text, StyleSheet, ImageBackground, ScrollView} from 'react-native';
 import axios from "axios";
 import { RadioButton,TextInput ,Button} from 'react-native-paper';
@@ -6,8 +6,7 @@ import isEmail from 'validator/lib/isEmail';
 import { AntDesign,MaterialIcons,MaterialCommunityIcons } from '@expo/vector-icons';
 import image from '../images/musicBackGround.jpg';
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import * as ImagePicker from "expo-image-picker";
-import {LOCAL_SERVER_URL, setIsLoggedIn, setToken, setUsername} from "../redux/actions";
+import {LOCAL_SERVER_URL, setToken, setUsername} from "../redux/actions";
 import {useDispatch, useSelector} from "react-redux";
 
 
@@ -15,7 +14,7 @@ import {useDispatch, useSelector} from "react-redux";
 
 
 
-export default function Login ({ navigation,refresh }) {
+export default function Login () {
     const dispatch = useDispatch(); // Get the dispatch function
 
     const [usernameInput, setUsernameInput] = useState("");
@@ -26,14 +25,6 @@ export default function Login ({ navigation,refresh }) {
     const [checked, setChecked] = useState('');
     const {isLoggedIn}= useSelector(state => state.reducer);
 
-
-
-    useEffect(() => {
-        console.log('isLoggedIn has changed:', isLoggedIn);
-        if (isLoggedIn){
-            dispatch(setUsername(usernameInput))
-        }
-    }, [isLoggedIn]);
 
 
     async function handleButtonPressed() {
@@ -61,15 +52,12 @@ export default function Login ({ navigation,refresh }) {
                 console.log(res.data)
                 if (res.data.success){
                     const token=res.data.token;
+                    await AsyncStorage.setItem('token', token);
+                    await AsyncStorage.setItem('username', usernameInput);
                     dispatch(setToken(token));
-                       dispatch(setIsLoggedIn(true))
-                        dispatch(setUsername(usernameInput))
-                        console.log("is logged in :" + isLoggedIn)
-                        await AsyncStorage.setItem('token', token);
-                        await AsyncStorage.setItem('username', usernameInput);
-                    refresh=true;
+                    dispatch(setUsername(usernameInput))
+                    console.log("is logged in :" + isLoggedIn)
                     alert("login successfully");
-                    navigation.navigate('Home');
                 }else {
                     alert(res.data.errorCode)
 
