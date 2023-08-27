@@ -15,7 +15,7 @@ import {AntDesign, FontAwesome, Fontisto} from "@expo/vector-icons";
 import { Audio } from 'expo-av';
 import { useSelector, useDispatch } from 'react-redux';
 import {useContext} from "react";
-import {setPlayedRecently, setPlaylist} from "../redux/actions";
+import {setPlayedRecently, setPlaylist, X_RAPID_API_HOST, X_RAPID_API_KEY} from "../redux/actions";
 import { useFocusEffect } from '@react-navigation/native';
 import Player from "./Player";
 
@@ -71,8 +71,8 @@ export default function MusicByArtist ({ navigation }) {
         const songs = {
             method: 'GET',
             headers: {
-                'X-RapidAPI-Key': '38fefeb706mshdeefd590dcb5b1fp1a76bdjsn744bb3ebe44f',
-                'X-RapidAPI-Host': 'shazam.p.rapidapi.com'
+                'X-RapidAPI-Key': X_RAPID_API_KEY,
+                'X-RapidAPI-Host': X_RAPID_API_HOST
             }
         };
 

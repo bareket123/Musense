@@ -1,4 +1,4 @@
-import {setPlayedRecently} from "../redux/actions";
+import {LOCAL_SERVER_URL, setPlayedRecently} from "../redux/actions";
 import {Audio} from "expo-av";
 import React, {useEffect, useState} from "react";
 import {Button, FlatList, Image, Text, TouchableOpacity, View} from "react-native";
@@ -146,7 +146,7 @@ export default function Player ({ songList,page,toggleFavorite }) {
         </View>
     )
     const deleteSong=async (song) => {
-        const response = await axios.create({baseURL: 'http://10.0.0.1:8989'}).post('/delete-song?songId=' + song.id);
+        const response = await axios.create({baseURL: LOCAL_SERVER_URL}).post('/delete-song?songId=' + song.id);
         if (response.data.success){
             alert("delete")
         }else {
@@ -155,7 +155,7 @@ export default function Player ({ songList,page,toggleFavorite }) {
     }
     const sendPlaylistToServer = async (song) => {
         if (token !== null) {
-            await axios.post('http://10.0.0.1:8989/add-song', null, {
+            await axios.post(LOCAL_SERVER_URL+'/add-song', null, {
                 params: {
                     token:token,
                     title: song.title,

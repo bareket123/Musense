@@ -9,7 +9,7 @@ import Questionnaire from "./Questionnaire";
 import axios from "axios";
 import Player from "./Player";
 import {useFocusEffect} from "@react-navigation/native";
-import {LOCAL_SERVER_URL} from "../redux/actions";
+import {LOCAL_SERVER_URL, X_RAPID_API_HOST, X_RAPID_API_HOST7, X_RAPID_API_KEY} from "../redux/actions";
 
 
 const PersonalRecommendations = ({onSubmit}) => {
@@ -55,8 +55,8 @@ useEffect(()=>{
                 const options = {
                     method: 'GET',
                     headers: {
-                        'X-RapidAPI-Key': '77f4e88fbcmsh34c35cf21256c6ap1326abjsn36b18c917e58',
-                        'X-RapidAPI-Host': 'shazam-api7.p.rapidapi.com'
+                        'X-RapidAPI-Key': X_RAPID_API_KEY,
+                        'X-RapidAPI-Host': X_RAPID_API_HOST
                     }
                 };
 
@@ -76,11 +76,11 @@ useEffect(()=>{
                 const artist1Songs = {
                     method: 'GET',
                     headers: {
-                        'X-RapidAPI-Key': '38fefeb706mshdeefd590dcb5b1fp1a76bdjsn744bb3ebe44f',
-                        'X-RapidAPI-Host': 'shazam.p.rapidapi.com'
+                        'X-RapidAPI-Key': X_RAPID_API_KEY,
+                        'X-RapidAPI-Host': X_RAPID_API_HOST
                     }
                 };
-                fetch('https://shazam.p.rapidapi.com/search?term='+allAnswers.artist1+'&locale=en-US&offset=0&limit=5', artist1Songs)
+                fetch('https://'+X_RAPID_API_HOST+'/search?term='+allAnswers.artist1+'&locale=en-US&offset=0&limit=5', artist1Songs)
                     .then(response => response.json())
                     .then(response => setArtistSong(response.tracks.hits,1))
                     .catch(err => console.error("There is error in fetching data: "+err));
@@ -96,11 +96,11 @@ useEffect(()=>{
                 const artist2Songs = {
                     method: 'GET',
                     headers: {
-                        'X-RapidAPI-Key': '38fefeb706mshdeefd590dcb5b1fp1a76bdjsn744bb3ebe44f',
-                        'X-RapidAPI-Host': 'shazam.p.rapidapi.com'
+                        'X-RapidAPI-Key': X_RAPID_API_KEY,
+                        'X-RapidAPI-Host': X_RAPID_API_HOST
                     }
                 }
-                fetch('https://shazam.p.rapidapi.com/search?term='+allAnswers.artist2+'&locale=en-US&offset=0&limit=5', artist2Songs)
+                fetch('https://'+X_RAPID_API_HOST+'/search?term='+allAnswers.artist2+'&locale=en-US&offset=0&limit=5', artist2Songs)
                     .then(response => response.json())
                     .then(response => setArtistSong(response.tracks.hits,2))
                     .catch(err => console.error("There is error in fetching data: "+err));
@@ -117,11 +117,11 @@ useEffect(()=>{
                 const favoriteSong = {
                     method: 'GET',
                     headers: {
-                        'X-RapidAPI-Key': '38fefeb706mshdeefd590dcb5b1fp1a76bdjsn744bb3ebe44f',
-                        'X-RapidAPI-Host': 'shazam.p.rapidapi.com'
+                        'X-RapidAPI-Key': X_RAPID_API_KEY,
+                        'X-RapidAPI-Host': X_RAPID_API_HOST
                     }
                 }
-                fetch('https://shazam.p.rapidapi.com/search?term='+allAnswers.favoriteSong+'&locale=en-US&offset=0&limit=1', favoriteSong)
+                fetch('https://'+X_RAPID_API_HOST+'/search?term='+allAnswers.favoriteSong+'&locale=en-US&offset=0&limit=1', favoriteSong)
                     .then(response => response.json())
                     .then(response => getByFavorite(response.tracks.hits[0].track.key) )
                     .catch(err => console.error("There is error in fetching data: "+err));
@@ -139,12 +139,12 @@ useEffect(()=>{
                 const songList = {
                     method: 'GET',
                     headers: {
-                        'X-RapidAPI-Key': '77f4e88fbcmsh34c35cf21256c6ap1326abjsn36b18c917e58',
-                        'X-RapidAPI-Host': 'shazam-api7.p.rapidapi.com'
+                        'X-RapidAPI-Key': X_RAPID_API_KEY,
+                        'X-RapidAPI-Host': X_RAPID_API_HOST7
                     }
                 };
 
-                fetch('https://shazam-api7.p.rapidapi.com/songs/list-recommendations?id='+songKey+'&limit=10', songList)
+                fetch('https://'+X_RAPID_API_HOST7+'/songs/list-recommendations?id='+songKey+'&limit=10', songList)
                     .then(response => response.json())
                     .then(response => setRelatedSongList(response.tracks))
                     .catch(err => console.error(err));

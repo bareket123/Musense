@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {View, Text, TouchableOpacity, StyleSheet, Button, ScrollView, SafeAreaView, FlatList} from 'react-native';
 
-import Player from "./Player"; // Import useSelector and useDispatch from react-redux
+import Player from "./Player";
+import {X_RAPID_API_HOST, X_RAPID_API_KEY} from "../redux/actions"; // Import useSelector and useDispatch from react-redux
 
 const PopularNow = () => {
     const [songsArray, setSongsArray] = useState([]); // Initialize songsArray as a state
@@ -43,8 +44,8 @@ const PopularNow = () => {
             const options = {
                 method: 'GET',
                 headers: {
-                    'X-RapidAPI-Key': '38fefeb706mshdeefd590dcb5b1fp1a76bdjsn744bb3ebe44f',
-                    'X-RapidAPI-Host': 'shazam.p.rapidapi.com'
+                    'X-RapidAPI-Key': X_RAPID_API_KEY,
+                    'X-RapidAPI-Host': X_RAPID_API_HOST
                 }
             };
 
