@@ -8,14 +8,16 @@ import image from '../images/musicBackGround.jpg';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {LOCAL_SERVER_URL, setToken, setUsername} from "../redux/actions";
 import {useDispatch, useSelector} from "react-redux";
-
+import ErrorAlert from "./ErrorAlert";
+import {SIGN_UP_SUCCESSFULLY} from "./Constans";
+import {LOGIN_SUCCESSFULLY} from "./Constans";
 
 
 
 
 
 export default function Login () {
-    const dispatch = useDispatch(); // Get the dispatch function
+    const dispatch = useDispatch();
 
     const [usernameInput, setUsernameInput] = useState("");
     const [password, setPassword] = useState("");
@@ -24,6 +26,7 @@ export default function Login () {
     const [confirmPassword, setConfirmPassword] = useState("");
     const [checked, setChecked] = useState('');
     const {isLoggedIn}= useSelector(state => state.reducer);
+    const[messageCode, setMessageCode] = useState(0);
 
 
 
@@ -35,14 +38,14 @@ export default function Login () {
                 console.log("enter sign")
                 res = await axios.create({baseURL: LOCAL_SERVER_URL}).post('/sign-up?username=' + usernameInput + '&password=' + password+'&email='+email+"&picture="+picture)
                 if (res.data.success) {
-                    alert("sign up successfully");
+                    setMessageCode(SIGN_UP_SUCCESSFULLY)
+
                     setConfirmPassword("");
                     setEmail("");
                     setChecked('login');
 
                 }else {
-                    alert(res.data.errorCode)
-
+                    setMessageCode(response.data.errorCode);
                 }
 
             }else if (checked==='login') {
@@ -57,9 +60,9 @@ export default function Login () {
                     dispatch(setToken(token));
                     dispatch(setUsername(usernameInput))
                     console.log("is logged in :" + isLoggedIn)
-                    alert("login successfully");
+                    setMessageCode(LOGIN_SUCCESSFULLY)
                 }else {
-                    alert(res.data.errorCode)
+                    setMessageCode(response.data.errorCode)
 
                 }
 
@@ -70,6 +73,7 @@ export default function Login () {
         }
         setUsernameInput("")
         setPassword("")
+        setMessageCode(0);
 
 
     }
@@ -222,7 +226,10 @@ export default function Login () {
                             </View>
                         </View>
                     }
-
+                    {
+                        messageCode!==0&&
+                        <ErrorAlert message={messageCode}/>
+                    }
 
                 </View>
             </ScrollView>

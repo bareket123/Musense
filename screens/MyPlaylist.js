@@ -7,18 +7,23 @@ import axios from "axios";
 import Player from "./Player";
 import {LOCAL_SERVER_URL, setPlaylist} from "../redux/actions";
 import {useDispatch} from "react-redux";
+import ErrorAlert from "./ErrorAlert";
 
 export default function MyPlaylist({ navigation }) {
      const {token } = useSelector(state => state.reducer);
     const [myPlaylist,setMyPlaylist]=useState([]);
+    const[messageCode, setMessageCode] = useState(0);
+
     const dispatch=useDispatch();
+
     const getPlaylist=async ()=>{
         const response = await axios.create({baseURL: LOCAL_SERVER_URL}).post('/get-playlist?token=' + token);
         if (response.data.success){
           setMyPlaylist(response.data.playlist)
         }else{
-            alert(response.data.errorCode)
+            setMessageCode(response.data.errorCode);
         }
+        setMessageCode(0);
 
     }
     useEffect(()=>{
@@ -41,7 +46,10 @@ export default function MyPlaylist({ navigation }) {
                     <Text>you haven't had songs</Text>
 
             }
-
+            {
+                messageCode!==0&&
+                <ErrorAlert message={messageCode}/>
+            }
         </View>
     );
 }

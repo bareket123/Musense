@@ -7,6 +7,8 @@ import {useSelector,useDispatch} from "react-redux";
 import Slider from '@react-native-community/slider';
 import {useFocusEffect} from "@react-navigation/native";
 import axios from "axios";
+import ErrorAlert from "./ErrorAlert";
+import {DELETE, SOMETHING_WENT_WRONG} from "./Constans";
 
 export default function Player ({ songList,page,toggleFavorite }) {
     const dispatch = useDispatch();
@@ -15,6 +17,7 @@ export default function Player ({ songList,page,toggleFavorite }) {
     const [pressedPlaying, setPressedPlaying] = useState(false);
     const [volume, setVolume] = useState(0.5); // Initial volume
     const {token} = useSelector(state => state.reducer);
+    const[messageCode, setMessageCode] = useState(0);
 
     useFocusEffect(
         React.useCallback(() => {
@@ -26,9 +29,9 @@ export default function Player ({ songList,page,toggleFavorite }) {
     async function playSound(song) {
         setPressedPlaying(true);
         setCurrentlyPlaying(song);
-        dispatch(setPlayedRecently(song)); // Dispatch the action to add the song to playedRecently state in redux
+        dispatch(setPlayedRecently(song));
         if (!song) {
-            return; // Handle invalid index
+            return;
         }
         try {
             const {sound} = await Audio.Sound.createAsync({uri: song.url});
@@ -148,10 +151,11 @@ export default function Player ({ songList,page,toggleFavorite }) {
     const deleteSong=async (song) => {
         const response = await axios.create({baseURL: LOCAL_SERVER_URL}).post('/delete-song?songId=' + song.id);
         if (response.data.success){
-            alert("delete")
+            setMessageCode(DELETE)
         }else {
-            alert(response.data.errorCode)
+            setMessageCode(response.data.errorCode);
         }
+        setMessageCode(0);
     }
     const sendPlaylistToServer = async (song) => {
         if (token !== null) {
@@ -168,11 +172,12 @@ export default function Player ({ songList,page,toggleFavorite }) {
                     console.log("updated successfully")
 
                 } else {
-                    alert("something went wrong")
+                    setMessageCode(SOMETHING_WENT_WRONG)
                 }
 
 
             });
+            setMessageCode(0);
 
         }
     }
@@ -225,6 +230,10 @@ export default function Player ({ songList,page,toggleFavorite }) {
                 keyExtractor={(item, index) => index.toString()}
 
             />
+            {
+                messageCode!==0&&
+                <ErrorAlert message={messageCode}/>
+            }
         </View>
     )
 

@@ -49,7 +49,7 @@ const PopularNow = () => {
                 }
             };
 
-            fetch('https://shazam.p.rapidapi.com/charts/track?locale=en-US&pageSize=20&startFrom=0', options)
+            fetch('https://shazam.p.rapidapi.com/charts/track?locale=en-US&pageSize=10&startFrom=0', options)
                 .then(response => response.json())
                 .then(response => getSong(response))
                 .catch(err =>  console.error(err));

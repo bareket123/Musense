@@ -14,10 +14,12 @@ import axios from "axios";
 import {useSelector} from "react-redux";
 import Player from "./Player";
 import {LOCAL_SERVER_URL} from "../redux/actions";
+import ErrorAlert from "./ErrorAlert";
 
 export default function MusicByFriends ({ navigation }) {
     const [playlistByFriends,setPlaylistByFriends]=useState([]);
     const {token} = useSelector(state => state.reducer);
+    const[messageCode, setMessageCode] = useState(0);
 
 
     const getPlaylistByFriends=async ()=>{
@@ -27,11 +29,12 @@ export default function MusicByFriends ({ navigation }) {
             if (response.data.success){
                 setPlaylistByFriends(response.data.playlistByFriends);
             }else {
-                alert(response.data.errorCode)
+                setMessageCode(response.data.errorCode)
             }
         }else {
             console.log(" friends: token is empty")
         }
+        setMessageCode(0);
 
     }
 
@@ -60,6 +63,10 @@ export default function MusicByFriends ({ navigation }) {
 
                    </View>
 
+           }
+           {
+               messageCode!==0&&
+               <ErrorAlert message={messageCode}/>
            }
        </View>
 
