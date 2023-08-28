@@ -6,6 +6,7 @@ import {DrawerContentScrollView, DrawerItemList} from "@react-navigation/drawer"
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {LOCAL_SERVER_URL, setToken} from "../redux/actions";
 import {useSelector} from "react-redux";
+import RNEventSource from 'react-native-event-source'
 
 const SearchFriends = ({ navigation }) => {
     const [searchFriend, setSearchFriend] = useState('');
@@ -55,6 +56,17 @@ const SearchFriends = ({ navigation }) => {
             const response = await axios.create({baseURL: LOCAL_SERVER_URL}).post('/follow-friend?token=' + token +'&friendUsername='+foundUser.username);
             if (response.data.success){
                 alert("following")
+                const eventSource = new RNEventSource(LOCAL_SERVER_URL + '/sse-handler?token=' + token+'&recipientId='+foundUser.id);
+
+                eventSource.addEventListener('message', (event) => {
+                    alert(event.type); // message
+                    if (event.data) {
+                        console.log("dsfdcsfd")
+                        alert(event.data);
+                    } else {
+                        alert('Event data is empty or null.');
+                    }
+                });
             }else {
                 alert(response.data.errorCode)
             }

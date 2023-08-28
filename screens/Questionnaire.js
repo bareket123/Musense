@@ -21,7 +21,9 @@ const Questionnaire = ({onSubmit}) => {
                     "&artist2=" + artist2 +'&favoriteSong='+ favoriteSong)
                 if (response.data.success){
                     alert("update")
-                    onSubmit(true)
+                    onSubmit({
+                        res:true
+                    });
                 }else {
                     alert(response.data.errorCode)
                 }
@@ -37,39 +39,39 @@ const Questionnaire = ({onSubmit}) => {
 
     return (
 
-         <ScrollView contentContainerStyle={{flex:0,alignItems:'center'}}>
-             <View>
-                 <ImageBackground source={{uri:'https://cdn.dribbble.com/users/1237300/screenshots/6478927/__-1_1_____.gif'}}>
-                     <View style={questionnaireStyle.cardContainer}>
-                         <Text style={questionnaireStyle.title} >Favorite music style  </Text>
+        <ScrollView contentContainerStyle={{flex:0,alignItems:'center'}}>
+            <View>
+                <ImageBackground source={{uri:'https://cdn.dribbble.com/users/1237300/screenshots/6478927/__-1_1_____.gif'}}>
+                    <View style={questionnaireStyle.cardContainer}>
+                        <Text style={questionnaireStyle.title} >Favorite music style  </Text>
 
-                         <RadioButton.Group onValueChange={value => setGenre(value)} value={genre}>
-                             <RadioButton.Item  labelStyle={questionnaireStyle.radioButtonLabel} style={questionnaireStyle.radioButton} label="POP" value="POP" />
-                             <RadioButton.Item   labelStyle={questionnaireStyle.radioButtonLabel} style={questionnaireStyle.radioButton} label="ELECTRONIC" value="ELECTRONIC" />
-                             <RadioButton.Item  labelStyle={questionnaireStyle.radioButtonLabel} style={questionnaireStyle.radioButton} label="ROCK" value="ROCK" />
-                             <RadioButton.Item  labelStyle={questionnaireStyle.radioButtonLabel} style={questionnaireStyle.radioButton} label="RNB" value="RNB" />
-                             <RadioButton.Item   labelStyle={questionnaireStyle.radioButtonLabel} style={questionnaireStyle.radioButton} label="DANCE" value="DANCE" />
-                         </RadioButton.Group>
-                     </View>
+                        <RadioButton.Group onValueChange={value => setGenre(value)} value={genre}>
+                            <RadioButton.Item  labelStyle={questionnaireStyle.radioButtonLabel} style={questionnaireStyle.radioButton} label="POP" value="POP" />
+                            <RadioButton.Item   labelStyle={questionnaireStyle.radioButtonLabel} style={questionnaireStyle.radioButton} label="ELECTRONIC" value="ELECTRONIC" />
+                            <RadioButton.Item  labelStyle={questionnaireStyle.radioButtonLabel} style={questionnaireStyle.radioButton} label="ROCK" value="ROCK" />
+                            <RadioButton.Item  labelStyle={questionnaireStyle.radioButtonLabel} style={questionnaireStyle.radioButton} label="RNB" value="RNB" />
+                            <RadioButton.Item   labelStyle={questionnaireStyle.radioButtonLabel} style={questionnaireStyle.radioButton} label="DANCE" value="DANCE" />
+                        </RadioButton.Group>
+                    </View>
 
-                     <View style={questionnaireStyle.cardContainer}>
-                         <Text style={questionnaireStyle.title}>Favorite music artist</Text>
-                         <TextInput style={questionnaireStyle.answerInput} placeholder={"first choice"} value={artist1} onChangeText={setArtist1}/>
-                         <TextInput style={questionnaireStyle.answerInput} placeholder={"second choice"} value={artist2} onChangeText={setArtist2}/>
-                     </View>
+                    <View style={questionnaireStyle.cardContainer}>
+                        <Text style={questionnaireStyle.title}>Favorite music artist</Text>
+                        <TextInput style={questionnaireStyle.answerInput} placeholder={"first choice"} value={artist1} onChangeText={setArtist1}/>
+                        <TextInput style={questionnaireStyle.answerInput} placeholder={"second choice"} value={artist2} onChangeText={setArtist2}/>
+                    </View>
 
-                     <View style={questionnaireStyle.cardContainer}>
-                         <Text style={questionnaireStyle.title}>a special song you can't go without</Text>
-                         <TextInput style={questionnaireStyle.answerInput} placeholder={"name and artist"} value={favoriteSong} onChangeText={setFavoriteSong}/>
-                     </View>
-                     <TouchableOpacity style={{alignItems:'center'}}>
-                         <Text style={questionnaireStyle.title} onPress={handleSubmit}>Submit</Text>
-                     </TouchableOpacity>
-                 </ImageBackground>
+                    <View style={questionnaireStyle.cardContainer}>
+                        <Text style={questionnaireStyle.title}>a special song you can't go without</Text>
+                        <TextInput style={questionnaireStyle.answerInput} placeholder={"name and artist"} value={favoriteSong} onChangeText={setFavoriteSong}/>
+                    </View>
+                    <TouchableOpacity style={{alignItems:'center'}}>
+                        <Text style={questionnaireStyle.title} onPress={handleSubmit}>Submit</Text>
+                    </TouchableOpacity>
+                </ImageBackground>
 
-             </View>
+            </View>
 
-         </ScrollView>
+        </ScrollView>
 
 
     );

@@ -1,4 +1,4 @@
-import React, { useState} from "react";
+import React, {useEffect, useState} from "react";
 import {createStackNavigator} from "@react-navigation/stack";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {Image, ScrollView, Text, TouchableOpacity, View} from "react-native";
@@ -14,19 +14,49 @@ import MyFriends from "./MyFriends";
 import SearchFriends from "./SearchFriends";
 import PersonalRecommendations from "./PersonalRecommendations";
 import {useDispatch, useSelector} from "react-redux";
-import { resetState} from "../redux/actions";
+import {LOCAL_SERVER_URL, resetState, setPlaylist} from "../redux/actions";
+import axios from "axios";
 
 
 
 export default function StackNav (){
-    const {username}= useSelector(state => state.reducer);
+    const {username,token}= useSelector(state => state.reducer);
     const dispatch = useDispatch(); // Get the dispatch function
 
 const {isLoggedIn}= useSelector(state => state.reducer);
 const [image,setImage]=useState('https://cdn-icons-png.flaticon.com/512/3271/3271191.png');
 const Stack = createStackNavigator();
 
+    useEffect(()=>{
+    getPlaylist().then(r => {console.log("get playlist from server")})
+    },[token])
 
+    const setThePlaylistInStore=(playlist)=>{
+        if (playlist!==undefined){
+            playlist.map((song)=>{
+                dispatch(setPlaylist(song))
+            })
+        }else {
+            console.log("playlist undefided")
+        }
+    }
+    const getPlaylist=async ()=>{
+        try {
+           if (token!==""){
+               const response = await axios.create({baseURL: LOCAL_SERVER_URL}).post('/get-playlist?token=' + token);
+               if (response.data.success){
+                   setThePlaylistInStore(response.data.playlist)
+
+               }else{
+                   alert(response.data.errorCode)
+               }}
+
+        }catch (error){
+            console.log("error getting playlist "+ error)
+        }
+
+
+    }
 
 
 async function handleLout(){

@@ -45,7 +45,7 @@ export default function Login () {
                     setChecked('login');
 
                 }else {
-                    setMessageCode(response.data.errorCode);
+                    setMessageCode(res.data.errorCode);
                 }
 
             }else if (checked==='login') {
@@ -62,7 +62,7 @@ export default function Login () {
                     console.log("is logged in :" + isLoggedIn)
                     setMessageCode(LOGIN_SUCCESSFULLY)
                 }else {
-                    setMessageCode(response.data.errorCode)
+                    setMessageCode(res.data.errorCode)
 
                 }
 

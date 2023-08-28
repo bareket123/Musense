@@ -3,8 +3,8 @@ import {
     SET_TOKEN,
     SET_PLAYLIST,
     SET_PLAYED_RECENTLY,
-    SET_CURRENTLY_DELETE,
-    SET_IS_LOGGED_IN, RESET_STATE
+    SET_IS_LOGGED_IN, RESET_STATE,
+    SET_DELETE_FROM_PLAYLIST
 } from "./actions";
 
 
@@ -41,12 +41,12 @@ function reducer (state = initialState,action){
                 ...state ,
                 playList: [...state.playList,action.playList]
             }
-        case SET_CURRENTLY_DELETE :
-            return{
+        case SET_DELETE_FROM_PLAYLIST:
+            const updatedPlayList = state.playList.filter(song => song.url !== action.payload.url);
+            return {
                 ...state,
-                currentlyDelete: action.payload
-            }
-
+                playList: updatedPlayList
+            };
         case SET_PLAYED_RECENTLY :
 
             if (!(state.playedRecently.includes(action.playedRecently))) {

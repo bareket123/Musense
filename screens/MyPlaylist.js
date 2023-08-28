@@ -26,13 +26,10 @@ export default function MyPlaylist({ navigation }) {
         setMessageCode(0);
 
     }
-    useEffect(()=>{
-      dispatch(setPlaylist(myPlaylist))
-    },[myPlaylist])
 
     useEffect(()=>{
         getPlaylist().then(r => {});
-    },[])
+    },[myPlaylist])
 
 
     return (

@@ -1,4 +1,4 @@
-import {LOCAL_SERVER_URL, setPlayedRecently} from "../redux/actions";
+import {LOCAL_SERVER_URL, setPlayedRecently, setPlaylist,setDeleteSong} from "../redux/actions";
 import {Audio} from "expo-av";
 import React, {useEffect, useState} from "react";
 import {Button, FlatList, Image, Text, TouchableOpacity, View} from "react-native";
@@ -7,31 +7,30 @@ import {useSelector,useDispatch} from "react-redux";
 import Slider from '@react-native-community/slider';
 import {useFocusEffect} from "@react-navigation/native";
 import axios from "axios";
-import ErrorAlert from "./ErrorAlert";
-import {DELETE, SOMETHING_WENT_WRONG} from "./Constans";
 
-export default function Player ({ songList,page,toggleFavorite }) {
+export default function Player ({ songList,page,toggleFavorite  }) {
     const dispatch = useDispatch();
     const [sound, setSound] = useState(null);
     const [currentlyPlaying,setCurrentlyPlaying]=useState({});
     const [pressedPlaying, setPressedPlaying] = useState(false);
     const [volume, setVolume] = useState(0.5); // Initial volume
-    const {token} = useSelector(state => state.reducer);
-    const[messageCode, setMessageCode] = useState(0);
+    const {token,playList} = useSelector(state => state.reducer);
 
     useFocusEffect(
         React.useCallback(() => {
-            setCurrentlyPlaying(undefined);
+            if (currentlyPlaying!==undefined)
+                setCurrentlyPlaying(undefined);
         }, [])
     );
+
 
 
     async function playSound(song) {
         setPressedPlaying(true);
         setCurrentlyPlaying(song);
-        dispatch(setPlayedRecently(song));
+        dispatch(setPlayedRecently(song)); // Dispatch the action to add the song to playedRecently state in redux
         if (!song) {
-            return;
+            return; // Handle invalid index
         }
         try {
             const {sound} = await Audio.Sound.createAsync({uri: song.url});
@@ -79,6 +78,7 @@ export default function Player ({ songList,page,toggleFavorite }) {
 
 
     const playMusic=(song)=>{
+        console.log(currentlyPlaying)
         if (pressedPlaying){
             pauseSound()
         }else {
@@ -115,8 +115,9 @@ export default function Player ({ songList,page,toggleFavorite }) {
 
     function addLovedSongs(song) {
         if (!song.isFavorite){
-            sendPlaylistToServer(song).then(r => {
-            })
+            sendPlaylistToServer(song).then(r => {dispatch(setPlaylist(song))})
+        }else {
+            alert("no longer favorite")
         }
 
     }
@@ -133,7 +134,7 @@ export default function Player ({ songList,page,toggleFavorite }) {
                         <AntDesign onPress={() => {
                             toggleFavorite(item.songIndex);
                             addLovedSongs(item);
-                        }} name="heart"  size={30} color={item.isFavorite ? 'red' : 'green'}/>
+                        }} name="heart"  size={30} color={ isSongInPlaylist(item.url) || item.isFavorite ? 'red' : 'green'}/>
                         :
                         <TouchableOpacity style={{ marginLeft: 50 }} onPress={() =>deleteSong(item)}>
                             <AntDesign name="delete" size={24} color="black" />
@@ -151,36 +152,61 @@ export default function Player ({ songList,page,toggleFavorite }) {
     const deleteSong=async (song) => {
         const response = await axios.create({baseURL: LOCAL_SERVER_URL}).post('/delete-song?songId=' + song.id);
         if (response.data.success){
-            setMessageCode(DELETE)
+            alert("delete")
+            dispatch(setDeleteSong(song))
+            playList.map((song)=>{
+                console.log(song.title +" ,")
+            })
+
         }else {
-            setMessageCode(response.data.errorCode);
+            alert(response.data.errorCode)
         }
-        setMessageCode(0);
     }
     const sendPlaylistToServer = async (song) => {
         if (token !== null) {
-            await axios.post(LOCAL_SERVER_URL+'/add-song', null, {
-                params: {
-                    token:token,
-                    title: song.title,
-                    artist: song.artist,
-                    url: song.url,
-                    coverImage: song.coverImage
-                }
-            }).then((res) => {
-                if (res.data.success) {
-                    console.log("updated successfully")
+            try {
+                const encodedTitle = encodeURIComponent(song.title);
+                const encodedArtist = encodeURIComponent(song.artist);
+                const encodedUrl = encodeURIComponent(song.url);
+                const encodedCoverImage = encodeURIComponent(song.coverImage);
 
+                const url = `${LOCAL_SERVER_URL}/add-song?token=${token}&title=${encodedTitle}&artist=${encodedArtist}&url=${encodedUrl}&coverImage=${encodedCoverImage}`;
+
+                const response = await axios.post(url);
+
+                if (response.data.success) {
+                    console.log("Updated successfully");
                 } else {
-                    setMessageCode(SOMETHING_WENT_WRONG)
+                    alert(response.data.errorCode);
                 }
-
-
-            });
-            setMessageCode(0);
-
+            } catch (error) {
+                console.error("Error while sending request:", error.message);
+            }
         }
-    }
+    };
+    // const sendPlaylistToServer = async (song) => {
+    //     if (token !== null) {
+    //         console.log(song)
+    //        const response= await axios.create({baseURL: LOCAL_SERVER_URL}).post('/add-song?token='+token+'&title='+song.title+'&artist='+
+    //         song.artist+'&url='+song.url+'&coverImage='+song.coverImage)
+    //          if (response.data.success){
+    //              console.log("updated successfully")
+    //          }else {
+    //              alert(response.data.errorCode)
+    //          }
+    //
+    //     }
+    // }
+    const isSongInPlaylist = (songUrl) => {
+        let exist=false;
+        if (playList!==undefined){
+            exist=playList.some(song => song.url === songUrl);
+        }
+
+        return exist;
+    };
+
+
 
     return(
         <View>
@@ -230,10 +256,6 @@ export default function Player ({ songList,page,toggleFavorite }) {
                 keyExtractor={(item, index) => index.toString()}
 
             />
-            {
-                messageCode!==0&&
-                <ErrorAlert message={messageCode}/>
-            }
         </View>
     )
 
