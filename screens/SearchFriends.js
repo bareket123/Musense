@@ -1,44 +1,30 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {View, TextInput, StyleSheet, TouchableOpacity, Text, Image} from 'react-native';
 import {Fontisto, SimpleLineIcons} from '@expo/vector-icons';
 import axios from "axios";
-import {DrawerContentScrollView, DrawerItemList} from "@react-navigation/drawer";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import {LOCAL_SERVER_URL, setToken} from "../redux/actions";
 import {useSelector} from "react-redux";
 import ErrorAlert from "./ErrorAlert";
 import {FOLLOWING} from "./Constans";
 import { useFocusEffect } from '@react-navigation/native';
+//import RNEventSource from "react-native-event-source";
 
 
 const SearchFriends = ({ navigation }) => {
     const [searchFriend, setSearchFriend] = useState('');
-    const [foundUser,setFoundUser]=useState({});
-    const [token,setToken]=useState('');
+    const [foundUser,setFoundUser]=useState(null);
     const [messageCode, setMessageCode] = useState(0);
-    const [isUserFound, setIsUserFound] = useState(false);
     const [isAlertShown, setIsAlertShown] = useState(false);
+    const {token} = useSelector(state => state.reducer);
 
     useFocusEffect(
         React.useCallback(() => {
-            setSearchFriend('');
-            setFoundUser({});
-            setIsUserFound(false);
+           // setSearchFriend('');
+            setFoundUser(null)
+           // setIsAlertShown(false)
+
         }, [])
     );
-
-    const getToken = async () => {
-        try {
-            const token = await AsyncStorage.getItem('token');
-            setToken(token);
-            console.log("token is: " + token);
-        } catch (error) {
-            console.log("error in the token Home screen ",error.message);
-        }
-    };
-    useEffect(() => {
-        getToken().then(r => {console.log("use effect worked")});
-    },[]);
 
 
     const handleSearch = (text) => {
@@ -51,30 +37,50 @@ const SearchFriends = ({ navigation }) => {
         const response = await axios.create({baseURL: LOCAL_SERVER_URL}).post('/search-by-user-username?username=' + searchFriend);
         if (response.data.success) {
             setFoundUser(response.data.friendsDetailsModel);
-            setIsUserFound(true);
-            setMessageCode(0);
+            //setMessageCode(0);
+            //
+            // try {
+            //    if (foundUser!==null){
+            //        const eventSource = new RNEventSource(LOCAL_SERVER_URL + '/sse-handler?token=' + token+'&recipientId='+foundUser.id);
+            //
+            //        eventSource.addEventListener('message', (event) => {
+            //            alert(event.type); // message
+            //            if (event.data) {
+            //                console.log("dsfdcsfd")
+            //                alert(event.data);
+            //            } else {
+            //                alert('Event data is empty or null.');
+            //            }
+            //        });
+            //    }
+            //
+            //
+            // } catch (error) {
+            //     console.error('Error creating event source:', error);
+            // }
         } else {
-            setIsUserFound(false);
             setMessageCode(response.data.errorCode);
             setIsAlertShown(true);
         }
         setSearchFriend("");
         setMessageCode(0);
+        setIsAlertShown(false);
+
     };
 
 
     const followingRequest = async ()=>{
-        console.log("inside ")
         if (token!==''){
             const response = await axios.create({baseURL: LOCAL_SERVER_URL}).post('/follow-friend?token=' + token +'&friendUsername='+foundUser.username);
             if (response.data.success){
-                setMessageCode(FOLLOWING)
+                setMessageCode(FOLLOWING);
             }else {
                 setMessageCode(response.data.errorCode);
             }
         }else {
             console.log("token is empty")
         }
+        setMessageCode(0)
     }
 
 
@@ -91,7 +97,6 @@ const SearchFriends = ({ navigation }) => {
                 </TouchableOpacity>
             </View>
             {
-                isUserFound &&
                 foundUser!==null &&
                 <View style={{flexDirection: 'row'}}>
                     <TouchableOpacity onPress={followingRequest}>
@@ -100,22 +105,22 @@ const SearchFriends = ({ navigation }) => {
                             <Text>You can start following</Text>
                         </View>
                     </TouchableOpacity>
-
                     <View style={{marginLeft:100}}>
                         <Text style={{height:50, width:50}}> {foundUser.username}</Text>
                     </View>
                     <Image
                         source={{
-                            uri: foundUser.picture,
+                            uri: foundUser.picture!==""?foundUser.picture:'https://t4.ftcdn.net/jpg/02/29/75/83/360_F_229758328_7x8jwCwjtBMmC6rgFzLFhZoEpLobB6L8.jpg',
                         }}
                         style={{ width: 60, height: 60, borderRadius: 30 }}
                     />
 
                 </View>
-            }
+
+                 }
             {
-                messageCode !== 0 && !isAlertShown &&
-                <ErrorAlert message={messageCode}/>
+               ( messageCode !== 0 && !isAlertShown)&&
+                <ErrorAlert message={messageCode} type={''}/>
             }
         </View>
     );

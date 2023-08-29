@@ -3,66 +3,70 @@ import React, { useState } from 'react';
 import { Alert } from 'react-native';
 
 function ErrorAlert(props) {
+    let messageForUser='';
     const [visible, setVisible] = useState(true);
     let message = props.message;
-
-
-    switch (message) {
-        case 1000:
-            message = 'ERROR MISSING USERNAME ';
-            break;
-        case 1001:
-            message = 'ERROR MISSING PASSWORD';
-            break;
-        case 1002:
-            message = "ERROR WEAK PASSWORD";
-            break;
-        case 1003:
-            message = 'ERROR USERNAME ALREADY EXISTS';
-            break;
-        case 1004:
-            message = 'ERROR WRONG LOGIN DETAILS';
-            break;
-        case 1005:
-            message = 'ERROR NOT FOUND USER';
-            break;
-        case 1006:
-            message = 'ERROR NOT FOUND FRIEND';
-            break;
-        case 1007:
-            message = 'ERROR WRONG SONG DETAILS';
-            break;
-        case 1008:
-            message = 'ERROR PLAYLIST NOT EXIST';
-            break;
+    let type=message<1009? 'ERROR':'SUCCESS';
+    if (visible){
+        switch (message) {
+            case 1000:
+                messageForUser = 'ERROR MISSING USERNAME ';
+                break;
+            case 1001:
+                messageForUser = 'ERROR MISSING PASSWORD';
+                break;
+            case 1002:
+                messageForUser = "ERROR WEAK PASSWORD";
+                break;
+            case 1003:
+                messageForUser = 'ERROR USERNAME ALREADY EXISTS';
+                break;
+            case 1004:
+                messageForUser = 'ERROR WRONG LOGIN DETAILS';
+                break;
+            case 1005:
+                messageForUser = 'ERROR NOT FOUND USER';
+                break;
+            case 1006:
+                messageForUser = 'ERROR NOT FOUND FRIEND';
+                break;
+            case 1007:
+                messageForUser = 'ERROR WRONG SONG DETAILS';
+                break;
+            case 1008:
+                messageForUser = 'ERROR PLAYLIST NOT EXIST';
+                break;
 
             ///////////////////////////////constant
-        case 1009:
-            message = 'SIGN UP SUCCESSFULLY';
-            break;
-        case 1010:
-            message = 'LOGIN SUCCESSFULLY';
-            break;
-        case 1011:
-            message = 'FOLLOWING';
-            break;
-        case 1012:
-            message = 'DELETE';
-            break;
-        case 1013:
-            message = 'SOMETHING_WENT_WRONG';
-            break;
+            case 1009:
+                messageForUser = 'SIGN UP SUCCESSFULLY';
+
+                break;
+            case 1010:
+                messageForUser = 'LOGIN SUCCESSFULLY';
+                break;
+            case 1011:
+                messageForUser = 'FOLLOWING';
+                break;
+            case 1012:
+                messageForUser = 'DELETE';
+                break;
+            case 1013:
+                messageForUser = 'SOMETHING_WENT_WRONG';
+                break;
+
+        }
     }
+
 
     const handleClose = () => {
         setVisible(false);
     };
 
     return (
-        Alert.alert('Error', message, [{ text: 'OK' ,onPress: handleClose}])
+        Alert.alert(type, messageForUser, [{ text: 'OK' ,onPress: handleClose}])
 
 );
-    return null;
 }
 
 export default ErrorAlert;
