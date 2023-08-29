@@ -1,6 +1,7 @@
 import {
     SET_USERNAME,
     SET_TOKEN,
+    SET_PICTURE,
     SET_PLAYLIST,
     SET_PLAYED_RECENTLY,
     SET_IS_LOGGED_IN, RESET_STATE,
@@ -13,6 +14,7 @@ const initialState = {
     username:'guest',
     token:'',
     isLoggedIn : false ,
+    picture : 'https://cdn-icons-png.flaticon.com/512/3271/3271191.png',
     playList : [],
     playedRecently: [],
     currentlyDelete:null,
@@ -30,6 +32,11 @@ function reducer (state = initialState,action){
                 ...state,
                 token: action.payload,
                 isLoggedIn: !!action.payload,
+            }
+        case SET_PICTURE:
+            return {
+                ...state,
+                picture: action.payload,
             }
         case SET_IS_LOGGED_IN:
             return {

@@ -1,19 +1,15 @@
-import React, { useState} from 'react';
-import {View, Text, StyleSheet, ImageBackground, ScrollView} from 'react-native';
+import React, {useState} from 'react';
+import {ImageBackground, ScrollView, StyleSheet, Text, View} from 'react-native';
 import axios from "axios";
-import { RadioButton,TextInput ,Button} from 'react-native-paper';
+import {Button, RadioButton, TextInput} from 'react-native-paper';
 import isEmail from 'validator/lib/isEmail';
-import { AntDesign,MaterialIcons,MaterialCommunityIcons } from '@expo/vector-icons';
+import {AntDesign, MaterialCommunityIcons, MaterialIcons} from '@expo/vector-icons';
 import image from '../images/musicBackGround.jpg';
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import {LOCAL_SERVER_URL, setToken, setUsername} from "../redux/actions";
+import {LOCAL_SERVER_URL, setToken, setUsername,setPicture} from "../redux/actions";
 import {useDispatch, useSelector} from "react-redux";
 import ErrorAlert from "./ErrorAlert";
-import {SIGN_UP_SUCCESSFULLY} from "./Constans";
-import {LOGIN_SUCCESSFULLY} from "./Constans";
-
-
-
+import {LOGIN_SUCCESSFULLY, SIGN_UP_SUCCESSFULLY} from "./Constans";
 
 
 export default function Login () {
@@ -22,7 +18,7 @@ export default function Login () {
     const [usernameInput, setUsernameInput] = useState("");
     const [password, setPassword] = useState("");
     const [email,setEmail]=useState("");
-    const [picture,setPicture]=useState("");
+    const {picture}=useSelector(state => state.reducer);
     const [confirmPassword, setConfirmPassword] = useState("");
     const [checked, setChecked] = useState('');
     const {isLoggedIn}= useSelector(state => state.reducer);
@@ -57,6 +53,7 @@ export default function Login () {
                     const token=res.data.token;
                     await AsyncStorage.setItem('token', token);
                     await AsyncStorage.setItem('username', usernameInput);
+                    await setUserPic(token)
                     dispatch(setToken(token));
                     dispatch(setUsername(usernameInput))
                     console.log("is logged in :" + isLoggedIn)
@@ -100,6 +97,14 @@ export default function Login () {
         setPassword("")
         setConfirmPassword("")
         setEmail("")
+
+    }
+    const setUserPic =async (token) => {
+     const res = await axios.create({baseURL: LOCAL_SERVER_URL}).get('/get-user-picture-by-token?token=' + token);
+     const picUrl=res.data.toString();
+     await AsyncStorage.setItem('picture', picUrl);
+     dispatch(setPicture(picUrl))
+
 
     }
 

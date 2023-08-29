@@ -4,8 +4,10 @@ export const SET_TOKEN = 'SET_TOKEN'
 export const SET_USERNAME = 'SET_USERNAME'
 export const SET_IS_LOGGED_IN = 'SET_IS_LOGGED_IN'
 export const SET_DELETE_FROM_PLAYLIST= 'SET_DELETE_FROM_PLAYLIST'
-export const LOCAL_SERVER_URL='http://10.100.102.7:8989';
+export const SET_PICTURE= 'SET_PICTURE'
 export const RESET_STATE = 'RESET_STATE';
+export const LOCAL_SERVER_URL='http://192.168.1.178:8989';
+
 export const X_RAPID_API_KEY='5ce6d5700cmsh0a744fbf3438d5ep10c2eejsn280c47bdb245';
 export const X_RAPID_API_HOST ='shazam.p.rapidapi.com'
 export const X_RAPID_API_HOST7 ='shazam-api7.p.rapidapi.com'
@@ -34,6 +36,12 @@ export const setUsername = username => dispatch => {
     dispatch({
         type: SET_USERNAME,
         payload: username
+    });
+}
+export const setPicture = pic => dispatch => {
+    dispatch({
+        type: SET_PICTURE,
+        payload: pic
     });
 }
 

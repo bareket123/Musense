@@ -24,11 +24,12 @@ export default function StackNav (){
     const dispatch = useDispatch(); // Get the dispatch function
 
 const {isLoggedIn}= useSelector(state => state.reducer);
-const [image,setImage]=useState('https://cdn-icons-png.flaticon.com/512/3271/3271191.png');
+const {picture}= useSelector(state => state.reducer);
+
 const Stack = createStackNavigator();
 
     useEffect(()=>{
-    getPlaylist().then(r => {console.log("get playlist from server")})
+    getPlaylist().then(() => {console.log("get playlist from server")})
     },[token])
 
     const setThePlaylistInStore=(playlist)=>{
@@ -62,10 +63,9 @@ const Stack = createStackNavigator();
 async function handleLout(){
     await AsyncStorage.removeItem('token')
     await AsyncStorage.removeItem('username')
-    setImage('https://cdn-icons-png.flaticon.com/512/3271/3271191.png')
+    await AsyncStorage.removeItem('picture')
     dispatch(resetState());
     console.log("delete")
-    console.log(isLoggedIn)
 }
 
 
@@ -88,7 +88,7 @@ const CustomDrawer = props => {
                     </View>
                     <Image
                         source={{
-                            uri: image,
+                            uri: picture,
                         }}
                         style={{ width: 60, height: 60, borderRadius: 30 }}
                     />

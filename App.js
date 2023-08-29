@@ -7,7 +7,7 @@ import {Provider, useSelector} from "react-redux";
 import {Store} from "./redux/store"
 
 import StackNav from "./screens/StackNav";
-import {setToken, setUsername} from "./redux/actions";
+import {setPicture, setToken, setUsername} from "./redux/actions";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 
@@ -17,10 +17,13 @@ export default function App() {
     const initializeApp = async () => {
         try {
             const tokenFromStorage = await AsyncStorage.getItem('token');
-            const usernameFromStorage = await AsyncStorage.getItem('username');
             if (tokenFromStorage) {
                 Store.dispatch(setToken(tokenFromStorage));
+                const usernameFromStorage = await AsyncStorage.getItem('username');
+                const pictureFromStorage = await AsyncStorage.getItem('picture');
                 Store.dispatch(setUsername(usernameFromStorage));
+                Store.dispatch(setPicture(pictureFromStorage));
+
             }
         } catch (error) {
             console.error('Error initializing app:', error);
