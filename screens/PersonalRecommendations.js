@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {Text, View} from "react-native";
 import {useSelector} from "react-redux";
-import { ScrollView } from 'react-native-virtualized-view'
+import {ScrollView}  from 'react-native-virtualized-view'
 import Questionnaire from "./Questionnaire";
 import axios from "axios";
 import Player from "./Player";
@@ -15,15 +15,25 @@ const PersonalRecommendations = () => {
     const [artist1Playlist,setArtist1Playlist]=useState([])
     const [artist2Playlist,setArtist2Playlist]=useState([])
     const [listByFavorite,setListByFavorite]=useState([])
+    const [combinedSongList, setCombinedSongList] = useState([]);
     const [questionnaireData, setQuestionnaireData] = useState(null);
 
     // Callback function to receive questionnaire data
     const handleQuestionnaireSubmit = (data) => {
         setQuestionnaireData(data);
     };
+    useEffect(() => {
+        if (playlistByGenre.length > 0 && artist1Playlist.length > 0 && artist2Playlist.length > 0 && listByFavorite.length > 0) {
+
+            const combinedList = [...playlistByGenre, ...artist1Playlist, ...artist2Playlist, ...listByFavorite];
+            const shuffleCombinedList=shuffleArray(combinedList)
+            setCombinedSongList(shuffleCombinedList);
+        }
+    }, [playlistByGenre, artist1Playlist, artist2Playlist, listByFavorite]);
 
 
     useEffect(()=>{
+        allAnswers===null&&
         getAnswers();
 
 
@@ -238,40 +248,31 @@ const PersonalRecommendations = () => {
 
 
     }
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    }
 
 
     return (
-        <ScrollView>
+
+
+        <View>
             {
                 allAnswers===null?
                     <Questionnaire onSubmit={handleQuestionnaireSubmit}/>
                     :
                     <View>
-
-                        <View>
-                            <Text>Music By {allAnswers.genre}</Text>
-                            <Player songList={playlistByGenre} page={'list'} toggleFavorite={null}/>
-                        </View>
-
-                        <View>
-                            <Text>Music by {allAnswers.artist1}</Text>
-                            <Player songList={artist1Playlist} page={'list'} toggleFavorite={null}/>
-                        </View>
-
-                        <View>
-                            <Text>Music by {allAnswers.artist2}</Text>
-                            <Player songList={artist2Playlist} page={'list'} toggleFavorite={null}/>
-                        </View>
-                        <View>
-                            <Text>Music relate to your favorite song {allAnswers.favoriteSong}</Text>
-                            <Player songList={listByFavorite} page={'list'} toggleFavorite={null}/>
-                        </View>
-
+                        <Text>Your Personal Groove</Text>
+                        <Player songList={combinedSongList} page={'list'} toggleFavorite={null}/>
                     </View>
             }
 
 
-        </ScrollView>
+        </View>
     );
 };
 

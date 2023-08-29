@@ -207,7 +207,6 @@ export default function Player ({ songList,page,toggleFavorite  }) {
     };
 
 
-
     return(
         <View>
             {
