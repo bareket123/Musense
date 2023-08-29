@@ -6,89 +6,77 @@ import {DrawerContentScrollView, DrawerItemList} from "@react-navigation/drawer"
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {LOCAL_SERVER_URL, setToken} from "../redux/actions";
 import {useSelector} from "react-redux";
-import RNEventSource from 'react-native-event-source'
+import ErrorAlert from "./ErrorAlert";
+import {FOLLOWING} from "./Constans";
+import { useFocusEffect } from '@react-navigation/native';
+
 
 const SearchFriends = ({ navigation }) => {
     const [searchFriend, setSearchFriend] = useState('');
-    const [foundUser,setFoundUser]=useState(null);
-    const {token} = useSelector(state => state.reducer);
-    const [allUsers, setAllUsers] = useState([]);
-    const [filteredUsers,setFilteredUsers]=useState([]);
+    const [foundUser,setFoundUser]=useState({});
+    const [token,setToken]=useState('');
+    const [messageCode, setMessageCode] = useState(0);
+    const [isUserFound, setIsUserFound] = useState(false);
+    const [isAlertShown, setIsAlertShown] = useState(false);
 
+    useFocusEffect(
+        React.useCallback(() => {
+            setSearchFriend('');
+            setFoundUser({});
+            setIsUserFound(false);
+        }, [])
+    );
+
+    const getToken = async () => {
+        try {
+            const token = await AsyncStorage.getItem('token');
+            setToken(token);
+            console.log("token is: " + token);
+        } catch (error) {
+            console.log("error in the token Home screen ",error.message);
+        }
+    };
     useEffect(() => {
-        if (token!==null)
-        setUsersFromServer().then(r => {})
-    },[token]);
-
+        getToken().then(r => {console.log("use effect worked")});
+    },[]);
 
 
     const handleSearch = (text) => {
         setSearchFriend(text);
-        if (text !== '') {
-            const tempFilteredUsers = allUsers.filter((user) => {
-                return user.username.includes(text);
-            });
-            setFilteredUsers(tempFilteredUsers);
-        } else {
-            setFilteredUsers(allUsers);
-        }
-        console.log(token);
-        console.log(filteredUsers);
     };
 
 
+    const search = async () => {
+        setIsAlertShown(false);
+        const response = await axios.create({baseURL: LOCAL_SERVER_URL}).post('/search-by-user-username?username=' + searchFriend);
+        if (response.data.success) {
+            setFoundUser(response.data.friendsDetailsModel);
+            setIsUserFound(true);
+            setMessageCode(0);
+        } else {
+            setIsUserFound(false);
+            setMessageCode(response.data.errorCode);
+            setIsAlertShown(true);
+        }
+        setSearchFriend("");
+        setMessageCode(0);
+    };
 
-    // const search = async () => {
-    //     // const response = await axios.create({baseURL: LOCAL_SERVER_URL}).post('/search-by-user-username?username=' + searchFriend);
-    //     // if (response.data.success) {
-    //     //     setFoundUser(response.data.friendsDetailsModel)
-    //     //
-    //     // } else {
-    //     //     alert(response.data.errorCode)
-    //     //
-    //     // }
-    //     // setSearchFriend("")
-    //
-    // };
+
     const followingRequest = async ()=>{
-           console.log("inside ")
+        console.log("inside ")
         if (token!==''){
             const response = await axios.create({baseURL: LOCAL_SERVER_URL}).post('/follow-friend?token=' + token +'&friendUsername='+foundUser.username);
             if (response.data.success){
-                alert("following")
-                const eventSource = new RNEventSource(LOCAL_SERVER_URL + '/sse-handler?token=' + token+'&recipientId='+foundUser.id);
-
-                eventSource.addEventListener('message', (event) => {
-                    alert(event.type); // message
-                    if (event.data) {
-                        console.log("dsfdcsfd")
-                        alert(event.data);
-                    } else {
-                        alert('Event data is empty or null.');
-                    }
-                });
+                setMessageCode(FOLLOWING)
             }else {
-                alert(response.data.errorCode)
+                setMessageCode(response.data.errorCode);
             }
         }else {
             console.log("token is empty")
         }
-
     }
 
-    const setUsersFromServer = async ()=>{
-            if (token!==''){
-            const response = await axios.create({baseURL: LOCAL_SERVER_URL}).post('/get-all-Users-without-current?token=' + token);
-            if (response.data.success){
-                setAllUsers(response.data.myFriends);
-            }else {
-                alert(response.data.errorCode)
-            }
-        }else {
-            console.log("token is empty")
-        }
-
-    }
 
     return (
         <View>
@@ -98,22 +86,12 @@ const SearchFriends = ({ navigation }) => {
                     onChangeText={handleSearch}
                     value={searchFriend}
                 />
-
-                {/*<TouchableOpacity onPress={search}>*/}
-                {/*    <Fontisto name="search" size={30} color="black" />*/}
-                {/*</TouchableOpacity>*/}
-            </View>
-            <View>
-                {
-
-                    filteredUsers.map((user)=>{
-                        return (
-                            <Text>{user.username}</Text>
-                        )
-                    })
-                }
+                <TouchableOpacity onPress={search}>
+                    <Fontisto name="search" size={30} color="black" />
+                </TouchableOpacity>
             </View>
             {
+                isUserFound &&
                 foundUser!==null &&
                 <View style={{flexDirection: 'row'}}>
                     <TouchableOpacity onPress={followingRequest}>
@@ -123,9 +101,9 @@ const SearchFriends = ({ navigation }) => {
                         </View>
                     </TouchableOpacity>
 
-                    {/*<View style={{marginLeft:100}}>*/}
-                    {/*    <Text style={{height:50, width:50}}> {foundUser.username}</Text>*/}
-                    {/*</View>*/}
+                    <View style={{marginLeft:100}}>
+                        <Text style={{height:50, width:50}}> {foundUser.username}</Text>
+                    </View>
                     <Image
                         source={{
                             uri: foundUser.picture,
@@ -135,7 +113,10 @@ const SearchFriends = ({ navigation }) => {
 
                 </View>
             }
-
+            {
+                messageCode !== 0 && !isAlertShown &&
+                <ErrorAlert message={messageCode}/>
+            }
         </View>
     );
 };
@@ -148,18 +129,9 @@ const styles = StyleSheet.create({
         marginBottom:50,
         borderColor: 'black',
         borderWidth: 5,
-        borderRadius: 20, // Make it circular by setting borderRadius to half of the height
+        borderRadius: 20,
         paddingHorizontal: 10,
     },
 });
 
 export default SearchFriends;
-
-
-
-
-
-
-
-
-
