@@ -7,7 +7,7 @@ import {useSelector} from "react-redux";
 import ErrorAlert from "./ErrorAlert";
 import {FOLLOWING} from "./Constans";
 import { useFocusEffect } from '@react-navigation/native';
-//import RNEventSource from "react-native-event-source";
+import EventSource from "react-native-event-source";
 
 
 const SearchFriends = ({ navigation }) => {
@@ -19,10 +19,7 @@ const SearchFriends = ({ navigation }) => {
 
     useFocusEffect(
         React.useCallback(() => {
-           // setSearchFriend('');
             setFoundUser(null)
-           // setIsAlertShown(false)
-
         }, [])
     );
 
@@ -37,27 +34,6 @@ const SearchFriends = ({ navigation }) => {
         const response = await axios.create({baseURL: LOCAL_SERVER_URL}).post('/search-by-user-username?username=' + searchFriend);
         if (response.data.success) {
             setFoundUser(response.data.friendsDetailsModel);
-            //setMessageCode(0);
-            //
-            // try {
-            //    if (foundUser!==null){
-            //        const eventSource = new RNEventSource(LOCAL_SERVER_URL + '/sse-handler?token=' + token+'&recipientId='+foundUser.id);
-            //
-            //        eventSource.addEventListener('message', (event) => {
-            //            alert(event.type); // message
-            //            if (event.data) {
-            //                console.log("dsfdcsfd")
-            //                alert(event.data);
-            //            } else {
-            //                alert('Event data is empty or null.');
-            //            }
-            //        });
-            //    }
-            //
-            //
-            // } catch (error) {
-            //     console.error('Error creating event source:', error);
-            // }
         } else {
             setMessageCode(response.data.errorCode);
             setIsAlertShown(true);
@@ -68,12 +44,42 @@ const SearchFriends = ({ navigation }) => {
 
     };
 
+const create_SSE_Connection=()=>{
+    try {
+        if (foundUser!==null) {
+            //     const eventSource = new RNEventSource(LOCAL_SERVER_URL + '/sse-handler?token=' + token+'&friendUsername='+foundUser.username);
+            //     eventSource.onMessage('message', (event) => {
+            //         alert("fgreg")
+            //         alert(event.type); // message
+            //         if (event.data) {
+            //             alert(event.data);
+            //             console.log(event.data)
+            //         } else {
+            //
+            //             alert('Event data is empty or null.');
+            //         }
+            //     });
+            // }else {
+            //     alert("nulll")
+            // }
+            const sse = new EventSource(LOCAL_SERVER_URL + '/sse-handler?token=' + token + '&friendUsername=' + foundUser.username);
+            sse.onmessage = (message) => {
+                const data = message.data;
+                alert(data)
+                console.log("this is: "+ data)
+            }
 
+        }
+    } catch (error) {
+        console.error('Error creating event source:', error);
+    }
+}
     const followingRequest = async ()=>{
         if (token!==''){
             const response = await axios.create({baseURL: LOCAL_SERVER_URL}).post('/follow-friend?token=' + token +'&friendUsername='+foundUser.username);
             if (response.data.success){
                 setMessageCode(FOLLOWING);
+                //create_SSE_Connection()
             }else {
                 setMessageCode(response.data.errorCode);
             }
@@ -120,7 +126,7 @@ const SearchFriends = ({ navigation }) => {
                  }
             {
                ( messageCode !== 0 && !isAlertShown)&&
-                <ErrorAlert message={messageCode} type={''}/>
+                <ErrorAlert message={messageCode}/>
             }
         </View>
     );

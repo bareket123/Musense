@@ -4,7 +4,7 @@ import {FlatList, Image, Text, TouchableOpacity, View} from "react-native";
 import {NavigationContainer} from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
-import {MaterialCommunityIcons} from "@expo/vector-icons";
+import {Entypo, MaterialCommunityIcons} from "@expo/vector-icons";
 import {LOCAL_SERVER_URL, setToken} from "../redux/actions";
 import {useDispatch, useSelector} from "react-redux";
 import ErrorAlert from "./ErrorAlert";
@@ -12,14 +12,13 @@ import ErrorAlert from "./ErrorAlert";
 
 const MyFriends = ({navigation}) => {
     const [myFriends,setMyFriends]=useState([]);
-    const dispatch = useDispatch();
-    const {token} = useSelector(state => state.reducer);
+   const {token} = useSelector(state => state.reducer);
     const[messageCode, setMessageCode] = useState(0);
 
 
 
     useEffect(() => {
-        fetchMyFriends().then(r => {});
+        fetchMyFriends().then();
 
     },[myFriends]);
 
@@ -36,18 +35,31 @@ const MyFriends = ({navigation}) => {
         }
         setMessageCode(0);
     }
+    const deleteFriend=async(friend) => {
+        const response = await axios.create({baseURL: LOCAL_SERVER_URL}).post('/delete-friend?token='+token+'&friendUsername='+friend.username);
+        if (response.data.success){
+            alert("delete")
+        }else {
+            alert(response.data.errorCode)
+        }
+    }
     const renderItem=({item})=>(
         <View style={{ padding: 20, flexDirection: 'row', alignItems: 'center', left: '20%' }}>
             <Text style={{marginRight:20}}>{item.username}</Text>
             <Image
                 source={{
-                    uri: item.picture,
+                    uri: item.picture!==''?item.picture : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS3J7fax0r25yrhXbt64ICXsKZ-Clm_txAxmw&usqp=CAU',
                 }}
-                style={{ width: 60, height: 60, borderRadius: 30 }}
+                style={{ width: 60, height: 60, borderRadius: 30 , marginRight:20}}
             />
-        </View>
+            <TouchableOpacity style={{flexDirection:'column' , alignItems:'center'}} onPress={()=>{deleteFriend(item).then(r=>console.log("delete friend"))}} >
+                <Entypo name="remove-user" size={24} color="black" />
+                <Text>remove user</Text>
+            </TouchableOpacity>
 
+        </View>
     )
+
     return (
         <View>
             {

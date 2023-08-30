@@ -14,8 +14,6 @@ export default function MyPlaylist({ navigation }) {
     const [myPlaylist,setMyPlaylist]=useState([]);
     const[messageCode, setMessageCode] = useState(0);
 
-    const dispatch=useDispatch();
-
     const getPlaylist=async ()=>{
         const response = await axios.create({baseURL: LOCAL_SERVER_URL}).post('/get-playlist?token=' + token);
         if (response.data.success){

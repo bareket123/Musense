@@ -154,10 +154,6 @@ export default function Player ({ songList,page,toggleFavorite  }) {
         if (response.data.success){
             alert("delete")
             dispatch(setDeleteSong(song))
-            playList.map((song)=>{
-                console.log(song.title +" ,")
-            })
-
         }else {
             alert(response.data.errorCode)
         }

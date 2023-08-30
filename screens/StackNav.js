@@ -88,7 +88,7 @@ const CustomDrawer = props => {
                     </View>
                     <Image
                         source={{
-                            uri: picture,
+                            uri: picture!==''?picture:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS3J7fax0r25yrhXbt64ICXsKZ-Clm_txAxmw&usqp=CAU',
                         }}
                         style={{ width: 60, height: 60, borderRadius: 30 }}
                     />
