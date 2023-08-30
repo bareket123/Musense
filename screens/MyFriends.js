@@ -22,19 +22,29 @@ const MyFriends = ({navigation}) => {
 
     },[myFriends]);
 
-    const fetchMyFriends = async ()=>{
-        if (token!==''){
-            const response = await axios.create({baseURL: LOCAL_SERVER_URL}).get('/get-my-friends?token=' + token);
-            if (response.data.success){
-                setMyFriends(response.data.myFriends);
-            }else {
+    const fetchMyFriends = async () => {
+        if (token !== '') {
+            const response = await axios.create({ baseURL: LOCAL_SERVER_URL }).get('/get-my-friends?token=' + token);
+            if (response.data.success) {
+                const uniqueUsernames = new Set();
+                const filteredFriends = response.data.myFriends.filter(friend => {
+                    if (!uniqueUsernames.has(friend.username)) {
+                        uniqueUsernames.add(friend.username);
+                        return true;
+                    }
+                    return false;
+                });
+                setMyFriends(Array.from(filteredFriends));
+            } else {
                 setMessageCode(response.data.errorCode);
             }
-        }else {
+        } else {
             console.log(" friends: token is empty")
         }
         setMessageCode(0);
     }
+
+
     const deleteFriend=async(friend) => {
         const response = await axios.create({baseURL: LOCAL_SERVER_URL}).post('/delete-friend?token='+token+'&friendUsername='+friend.username);
         if (response.data.success){
