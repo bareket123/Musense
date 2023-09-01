@@ -6,7 +6,7 @@ function ErrorAlert(props) {
     let messageForUser='';
     const [visible, setVisible] = useState(true);
     let message = props.message;
-    let type=message<1009? 'ERROR':'SUCCESS';
+    let type=message<1012? 'ERROR':'SUCCESS';
     if (visible){
         switch (message) {
             case 1000:
@@ -38,24 +38,37 @@ function ErrorAlert(props) {
                 break;
 
 
-            ///////////////////////////////constant
             case 1009:
-                messageForUser = 'SIGN UP SUCCESSFULLY';
-
+                messageForUser = 'ERROR_IN_ANSWERS_DETAILS';
                 break;
             case 1010:
-                messageForUser = 'LOGIN SUCCESSFULLY';
+                messageForUser = 'ERROR_WRONG_ANSWERS_DETAILS';
                 break;
             case 1011:
-                messageForUser = 'FOLLOWING';
+                messageForUser = 'ERROR_NO_SUCH_CONNECTION';
                 break;
             case 1012:
-                messageForUser = 'DELETE';
-                break;
-            case 1013:
-                messageForUser = 'SOMETHING_WENT_WRONG';
+                messageForUser = 'IMAGE_UPLOAD_FAILED';
                 break;
 
+
+                ///////////////////////////////constant
+
+            case 1013:
+                messageForUser = 'SIGN_UP_SUCCESSFULLY';
+                break;
+            case 1014:
+                messageForUser = 'LOGIN_SUCCESSFULLY';
+                break;
+                case 1015:
+                messageForUser = 'FOLLOWING';
+                break;
+                case 1016:
+                messageForUser = 'DELETE';
+                break;
+                case 1017:
+                messageForUser = 'SOMETHING_WENT_WRONG';
+                break;
         }
     }
 

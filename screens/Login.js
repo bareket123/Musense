@@ -15,7 +15,6 @@ import * as ImagePicker from 'expo-image-picker';
 
 export default function Login () {
     const dispatch = useDispatch();
-
     const [usernameInput, setUsernameInput] = useState("");
     const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");
@@ -23,7 +22,6 @@ export default function Login () {
     const [checked, setChecked] = useState('');
     const {isLoggedIn} = useSelector(state => state.reducer);
     const [messageCode, setMessageCode] = useState(0);
-
     const [uploadPic, setUploadPic] = useState(null);
 
 
@@ -39,7 +37,7 @@ export default function Login () {
         }
     };
 
-        const uploadImage = async () => {
+    const uploadImage = async () => {
         if (uploadPic) {
             const formData = new FormData();
             formData.append('image', {
@@ -47,7 +45,6 @@ export default function Login () {
                 type: 'image/jpeg',
                 name: 'image.jpg',
             });
-
             try {
                 const response = await axios.post(LOCAL_SERVER_URL + '/upload', formData, {
                     params: {
@@ -57,26 +54,23 @@ export default function Login () {
                         'Content-Type': 'multipart/form-data',
                     },
                 });
-
                 return { success: true, imageUrl: response.data.imageUrl }; // Return the upload success and imageUrl
             } catch (error) {
                 return { success: false, errorCode: response.data.errorCode };
             }
         }
     };
+
     async function handleButtonPressed() {
+        let res;
         try {
             if (checked === 'signUp') {
                 console.log("enter sign");
-
                 const uploadResponse = await uploadImage(); // Wait for the image upload
                 console.log(uploadResponse);
-
-                if (uploadResponse.success) {
-                  const  res = await axios.create({baseURL: LOCAL_SERVER_URL}).post('/sign-up?username=' + usernameInput + '&password=' + password+'&email='+email+'&imageUrl='+uploadResponse.imageUrl)
-
+                      res = await axios.create({baseURL: LOCAL_SERVER_URL}).post('/sign-up?username=' + usernameInput + '&password=' + password+'&email='+email+'&imageUrl='+uploadResponse.imageUrl)
                     if (res.data.success) {
-                        alert(SIGN_UP_SUCCESSFULLY);
+                        setMessageCode(SIGN_UP_SUCCESSFULLY);
                         setConfirmPassword("");
                         setEmail("");
                         setChecked('login');
@@ -84,37 +78,30 @@ export default function Login () {
                     } else {
                         setMessageCode(res.data.errorCode);
                     }
-                } else {
-                    alert(uploadResponse.errorCode);
-                }
             } else if (checked === 'login') {
                 console.log("enter login")
-                let res;
                 res = await axios.create({baseURL: LOCAL_SERVER_URL}).post('/login?username=' + usernameInput + '&password=' + password)
-                            console.log(res.data)
-                            if (res.data.success){
-                                const token=res.data.token;
-                                await AsyncStorage.setItem('token', token);
-                                await AsyncStorage.setItem('username', usernameInput);
-                                dispatch(setToken(token));
-                                dispatch(setUsername(usernameInput))
-                                await setUserPic(token);
-                                console.log("is logged in :" + isLoggedIn)
-                                alert(LOGIN_SUCCESSFULLY);
-                            }else {
-                                setMessageCode(res.data.errorCode)
-
-                            }
+                console.log(res.data)
+               setMessageCode(LOGIN_SUCCESSFULLY)
+                if (res.data.success){
+                    const token=res.data.token;
+                    await AsyncStorage.setItem('token', token);
+                    await AsyncStorage.setItem('username', usernameInput);
+                    dispatch(setToken(token));
+                    dispatch(setUsername(usernameInput))
+                    await setUserPic(token);
+                    console.log("is logged in :" + isLoggedIn)
+                }else {
+                    setMessageCode(res.data.errorCode)
+                }
             }
         } catch (error) {
             console.log(error);
         }
-
         setUsernameInput("");
         setPassword("");
+        setMessageCode(0);
     }
-
-
 
 
     function emailValidation(userEmail){
@@ -135,33 +122,31 @@ export default function Login () {
         return validToPress;
     }
 
+
     function clearButton() {
         setUsernameInput("")
         setPassword("")
         setConfirmPassword("")
         setEmail("")
-
     }
-    const setUserPic =async (token) => {
-     const res = await axios.create({baseURL: LOCAL_SERVER_URL}).get('/get-user-picture-by-token?token=' + token);
-     const picUrl=res.data.toString();
-     await AsyncStorage.setItem('picture', picUrl);
-     dispatch(setPicture(picUrl))
 
+
+    const setUserPic =async (token) => {
+        const res = await axios.create({baseURL: LOCAL_SERVER_URL}).get('/get-user-picture-by-token?token=' + token);
+        const picUrl=res.data.toString();
+        await AsyncStorage.setItem('picture', picUrl);
+        dispatch(setPicture(picUrl))
     }
 
     return (
         <ImageBackground source={pic} style={styles.background} >
             <ScrollView style={styles.container}>
                 <View>
-
                     <RadioButton.Group onValueChange={value => setChecked(value)} value={checked}>
                         <RadioButton.Item labelStyle={{ color: 'black', fontWeight: 'bold',fontSize:20 }} style={{shadowColor:'white'}} label="Login" value="login" />
                         <RadioButton.Item labelStyle={{ color: 'black', fontWeight: 'bold',fontSize:20 }} style={{shadowColor:'white'}} label="SignUp" value="signUp" />
                     </RadioButton.Group>
-
                     {
-
                         checked!==''&&
                         <View>
                             <Text style={styles.headerText}>Enter your {checked==='login' ? 'username and password' : 'details to sign up'}</Text>
@@ -173,7 +158,6 @@ export default function Login () {
                                     mode={"outlined"}
                                     onChangeText={setUsernameInput}
                                     style={styles.textInput}
-
                                 />
                             </View>
                             <View style={styles.viewStyle}>
@@ -187,11 +171,9 @@ export default function Login () {
                                     secureTextEntry={true}
                                 />
                             </View>
-
                             {
                                 checked === 'signUp' &&
                                 <View>
-
                                     <View style={styles.viewStyle}>
                                         <MaterialCommunityIcons name="lock-check" size={24} color="black"/>
                                         <TextInput
@@ -202,11 +184,8 @@ export default function Login () {
                                             style={[styles.textInput, ((password !== confirmPassword) && (password.length !== 0&& confirmPassword.length!==0)) && { backgroundColor: 'tomato'}] }
                                             secureTextEntry={true}
                                         />
-
                                     </View>
-
                                     <View style={[styles.viewStyle]}>
-
                                         <MaterialIcons name="mail-outline" size={24} color="black" />
                                         <TextInput
                                             placeholder="Email"
@@ -216,13 +195,11 @@ export default function Login () {
                                             style={[styles.textInput,(!emailValidation(email)&&  email.length!==0)&&  { backgroundColor: 'tomato'}]}
                                             keyboardType={"email-address"}
                                         />
-
                                     </View>
                                     <View style={[styles.viewStyle]}>
                                         <Button style={styles.button} labelStyle={{color:'white',fontSize:21,fontWeight: 'bold'}}
                                                 onPress={selectImage}
                                         >Upload Picture </Button>
-
                                     </View>
                                     <View style={[styles.viewStyle]}>
                                         {uploadPic && <Image source={{ uri: uploadPic.uri }} style={styles.image} />}
@@ -231,7 +208,6 @@ export default function Login () {
                                     {/*        onPress={uploadImage}*/}
                                     {/*>Upload  </Button>*/}
                                 </View>
-
                             }
                             <View style={{ justifyContent: 'center', alignItems: 'center' }}>
                                 <Button style={styles.button} labelStyle={{color:'white',fontSize:21,fontWeight: 'bold'}}
@@ -266,14 +242,12 @@ export default function Login () {
                         messageCode!==0&&
                         <ErrorAlert message={messageCode}/>
                     }
-
                 </View>
             </ScrollView>
         </ImageBackground>
     );
-
-
 };
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -282,7 +256,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         flexDirection: 'row',
         alignItems: 'center',
-        // flexDirection: 'column'
     },
     textInput:{
         justifyContent: 'center',
