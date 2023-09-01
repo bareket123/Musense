@@ -8,6 +8,7 @@ import {Entypo, MaterialCommunityIcons} from "@expo/vector-icons";
 import {LOCAL_SERVER_URL, setToken} from "../redux/actions";
 import {useDispatch, useSelector} from "react-redux";
 import ErrorAlert from "./ErrorAlert";
+import Logo from "./Logo";
 
 
 const MyFriends = ({navigation}) => {
@@ -72,6 +73,7 @@ const MyFriends = ({navigation}) => {
 
     return (
         <View>
+
             {
                 myFriends.length!==0?
                     <View>

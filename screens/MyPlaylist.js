@@ -8,6 +8,7 @@ import Player from "./Player";
 import {LOCAL_SERVER_URL, setPlaylist} from "../redux/actions";
 import {useDispatch} from "react-redux";
 import ErrorAlert from "./ErrorAlert";
+import Logo from "./Logo";
 
 export default function MyPlaylist({ navigation }) {
      const {token } = useSelector(state => state.reducer);

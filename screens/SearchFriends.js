@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {View, TextInput, StyleSheet, TouchableOpacity, Text, Image} from 'react-native';
 import {Fontisto, SimpleLineIcons} from '@expo/vector-icons';
 import axios from "axios";
@@ -8,6 +8,7 @@ import ErrorAlert from "./ErrorAlert";
 import {FOLLOWING} from "./Constans";
 import { useFocusEffect } from '@react-navigation/native';
 import EventSource from "react-native-event-source";
+import Logo from "./Logo";
 
 
 const SearchFriends = ({ navigation }) => {
@@ -15,6 +16,7 @@ const SearchFriends = ({ navigation }) => {
     const [foundUser,setFoundUser]=useState(null);
     const [messageCode, setMessageCode] = useState(0);
     const [isAlertShown, setIsAlertShown] = useState(false);
+    const [showLogo, setShowLogo] = useState(true);
     const {token} = useSelector(state => state.reducer);
 
     useFocusEffect(
@@ -22,7 +24,15 @@ const SearchFriends = ({ navigation }) => {
             setFoundUser(null)
         }, [])
     );
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setShowLogo(false);
+        }, 5000); // 10000 milliseconds = 10 seconds
 
+        return () => {
+            clearTimeout(timer);
+        };
+    }, []);
 
     const handleSearch = (text) => {
         setSearchFriend(text);
@@ -34,6 +44,13 @@ const SearchFriends = ({ navigation }) => {
         const response = await axios.create({baseURL: LOCAL_SERVER_URL}).post('/search-by-user-username?username=' + searchFriend);
         if (response.data.success) {
             setFoundUser(response.data.friendsDetailsModel);
+            const logoTimeout = setTimeout(() => {
+                setShowLogo(false);
+            }, 5000);
+
+            return () => {
+                clearTimeout(logoTimeout); // Clear the timeout on unmount
+            };
         } else {
             setMessageCode(response.data.errorCode);
             setIsAlertShown(true);

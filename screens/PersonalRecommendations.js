@@ -6,6 +6,7 @@ import Questionnaire from "./Questionnaire";
 import axios from "axios";
 import Player from "./Player";
 import {LOCAL_SERVER_URL} from "../redux/actions";
+import Logo from "./Logo";
 
 
 const PersonalRecommendations = () => {
@@ -18,13 +19,11 @@ const PersonalRecommendations = () => {
     const [combinedSongList, setCombinedSongList] = useState([]);
     const [questionnaireData, setQuestionnaireData] = useState(null);
 
-    // Callback function to receive questionnaire data
     const handleQuestionnaireSubmit = (data) => {
         setQuestionnaireData(data);
     };
     useEffect(() => {
         if (playlistByGenre.length > 0 && artist1Playlist.length > 0 && artist2Playlist.length > 0 && listByFavorite.length > 0) {
-
             const combinedList = [...playlistByGenre, ...artist1Playlist, ...artist2Playlist, ...listByFavorite];
             const shuffleCombinedList=shuffleArray(combinedList)
             setCombinedSongList(shuffleCombinedList);
@@ -33,8 +32,7 @@ const PersonalRecommendations = () => {
 
 
     useEffect(()=>{
-        allAnswers===null&&
-        getAnswers();
+        getAnswers().then(r => {});
 
 
     },[questionnaireData,token])
@@ -52,11 +50,8 @@ const PersonalRecommendations = () => {
         const response = await axios.create({baseURL: LOCAL_SERVER_URL}).get('/get-user-preferences?token=' + token)
         if(response.data.success){
             setAllAnswers(response.data.userPreferences)
-
-
         }else {
-            alert(response.data.errorCode)
-            console.log(token)
+            console.log("not found answers: "+response.data.errorCode)
         }
     }
 
@@ -171,13 +166,15 @@ const PersonalRecommendations = () => {
     const setRelatedSongList=(response)=>{
         let tempSongs=[];
         if (response!==undefined){
-            response.map((song)=>{
+            response.map((song,index)=>{
                 if (song!==undefined){
                     const currentSong = {
+                        songIndex:index,
                         title: song.title!==undefined? song.title: '',
                         artist: song.subtitle!==undefined? song.subtitle:'',
                         url: song.hub?.actions[1]?.uri!==undefined?song.hub?.actions[1]?.uri : '',
                         coverImage: song.images?.background!==undefined? song.images.background :'',
+                        isFavorite:false
                     };
                     tempSongs.push(currentSong);
                 }
@@ -206,6 +203,7 @@ const PersonalRecommendations = () => {
                     artist: song.heading.subtitle!==undefined? song.heading.subtitle:'',
                     url: song.stores?.apple.previewurl!==undefined?song.stores?.apple.previewurl : '',
                     coverImage: song.images?.play!==undefined? song.images.play :'',
+                    isFavorite:false
 
 
                 };
@@ -234,6 +232,8 @@ const PersonalRecommendations = () => {
                     artist: song.subtitle,
                     url: song.hub.actions[1].uri,
                     coverImage: song.images.background,
+                    isFavorite:false
+
 
 
                 };
@@ -255,6 +255,17 @@ const PersonalRecommendations = () => {
         }
         return array;
     }
+    function toggleFavorite(index) {
+        const updatedArray = combinedSongList.map((song, i) => {
+            if (i === index) {
+                return { ...song, isFavorite: !song.isFavorite };
+            }
+            return song;
+        });
+        setCombinedSongList(updatedArray);
+    }
+
+
 
 
     return (
@@ -267,7 +278,8 @@ const PersonalRecommendations = () => {
                     :
                     <View>
                         <Text>Your Personal Groove</Text>
-                        <Player songList={combinedSongList} page={'list'} toggleFavorite={null}/>
+                        {combinedSongList.length===0&& <Logo/>}
+                        <Player songList={combinedSongList} page={'list'} toggleFavorite={toggleFavorite}/>
                     </View>
             }
 

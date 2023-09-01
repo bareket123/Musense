@@ -15,9 +15,10 @@ import {AntDesign, FontAwesome, Fontisto} from "@expo/vector-icons";
 import { Audio } from 'expo-av';
 import { useSelector, useDispatch } from 'react-redux';
 import {useContext} from "react";
-import {setPlayedRecently, setPlaylist, X_RAPID_API_HOST, X_RAPID_API_KEY} from "../redux/actions";
+import {setPlayedRecently, setPlaylist, X_RAPID_API_HOST, X_RAPID_API_HOST7, X_RAPID_API_KEY} from "../redux/actions";
 import { useFocusEffect } from '@react-navigation/native';
 import Player from "./Player";
+import Logo from "./Logo";
 
 
 
@@ -33,7 +34,7 @@ export default function MusicByArtist ({ navigation }) {
         React.useCallback(() => {
             setShowSongs(false);
             setCurrentArray([]);
-            setSearchText('');
+
         }, [])
     );
 
@@ -47,13 +48,12 @@ export default function MusicByArtist ({ navigation }) {
         let tempArray=[]
         response.map((song,index) => {
             const currentSong = {
-                songIndex:index,
-                title: song.track.title,
-                artist: song.track.subtitle,
-                url: song.track.hub.actions[1].uri,
-                coverImage:song.track.images.background,
-                isFavorite: false ///
-
+                songIndex: index,
+                title: song.heading.title!==undefined? song.heading.title: '',
+                artist: song.heading.subtitle!==undefined? song.heading.subtitle:'',
+                url: song.stores?.apple.previewurl!==undefined?song.stores?.apple.previewurl : '',
+                coverImage: song.images?.play!==undefined? song.images.play :'',
+                isFavorite: false,
             };
 
             tempArray.push(currentSong);
@@ -68,19 +68,21 @@ export default function MusicByArtist ({ navigation }) {
 
     const search= ()=> {
         console.log("this is the text "+searchText)
+        setSearchText('');
         const songs = {
             method: 'GET',
             headers: {
                 'X-RapidAPI-Key': X_RAPID_API_KEY,
-                'X-RapidAPI-Host': X_RAPID_API_HOST
+                'X-RapidAPI-Host': X_RAPID_API_HOST7
             }
         };
 
-        fetch('https://shazam.p.rapidapi.com/search?term='+searchText+'&locale=en-US&offset=0&limit=5', songs)
+        fetch('https://shazam-api7.p.rapidapi.com/search?term='+searchText+'&limit=5', songs)
             .then(response => response.json())
             .then(response => getAllSongByName(response.tracks.hits))
             .catch(err => console.error("There is error in fetching data: "+err));
         setShowSongs(true);
+
         setSearchText('');
     }
 
@@ -97,6 +99,8 @@ export default function MusicByArtist ({ navigation }) {
 
 
 
+
+
     return (
         <View>
             <View style={styles.searchStyle} >
@@ -109,8 +113,14 @@ export default function MusicByArtist ({ navigation }) {
                 <Fontisto name="search" onPress={search} size={20} color="black" />
             </View>
             {
-                showSongs&&
-                <Player songList={currentArray} page={'list'} toggleFavorite={toggleFavorite}/>
+
+                    showSongs&&
+                <View>
+                    {currentArray.length===0&& <Logo/>}
+                    <Player songList={currentArray} page={'list'} toggleFavorite={toggleFavorite}/>
+                    </View>
+
+
 
             }
 
