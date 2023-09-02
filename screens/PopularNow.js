@@ -19,28 +19,28 @@ import pic from "../images/musicBackGround.jpg";
 
 const PopularNow = () => {
     const [songsArray, setSongsArray] = useState([]); // Initialize songsArray as a state
-    const [fontsLoaded] = useFonts({
-        'Anton-R': require('../assets/fonts/RammettoOne-Regular.ttf')
-    });
+    // const [fontsLoaded] = useFonts({
+    //     'Anton-R': require('../assets/fonts/RammettoOne-Regular.ttf')
+    // });
 
     useEffect(() => {
         try {
-            prepare();
+        //   prepare();
             fetchPlaylist();
         } catch (error) {
             console.log("error in fetching " + error);
         }
     }, []);
 
-    useEffect(() => {
-        if (fontsLoaded) {
-            SplashScreen.hideAsync();
-        }
-    }, [fontsLoaded]);
+    // useEffect(() => {
+    //     if (fontsLoaded) {
+    //         SplashScreen.hideAsync();
+    //     }
+    // }, [fontsLoaded]);
 
-    async function prepare() {
-        await SplashScreen.preventAutoHideAsync();
-    }
+    // async function prepare() {
+    //     await SplashScreen.preventAutoHideAsync();
+    // }
 
 
 
@@ -98,8 +98,8 @@ const PopularNow = () => {
            <View style={{backgroundColor:'black'}}>
             {/*<ImageBackground source={require('../images/popular.png')} >*/}
                 <View style={{alignItems:'center',backgroundColor:'black'}} >
-                    {fontsLoaded && (
-                        <Text style={{ fontFamily: "Anton-R",fontSize:30,color: 'white',
+                    { (
+                        <Text style={{ fontSize:30,color: 'white',
                             textShadowColor: 'rgba(255, 255, 255, 0.6)', // Change text shadow color to white with opacity
                             textShadowOffset: { width: 2, height: 2 },
                             textShadowRadius: 4

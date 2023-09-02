@@ -12,18 +12,18 @@ import * as SplashScreen from "expo-splash-screen";
 const CurrentPlaying= ({ currentSong, setSong, allSongs })=>{
     const [pressedPlaying, setPressedPlaying] = useState(false);
     const dispatch = useDispatch();
-    const [fontsLoaded] = useFonts({
-        'Anton-R': require('../assets/fonts/Anton-Regular.ttf')
-    });
-    useEffect(()=>{
-        if (fontsLoaded) {
-            SplashScreen.hideAsync();
-        }
-        async function prepare() {
-            await SplashScreen.preventAutoHideAsync();
-        }
-        prepare();
-    },[])
+    // const [fontsLoaded] = useFonts({
+    //     'Anton-R': require('../assets/Fonts/Anton-Regular.ttf')
+    // });
+    // useEffect(()=>{
+    //     if (fontsLoaded) {
+    //         SplashScreen.hideAsync();
+    //     }
+    //     async function prepare() {
+    //         await SplashScreen.preventAutoHideAsync();
+    //     }
+    //     prepare();
+    // },[])
 
     async function playSound(song) {
         setPressedPlaying(true);
@@ -75,7 +75,7 @@ const CurrentPlaying= ({ currentSong, setSong, allSongs })=>{
                         <Text style={{fontSize:20,color:'white'}}>X</Text>
                     </TouchableOpacity>
                 </View>
-                <Text style={{color:'white',  fontFamily: "Anton-R"}}>currently playing...</Text>
+                <Text style={{color:'white'}}>currently playing...</Text>
                 <Image source={{uri:currentSong.coverImage}} style={{width:300,height:300,marginBottom:20}}/>
                 <View style={{flexDirection:'row'}}>
                     <TouchableHighlight
