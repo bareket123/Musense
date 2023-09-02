@@ -1,4 +1,4 @@
-import {Image, Text, TouchableOpacity, View, TouchableHighlight, ImageBackground} from "react-native";
+import {Image, Text, TouchableOpacity, View, TouchableHighlight} from "react-native";
 import {AntDesign, Ionicons} from "@expo/vector-icons";
 import Slider from "@react-native-community/slider";
 import React, {useEffect, useState} from "react";
