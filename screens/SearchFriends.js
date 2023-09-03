@@ -19,6 +19,7 @@ const SearchFriends = ({ navigation }) => {
     const [isAlertShown, setIsAlertShown] = useState(false);
     const [showLogo, setShowLogo] = useState(true);
     const {token} = useSelector(state => state.reducer);
+    const [allUsers, setAllUsers] = useState([]);
 
     useFocusEffect(
         React.useCallback(() => {
@@ -36,31 +37,57 @@ const SearchFriends = ({ navigation }) => {
     }, []);
 
     const handleSearch = (text) => {
+        let tempFilteredUsers;
+        if (text!=='' ){
+             tempFilteredUsers = allUsers.filter((user) => {
+                return user.username.toLowerCase().startsWith(text.toLowerCase());
+            });
+        }else tempFilteredUsers=allUsers;
+        setAllUsers(tempFilteredUsers);
         setSearchFriend(text);
+
     };
 
+    useEffect(() => {
+        setUsersFromServer().then(r => {})
+    },[token,allUsers]);
 
-    const search = async () => {
-        setIsAlertShown(false);
-        const response = await axios.create({baseURL: LOCAL_SERVER_URL}).post('/search-by-user-username?username=' + searchFriend);
-        if (response.data.success) {
-            setFoundUser(response.data.friendsDetailsModel);
-            const logoTimeout = setTimeout(() => {
-                setShowLogo(false);
-            }, 5000);
+    // const search = async () => {
+    //     setIsAlertShown(false);
+    //
+    //     const response = await axios.create({baseURL: LOCAL_SERVER_URL}).post('/search-by-user-username?username=' + searchFriend);
+    //     if (response.data.success) {
+    //         setFoundUser(response.data.friendsDetailsModel);
+    //         const logoTimeout = setTimeout(() => {
+    //             setShowLogo(false);
+    //         }, 5000);
+    //
+    //         return () => {
+    //             clearTimeout(logoTimeout); // Clear the timeout on unmount
+    //         };
+    //     } else {
+    //         setMessageCode(response.data.errorCode);
+    //         setIsAlertShown(true);
+    //     }
+    //     setSearchFriend("");
+    //     setMessageCode(0);
+    //     setIsAlertShown(false);
+    //
+    // };
 
-            return () => {
-                clearTimeout(logoTimeout); // Clear the timeout on unmount
-            };
-        } else {
-            setMessageCode(response.data.errorCode);
-            setIsAlertShown(true);
+    const setUsersFromServer = async ()=>{
+        if (token!==''){
+            const response = await axios.create({baseURL: LOCAL_SERVER_URL}).post('/get-all-Users-without-current?token=' + token);
+            if (response.data.success){
+                setAllUsers(response.data.myFriends);
+            }else {
+                alert(response.data.errorCode)
+            }
+        }else {
+            console.log("token is empty")
         }
-        setSearchFriend("");
-        setMessageCode(0);
-        setIsAlertShown(false);
 
-    };
+    }
 
 const create_SSE_Connection=()=>{
     try {
@@ -92,9 +119,9 @@ const create_SSE_Connection=()=>{
         console.error('Error creating event source:', error);
     }
 }
-    const followingRequest = async ()=>{
+    const followingRequest = async (user)=>{
         if (token!==''){
-            const response = await axios.create({baseURL: LOCAL_SERVER_URL}).post('/follow-friend?token=' + token +'&friendUsername='+foundUser.username);
+            const response = await axios.create({baseURL: LOCAL_SERVER_URL}).post('/follow-friend?token=' + token +'&friendUsername='+user.username);
             if (response.data.success){
                 setMessageCode(FOLLOWING);
                 //create_SSE_Connection()
@@ -116,30 +143,30 @@ const create_SSE_Connection=()=>{
                     onChangeText={handleSearch}
                     value={searchFriend}
                 />
-                <TouchableOpacity onPress={search}>
-                    <Fontisto name="search" size={30} color="black" />
-                </TouchableOpacity>
             </View>
             {
-                foundUser!==null &&
-                <View style={{flexDirection: 'row'}}>
-                    <TouchableOpacity onPress={followingRequest}>
-                        <View style={{height: 100, width: 180, alignItems: 'center' }}>
-                            <SimpleLineIcons name="user-follow" size={24} color="black" style={{ height: 30, width: 50, marginBottom: 5 }} />
-                            <Text>You can start following</Text>
+                allUsers.length!==0 &&
+                allUsers.map((user) => (
+                    <View style={{flexDirection: 'row'}}>
+                        <TouchableOpacity onPress={()=>followingRequest(user)} >
+                            <View style={{height: 100, width: 180, alignItems: 'center' }}>
+                                <SimpleLineIcons name="user-follow" size={24} color="black" style={{ height: 30, width: 50, marginBottom: 5 }} />
+                                <Text>You can start following</Text>
+                            </View>
+                        </TouchableOpacity>
+                        <View style={{marginLeft:100}}>
+                            <Text style={{height:50, width:50}}> {user.username}</Text>
                         </View>
-                    </TouchableOpacity>
-                    <View style={{marginLeft:100}}>
-                        <Text style={{height:50, width:50}}> {foundUser.username}</Text>
-                    </View>
-                    <Image
-                        source={{
-                            uri: foundUser.picture!==""?foundUser.picture:'https://t4.ftcdn.net/jpg/02/29/75/83/360_F_229758328_7x8jwCwjtBMmC6rgFzLFhZoEpLobB6L8.jpg',
-                        }}
-                        style={{ width: 60, height: 60, borderRadius: 30 }}
-                    />
+                        <Image
+                            source={{
+                                uri: user.picture!==""?user.picture:'https://t4.ftcdn.net/jpg/02/29/75/83/360_F_229758328_7x8jwCwjtBMmC6rgFzLFhZoEpLobB6L8.jpg',
+                            }}
+                            style={{ width: 60, height: 60, borderRadius: 30 }}
+                        />
 
-                </View>
+                    </View>
+                ))
+
 
                  }
             {
