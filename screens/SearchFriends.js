@@ -14,16 +14,17 @@ import searchFriendsStyle from "../styles/searchFriendsStyle";
 
 const SearchFriends = ({ navigation }) => {
     const [searchFriend, setSearchFriend] = useState('');
-    const [foundUser,setFoundUser]=useState(null);
+    const [foundUser,setFoundUser]=useState(false);
     const [messageCode, setMessageCode] = useState(0);
     const [isAlertShown, setIsAlertShown] = useState(false);
     const [showLogo, setShowLogo] = useState(true);
     const {token} = useSelector(state => state.reducer);
     const [allUsers, setAllUsers] = useState([]);
+    const [filteredUsers, setFilteredUsers] = useState([]);
 
     useFocusEffect(
         React.useCallback(() => {
-            setFoundUser(null)
+            // setFoundUser(null)
         }, [])
     );
     useEffect(() => {
@@ -37,21 +38,21 @@ const SearchFriends = ({ navigation }) => {
     }, []);
 
     const handleSearch = (text) => {
-        let tempFilteredUsers;
-        if (text!=='' ){
-             tempFilteredUsers = allUsers.filter((user) => {
-                return user.username.toLowerCase().startsWith(text.toLowerCase());
-            });
-        }else tempFilteredUsers=allUsers;
-        setAllUsers(tempFilteredUsers);
         setSearchFriend(text);
-
-    };
+        const tempFilteredUsers = allUsers.filter((user) => {
+            return user.username.toLowerCase().startsWith(text.toLowerCase())})
+        tempFilteredUsers.length===0 ?
+            setFilteredUsers(allUsers):
+            setFilteredUsers(tempFilteredUsers)
+         setFoundUser(tempFilteredUsers.length!==0)
+    }
 
     useEffect(() => {
         setUsersFromServer().then(r => {})
-    },[token,allUsers]);
+    },[token]);
 
+    useEffect(() => {
+    },[searchFriend,filteredUsers]);
     // const search = async () => {
     //     setIsAlertShown(false);
     //
@@ -80,6 +81,7 @@ const SearchFriends = ({ navigation }) => {
             const response = await axios.create({baseURL: LOCAL_SERVER_URL}).post('/get-all-Users-without-current?token=' + token);
             if (response.data.success){
                 setAllUsers(response.data.myFriends);
+                setFilteredUsers(response.data.myFriends)
             }else {
                 alert(response.data.errorCode)
             }
@@ -121,19 +123,35 @@ const create_SSE_Connection=()=>{
 }
     const followingRequest = async (user)=>{
         if (token!==''){
-            const response = await axios.create({baseURL: LOCAL_SERVER_URL}).post('/follow-friend?token=' + token +'&friendUsername='+user.username);
-            if (response.data.success){
-                setMessageCode(FOLLOWING);
-                //create_SSE_Connection()
+            if(user.following){
+               await unfollowFriend(user);
             }else {
-                setMessageCode(response.data.errorCode);
+              const  response = await axios.create({baseURL: LOCAL_SERVER_URL}).post('/follow-friend?token=' + token +'&friendUsername='+user.username);
+                if (response.data.success){
+                    setMessageCode(FOLLOWING);
+                    user.following = true ;
+                    //create_SSE_Connection()
+                }else {
+                    setMessageCode(response.data.errorCode);
+                }
             }
+
         }else {
             console.log("token is empty")
         }
         setMessageCode(0)
     }
 
+    const unfollowFriend=async(friend) => {
+        const response = await axios.create({baseURL: LOCAL_SERVER_URL}).post('/delete-friend?token='+token+'&friendUsername='+friend.username);
+        if (response.data.success){
+            friend.following=false;
+            alert("delete")
+
+        }else {
+            alert(response.data.errorCode)
+        }
+    }
 
     return (
         <View>
@@ -142,16 +160,22 @@ const create_SSE_Connection=()=>{
                     placeholder="Search Friends..."
                     onChangeText={handleSearch}
                     value={searchFriend}
+
                 />
+                {
+                    !foundUser && searchFriend!=='' &&
+                    <Text> {"Oops! We couldn't find: "+ searchFriend  }  </Text>
+
+                }
             </View>
             {
-                allUsers.length !== 0 &&
-                allUsers.map((user) => (
+                filteredUsers.length !== 0 &&
+                filteredUsers.map((user) => (
                     <View key={user.id} style={{ flexDirection: 'row' }}>
                         <TouchableOpacity onPress={() => followingRequest(user)}>
                             <View style={{ height: 100, width: 180, alignItems: 'center' }}>
                                 <SimpleLineIcons name="user-follow" size={24} color="black" style={{ height: 30, width: 50, marginBottom: 5 }} />
-                                <Text>You can start following</Text>
+                                <Text>{user.following ? "Unfollow" : "Follow"}</Text>
                             </View>
                         </TouchableOpacity>
                         <View style={{ marginLeft: 100 }}>
