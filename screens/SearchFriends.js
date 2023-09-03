@@ -145,30 +145,27 @@ const create_SSE_Connection=()=>{
                 />
             </View>
             {
-                allUsers.length!==0 &&
+                allUsers.length !== 0 &&
                 allUsers.map((user) => (
-                    <View style={{flexDirection: 'row'}}>
-                        <TouchableOpacity onPress={()=>followingRequest(user)} >
-                            <View style={{height: 100, width: 180, alignItems: 'center' }}>
+                    <View key={user.id} style={{ flexDirection: 'row' }}>
+                        <TouchableOpacity onPress={() => followingRequest(user)}>
+                            <View style={{ height: 100, width: 180, alignItems: 'center' }}>
                                 <SimpleLineIcons name="user-follow" size={24} color="black" style={{ height: 30, width: 50, marginBottom: 5 }} />
                                 <Text>You can start following</Text>
                             </View>
                         </TouchableOpacity>
-                        <View style={{marginLeft:100}}>
-                            <Text style={{height:50, width:50}}> {user.username}</Text>
+                        <View style={{ marginLeft: 100 }}>
+                            <Text style={{ height: 50, width: 50 }}> {user.username}</Text>
                         </View>
                         <Image
                             source={{
-                                uri: user.picture!==""?user.picture:'https://t4.ftcdn.net/jpg/02/29/75/83/360_F_229758328_7x8jwCwjtBMmC6rgFzLFhZoEpLobB6L8.jpg',
+                                uri: user.picture !== "" ? user.picture : 'https://t4.ftcdn.net/jpg/02/29/75/83/360_F_229758328_7x8jwCwjtBMmC6rgFzLFhZoEpLobB6L8.jpg',
                             }}
                             style={{ width: 60, height: 60, borderRadius: 30 }}
                         />
-
                     </View>
                 ))
-
-
-                 }
+            }
             {
                ( messageCode !== 0 && !isAlertShown)&&
                 <ErrorAlert message={messageCode}/>
