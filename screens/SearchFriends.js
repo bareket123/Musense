@@ -123,9 +123,9 @@ const create_SSE_Connection=()=>{
 }
     const followingRequest = async (user)=>{
         if (token!==''){
-            if(user.following){
-               await unfollowFriend(user);
-            }else {
+            // if(user.following){
+            //    await unfollowFriend(user);
+            // }else {
               const  response = await axios.create({baseURL: LOCAL_SERVER_URL}).post('/follow-friend?token=' + token +'&friendUsername='+user.username);
                 if (response.data.success){
                     setMessageCode(FOLLOWING);
@@ -134,7 +134,7 @@ const create_SSE_Connection=()=>{
                 }else {
                     setMessageCode(response.data.errorCode);
                 }
-            }
+            // }
 
         }else {
             console.log("token is empty")
@@ -142,16 +142,16 @@ const create_SSE_Connection=()=>{
         setMessageCode(0)
     }
 
-    const unfollowFriend=async(friend) => {
-        const response = await axios.create({baseURL: LOCAL_SERVER_URL}).post('/delete-friend?token='+token+'&friendUsername='+friend.username);
-        if (response.data.success){
-            friend.following=false;
-            alert("delete")
-
-        }else {
-            alert(response.data.errorCode)
-        }
-    }
+    // const unfollowFriend=async(friend) => {
+    //     const response = await axios.create({baseURL: LOCAL_SERVER_URL}).post('/delete-friend?token='+token+'&friendUsername='+friend.username);
+    //     if (response.data.success){
+    //         friend.following=false;
+    //         alert("delete")
+    //
+    //     }else {
+    //         alert(response.data.errorCode)
+    //     }
+    // }
 
     return (
         <View>
