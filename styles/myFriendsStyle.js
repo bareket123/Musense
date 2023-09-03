@@ -58,9 +58,8 @@ const myFriendsStyle = StyleSheet.create({
         backgroundColor:'antiquewhite'
     },
     container: {
-        flex: 1,
-        backgroundColor:'pink',
-        flexDirection:'row'
+        padding: 10,
+        backgroundColor: 'black',
     },
     searchStyle: {
         flexDirection:'row',

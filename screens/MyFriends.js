@@ -57,7 +57,7 @@ const MyFriends = ({navigation}) => {
     }
     const renderItem=({item})=>(
         <View style={{ padding: 20, flexDirection: 'row', alignItems: 'center', left: '20%' }}>
-            <Text style={{marginRight:20}}>{item.username}</Text>
+            <Text style={{marginRight:20,  color:'white'}}>{item.username}</Text>
             <Image
                 source={{
                     uri: item.picture!==''?item.picture : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS3J7fax0r25yrhXbt64ICXsKZ-Clm_txAxmw&usqp=CAU',
@@ -65,8 +65,8 @@ const MyFriends = ({navigation}) => {
                 style={{ width: 60, height: 60, borderRadius: 30 , marginRight:20}}
             />
             <TouchableOpacity style={{flexDirection:'column' , alignItems:'center'}} onPress={()=>{deleteFriend(item).then(r=>console.log("delete friend"))}} >
-                <Entypo name="remove-user" size={24} color="black" />
-                <Text>remove user</Text>
+                <Entypo name="remove-user" size={24} color="white" />
+                <Text  style={{ color:'white'}}>remove user</Text>
             </TouchableOpacity>
 
         </View>
@@ -74,16 +74,17 @@ const MyFriends = ({navigation}) => {
 
     return (
         <View>
+            <View style={myFriendsStyle.container}>
 
             {
                 myFriends.length!==0?
                     <View>
-                        <Text style={{fontWeight:'bold'}}>my friends: </Text>
+                        <Text style={{fontWeight:'bold', color:'white'}} >my friends: </Text>
                         <FlatList data={myFriends} renderItem={renderItem}/>
                     </View>
                     :
                     <View>
-                        <Text>Looks like you haven't added any friends yet  </Text>
+                        <Text style={{fontWeight:'bold', color:'white'}}>Looks like you haven't added any friends yet  </Text>
 
                     </View>
 
@@ -92,6 +93,7 @@ const MyFriends = ({navigation}) => {
                 messageCode!==0&&
                 <ErrorAlert message={messageCode}/>
             }
+            </View>
         </View>
     );
 };

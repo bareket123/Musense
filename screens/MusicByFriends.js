@@ -48,6 +48,7 @@ export default function MusicByFriends ({ navigation }) {
 
 
     return (
+        <View style={musicByFriendsStyle.container}>
 
        <View>
            {
@@ -70,6 +71,7 @@ export default function MusicByFriends ({ navigation }) {
                <ErrorAlert message={messageCode}/>
            }
        </View>
+        </View>
 
     );
 };

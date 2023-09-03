@@ -12,6 +12,10 @@ const musicByFriendsStyle = StyleSheet.create({
         height: '100%',
         resizeMode: 'cover',
     },
+    container: {
+        flex: 1,
+        backgroundColor: 'black',
+    },
     buttonExit: {
         backgroundColor: 'orange',
         borderRadius: 50,
