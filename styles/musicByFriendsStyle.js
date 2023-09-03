@@ -2,7 +2,6 @@ import { StyleSheet } from 'react-native';
 
 const musicByFriendsStyle = StyleSheet.create({
 
-
     viewStyle:{
         justifyContent: 'center',
         flexDirection: 'row',

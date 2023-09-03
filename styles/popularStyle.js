@@ -16,7 +16,6 @@ playButtonText: {
         fontSize: 16,
         fontWeight: 'bold',
 },
-
 SafeAreaView:{
     justifyContent: 'center',
         alignItems: 'center',

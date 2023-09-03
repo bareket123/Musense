@@ -52,7 +52,7 @@ export default function Player ({ songList,page,toggleFavorite  }) {
                         }} name="heart"  size={30} color={ isSongInPlaylist(item.url) || item.isFavorite ? 'red' : 'green'}/>
                         :
                         <TouchableOpacity style={{ marginLeft: 50 }} onPress={() =>deleteSong(item)}>
-                            <AntDesign name="delete" size={24} color="black" />
+                            <AntDesign name="delete" size={24} color="white" />
                         </TouchableOpacity>
 
                 }

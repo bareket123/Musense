@@ -37,7 +37,7 @@ const CurrentPlaying= ({ currentSong, setSong, allSongs })=>{
     }
 
     const handleVolumeChange = async (newVolume) => {
-      await setVolume(newVolume)
+        await setVolume(newVolume)
     }
 
     const playMusic=(song)=>{
@@ -69,59 +69,59 @@ const CurrentPlaying= ({ currentSong, setSong, allSongs })=>{
 
 
     return (
-            <View style={{alignItems:'center'}}>
-                <View style={{position:'absolute',top:0,right:0}}>
-                    <TouchableOpacity onPress={()=>{setSong(undefined),pauseAudio()}} style={{justifyContent:'flex-start',alignItems: 'flex-start'}}>
-                        <Text style={{fontSize:20,color:'white'}}>X</Text>
-                    </TouchableOpacity>
-                </View>
-                <Text style={{color:'white'}}>currently playing...</Text>
-                <Image source={{uri:currentSong.coverImage}} style={{width:300,height:300,marginBottom:20}}/>
-                <View style={{flexDirection:'row'}}>
-                    <TouchableHighlight
-                        underlayColor="rgba(255, 255, 255, 0.2)" // White glow on black background
-                        onPress={() => replaceSong('next')}
-                        style={{ overflow: 'hidden', marginHorizontal: 5,right:40 }}
-                    >
-                        <AntDesign name="forward" color="white" style={{ fontSize: 40 }} />
-                    </TouchableHighlight>
-
-                    <TouchableHighlight
-                        underlayColor="rgba(255, 255, 255, 0.2)" // White glow on black background
-                        onPress={() =>{playMusic(currentSong)} }
-                        style={{ overflow: 'hidden', marginHorizontal: 5 }}
-                    >
-                        <AntDesign name={pressedPlaying ? 'pausecircle' : 'play'} style={{ fontSize: 50 }} color="white" />
-                    </TouchableHighlight>
-
-                    <TouchableHighlight
-                        underlayColor="rgba(255, 255, 255, 0.2)" // White glow on black background
-                        onPress={() => replaceSong('previous')}
-                        style={{ overflow: 'hidden', marginHorizontal: 5, left:40 }}
-                    >
-                        <AntDesign name="banckward" color="white" style={{ fontSize: 40 }} />
-                    </TouchableHighlight>
-                </View>
-                <View style={{flexDirection:'row'}}>
-                    <Ionicons name="md-volume-high" size={24} color="black" style={{left:5}} />
-                    <Slider
-                        style={{  width: 200, marginLeft: 5,marginTop:5  }}
-                        value={getVolume()}
-                        minimumValue={0}
-                        maximumValue={1}
-                        step={0.05}
-                        onValueChange={handleVolumeChange}
-                        minimumTrackTintColor={'black'}
-                        maximumTrackTintColor={'grey'}
-                        thumbTintColor={"black"}
-                    />
-
-
-
-                </View>
+        <View style={{alignItems:'center'}}>
+            <View style={{position:'absolute',top:0,right:0}}>
+                <TouchableOpacity onPress={()=>{setSong(undefined),pauseAudio()}} style={{justifyContent:'flex-start',alignItems: 'flex-start'}}>
+                    <Text style={{fontSize:20,color:'white'}}>X</Text>
+                </TouchableOpacity>
             </View>
+            <Text style={{color:'white'}}>currently playing...</Text>
+            <Image source={{uri:currentSong.coverImage}} style={{width:300,height:300,marginBottom:20}}/>
+            <View style={{flexDirection:'row'}}>
+                <TouchableHighlight
+                    underlayColor="rgba(255, 255, 255, 0.2)" // White glow on black background
+                    onPress={() => replaceSong('next')}
+                    style={{ overflow: 'hidden', marginHorizontal: 5,right:40 }}
+                >
+                    <AntDesign name="forward" color="white" style={{ fontSize: 40 }} />
+                </TouchableHighlight>
 
-        );
+                <TouchableHighlight
+                    underlayColor="rgba(255, 255, 255, 0.2)" // White glow on black background
+                    onPress={() =>{playMusic(currentSong)} }
+                    style={{ overflow: 'hidden', marginHorizontal: 5 }}
+                >
+                    <AntDesign name={pressedPlaying ? 'pausecircle' : 'play'} style={{ fontSize: 50 }} color="white" />
+                </TouchableHighlight>
+
+                <TouchableHighlight
+                    underlayColor="rgba(255, 255, 255, 0.2)" // White glow on black background
+                    onPress={() => replaceSong('previous')}
+                    style={{ overflow: 'hidden', marginHorizontal: 5, left:40 }}
+                >
+                    <AntDesign name="banckward" color="white" style={{ fontSize: 40 }} />
+                </TouchableHighlight>
+            </View>
+            <View style={{flexDirection:'row'}}>
+                <Ionicons name="md-volume-high" size={24} color="white" style={{left:5}} />
+                <Slider
+                    style={{  width: 200, marginLeft: 5,marginTop:5  }}
+                    value={getVolume()}
+                    minimumValue={0}
+                    maximumValue={1}
+                    step={0.05}
+                    onValueChange={handleVolumeChange}
+                    minimumTrackTintColor={'white'}
+                    maximumTrackTintColor={'grey'}
+                    thumbTintColor={"white"}
+                />
+
+
+
+            </View>
+        </View>
+
+    );
 
 
 }

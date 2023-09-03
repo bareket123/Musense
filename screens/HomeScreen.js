@@ -6,9 +6,9 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import SearchFriends from "./SearchFriends";
 import MyFriends from "./MyFriends";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
 import {setToken} from "../redux/actions";
 import {useDispatch} from "react-redux";
+import  homeStyle from '../styles/homeStyle'
 
 
 const HomeScreen = ({ navigation }) => {
@@ -34,34 +34,34 @@ const HomeScreen = ({ navigation }) => {
     }
     useEffect(  () => {
 
-       getToken().then(r => {console.log("save the token in state")});
+        getToken().then(r => {console.log("save the token in state")});
 
     },[])
 
     return (
-        <ScrollView style={styles.container}>
+        <ScrollView style={homeStyle.container}>
             <SafeAreaView>
-                <View style={styles.SafeAreaView}>
+                <View style={homeStyle.SafeAreaView}>
                     <TouchableOpacity onPress={()=>{ navigation.navigate('Popular')}}>
-                        <Image source={require('../images/popular.gif')} style={styles.image}  resizeMode="cover"
+                        <Image source={require('../images/popular.gif')} style={homeStyle.image}  resizeMode="cover"
                         />
-                        <Text style={styles.caption}>Popular Music</Text>
+                        <Text style={homeStyle.caption}>Popular Music</Text>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={()=>{ navigation.navigate('played')}}>
-                        <Image source={require('../images/playrecently.gif')} style={styles.image}/>
-                        <Text style={styles.caption}>Played Recently</Text>
+                        <Image source={require('../images/playrecently.gif')} style={homeStyle.image}/>
+                        <Text style={homeStyle.caption}>Played Recently</Text>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={()=>{ navigation.navigate('artist')}}>
-                        <Image source={require('../images/music.png')} style={styles.image}/>
-                        <Text style={styles.caption}> Music by Artist</Text>
+                        <Image source={require('../images/music.png')} style={homeStyle.image}/>
+                        <Text style={homeStyle.caption}> Music by Artist</Text>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={()=>{ navigation.navigate('friends')}}>
-                        <Image source={require('../images/friends.gif')} style={styles.image}/>
-                        <Text style={styles.caption}>Played Music by Friends</Text>
+                        <Image source={require('../images/friends.gif')} style={homeStyle.image}/>
+                        <Text style={homeStyle.caption}>Played Music by Friends</Text>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={()=>{ navigation.navigate('playlist')}}>
-                        <Image source={require('../images/playlist2.gif')} style={styles.image}/>
-                        <Text style={styles.caption}>my playlist</Text>
+                        <Image source={require('../images/playlist2.gif')} style={homeStyle.image}/>
+                        <Text style={homeStyle.caption}>my playlist</Text>
                     </TouchableOpacity>
                 </View>
 
@@ -111,67 +111,5 @@ const HomeScreen = ({ navigation }) => {
     );
 };
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor:'black'
-    },
-    SafeAreaView:{
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    TouchableOpacity: {
-        backgroundColor: '#2196F3',
-        paddingVertical: 10,
-        paddingHorizontal: 20,
-        borderRadius: 10,
-        marginHorizontal: 5,
-    },
-    buttonText: {
-        color: '#fff',
-        fontSize: 16,
-        fontWeight: 'bold',
-    },
-    image: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        width: 300,
-        height: 300,
-    },
-    caption: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
-        color: '#fff',
-        padding: 5,
-        fontSize: 20,
-    },
-    header:{
-        position: 'absolute',
-        right:150,
-        fontSize: 16,
-        fontWeight: 'bold',
-        color:'white',
-        shadowColor:'green'
-    },
-    loginButton:{
-        left:100,
-        backgroundColor:'green',
-    },
-    linearGradient: {
-        left:100,
-        paddingLeft: 15,
-        paddingRight: 15,
-        borderRadius: 60
-    },
-    buttonText3: {
-        fontSize: 18,
-        textAlign: 'center',
-        margin: 10,
-        color: '#ffffff',
-        backgroundColor: 'transparent',
-    },
-});
 
 export default HomeScreen;

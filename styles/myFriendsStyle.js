@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-const musicByArtistStyle = StyleSheet.create({
+const myFriendsStyle = StyleSheet.create({
     viewStyle:{
         justifyContent: 'center',
         flexDirection: 'row',
@@ -68,10 +68,11 @@ const musicByArtistStyle = StyleSheet.create({
         height: 40,
         borderColor: 'black',
         borderWidth: 5,
-        borderRadius: 20, // Make it circular by setting borderRadius to half of the height
+        borderRadius: 20,
         paddingHorizontal: 10,
+
     },
 
 });
 
-export default musicByArtistStyle;
+export default myFriendsStyle;

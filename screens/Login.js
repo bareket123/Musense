@@ -11,6 +11,7 @@ import {useDispatch, useSelector} from "react-redux";
 import ErrorAlert from "./ErrorAlert";
 import {LOGIN_SUCCESSFULLY, SIGN_UP_SUCCESSFULLY} from "./Constans";
 import * as ImagePicker from 'expo-image-picker';
+import  loginStyle from '../styles/loginStyle'
 
 
 export default function Login () {
@@ -139,8 +140,8 @@ export default function Login () {
     }
 
     return (
-        <ImageBackground source={pic} style={styles.background} >
-            <ScrollView style={styles.container}>
+        <ImageBackground source={pic} style={loginStyle.background} >
+            <ScrollView style={loginStyle.container}>
                 <View>
                     <RadioButton.Group onValueChange={value => setChecked(value)} value={checked}>
                         <RadioButton.Item labelStyle={{ color: 'black', fontWeight: 'bold',fontSize:20 }} style={{shadowColor:'white'}} label="Login" value="login" />
@@ -149,68 +150,68 @@ export default function Login () {
                     {
                         checked!==''&&
                         <View>
-                            <Text style={styles.headerText}>Enter your {checked==='login' ? 'username and password' : 'details to sign up'}</Text>
-                            <View style={styles.viewStyle}>
+                            <Text style={loginStyle.headerText}>Enter your {checked==='login' ? 'username and password' : 'details to sign up'}</Text>
+                            <View style={loginStyle.viewStyle}>
                                 <AntDesign name="user" size={24} color="black" />
                                 <TextInput
                                     placeholder="Username"
                                     value={usernameInput}
                                     mode={"outlined"}
                                     onChangeText={setUsernameInput}
-                                    style={styles.textInput}
+                                    style={loginStyle.textInput}
                                 />
                             </View>
-                            <View style={styles.viewStyle}>
+                            <View style={loginStyle.viewStyle}>
                                 <MaterialCommunityIcons name="lock" size={24} color="black" />
                                 <TextInput
                                     placeholder="Password"
                                     value={password}
                                     mode={"outlined"}
                                     onChangeText={setPassword}
-                                    style={[styles.textInput, checked==='login'&& {marginBottom: 20}]}
+                                    style={[loginStyle.textInput, checked==='login'&& {marginBottom: 20}]}
                                     secureTextEntry={true}
                                 />
                             </View>
                             {
                                 checked === 'signUp' &&
                                 <View>
-                                    <View style={styles.viewStyle}>
+                                    <View style={loginStyle.viewStyle}>
                                         <MaterialCommunityIcons name="lock-check" size={24} color="black"/>
                                         <TextInput
                                             placeholder="Confirm Password"
                                             mode={"outlined"}
                                             value={confirmPassword}
                                             onChangeText={setConfirmPassword}
-                                            style={[styles.textInput, ((password !== confirmPassword) && (password.length !== 0&& confirmPassword.length!==0)) && { backgroundColor: 'tomato'}] }
+                                            style={[loginStyle.textInput, ((password !== confirmPassword) && (password.length !== 0&& confirmPassword.length!==0)) && { backgroundColor: 'tomato'}] }
                                             secureTextEntry={true}
                                         />
                                     </View>
-                                    <View style={[styles.viewStyle]}>
+                                    <View style={[loginStyle.viewStyle]}>
                                         <MaterialIcons name="mail-outline" size={24} color="black" />
                                         <TextInput
                                             placeholder="Email"
                                             value={email}
                                             mode={"outlined"}
                                             onChangeText={setEmail}
-                                            style={[styles.textInput,(!emailValidation(email)&&  email.length!==0)&&  { backgroundColor: 'tomato'}]}
+                                            style={[loginStyle.textInput,(!emailValidation(email)&&  email.length!==0)&&  { backgroundColor: 'tomato'}]}
                                             keyboardType={"email-address"}
                                         />
                                     </View>
-                                    <View style={[styles.viewStyle]}>
-                                        <Button style={styles.button} labelStyle={{color:'white',fontSize:21,fontWeight: 'bold'}}
+                                    <View style={[loginStyle.viewStyle]}>
+                                        <Button style={loginStyle.button} labelStyle={{color:'white',fontSize:21,fontWeight: 'bold'}}
                                                 onPress={selectImage}
                                         >Upload Picture </Button>
                                     </View>
-                                    <View style={[styles.viewStyle]}>
-                                        {uploadPic && <Image source={{ uri: uploadPic.uri }} style={styles.image} />}
+                                    <View style={[loginStyle.viewStyle]}>
+                                        {uploadPic && <Image source={{ uri: uploadPic.uri }} style={loginStyle.image} />}
                                     </View>
-                                    {/*<Button style={styles.button} labelStyle={{color:'white',fontSize:21,fontWeight: 'bold'}}*/}
+                                    {/*<Button style={loginStyle.button} labelStyle={{color:'white',fontSize:21,fontWeight: 'bold'}}*/}
                                     {/*        onPress={uploadImage}*/}
                                     {/*>Upload  </Button>*/}
                                 </View>
                             }
                             <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                                <Button style={styles.button} labelStyle={{color:'white',fontSize:21,fontWeight: 'bold'}}
+                                <Button style={loginStyle.button} labelStyle={{color:'white',fontSize:21,fontWeight: 'bold'}}
                                         mode="contained"
                                         disabled={!checkValidation() }
                                         onPress={handleButtonPressed}
@@ -219,10 +220,10 @@ export default function Login () {
                             {
                                 (password !== confirmPassword) && (password.length !== 0) &&(confirmPassword.length!==0)&&
 
-                                <View style={styles.viewStyle}>
+                                <View style={loginStyle.viewStyle}>
                                     <MaterialCommunityIcons name="alert-circle" size={24} color="red" />
                                     <View style={{ marginLeft: 5 }}>
-                                        <Text style={styles.warningText}>Passwords do not match</Text>
+                                        <Text style={loginStyle.warningText}>Passwords do not match</Text>
                                     </View>
                                 </View>
                             }
@@ -230,11 +231,11 @@ export default function Login () {
                                 (!emailValidation(email)) && (email.length!==0)&&
                                 <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10  }}>
                                     <MaterialCommunityIcons name="alert-circle" size={24} color="red" />
-                                    <Text style={styles.warningText}>email isn't valid </Text>
+                                    <Text style={loginStyle.warningText}>email isn't valid </Text>
                                 </View>
                             }
                             <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                                <Button style={styles.button} title={'clear'} labelStyle={{color:'white',fontSize:21,fontWeight: 'bold'}} mode="contained" onPress={clearButton}>Clear</Button>
+                                <Button style={loginStyle.button} title={'clear'} labelStyle={{color:'white',fontSize:21,fontWeight: 'bold'}} mode="contained" onPress={clearButton}>Clear</Button>
                             </View>
                         </View>
                     }
@@ -247,53 +248,3 @@ export default function Login () {
         </ImageBackground>
     );
 };
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
-    viewStyle:{
-        justifyContent: 'center',
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
-    textInput:{
-        justifyContent: 'center',
-        padding: 10,
-        paddingLeft: 60,
-        width: 300,
-        backgroundColor:'antiquewhite'
-    },
-    warningText:{
-        color:'red',
-    },
-    headerText: {
-        justifyContent: 'center',
-        fontSize: 23,
-        fontWeight: 'bold',
-        marginBottom: 10,
-        color:'indianred',
-        shadowColor:'white'
-    },
-    background: {
-        width: '100%',
-        height: '100%',
-        resizeMode: 'cover',
-    },
-    button:{
-        marginBottom: 10,
-        alignItems:'center',
-        backgroundColor: 'pink',
-        paddingVertical: 10,
-        width:200,
-        paddingHorizontal: 0,
-        shadowColor: 'black',
-    },
-    image: {
-        width: 200,
-        height: 200,
-        marginTop: 20,
-    },
-
-
-});

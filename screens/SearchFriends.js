@@ -9,6 +9,7 @@ import {FOLLOWING} from "./Constans";
 import { useFocusEffect } from '@react-navigation/native';
 import EventSource from "react-native-event-source";
 import Logo from "./Logo";
+import searchFriendsStyle from "../styles/searchFriendsStyle";
 
 
 const SearchFriends = ({ navigation }) => {
@@ -109,7 +110,7 @@ const create_SSE_Connection=()=>{
 
     return (
         <View>
-            <View style={styles.searchStyle}>
+            <View style={searchFriendsStyle.searchStyle}>
                 <TextInput
                     placeholder="Search Friends..."
                     onChangeText={handleSearch}
@@ -149,17 +150,5 @@ const create_SSE_Connection=()=>{
     );
 };
 
-const styles = StyleSheet.create({
-    searchStyle: {
-        flexDirection:'row',
-        justifyContent: 'space-between',
-        height: 40,
-        marginBottom:50,
-        borderColor: 'black',
-        borderWidth: 5,
-        borderRadius: 20,
-        paddingHorizontal: 10,
-    },
-});
 
 export default SearchFriends;

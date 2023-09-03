@@ -8,7 +8,6 @@ const loginStyle = StyleSheet.create({
         justifyContent: 'center',
         flexDirection: 'row',
         alignItems: 'center',
-        // flexDirection: 'column'
     },
     textInput:{
         justifyContent: 'center',
@@ -34,7 +33,6 @@ const loginStyle = StyleSheet.create({
         resizeMode: 'cover',
     },
     button:{
-
         marginBottom: 10,
         alignItems:'center',
         backgroundColor: 'pink',

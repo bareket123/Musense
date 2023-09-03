@@ -9,6 +9,7 @@ import {LOCAL_SERVER_URL, setPlaylist} from "../redux/actions";
 import {useDispatch} from "react-redux";
 import ErrorAlert from "./ErrorAlert";
 import Logo from "./Logo";
+import  myPlaylistStyle from '../styles/myPlaylistStyle'
 
 export default function MyPlaylist({ navigation }) {
      const {token } = useSelector(state => state.reducer);
@@ -50,15 +51,3 @@ export default function MyPlaylist({ navigation }) {
     );
 }
 
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        padding: 10,
-        backgroundColor:'pink',
-    },
-    text: {
-        fontSize: 16,
-        lineHeight: 24,
-    },
-});

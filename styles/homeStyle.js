@@ -48,8 +48,6 @@ const homeStyle = StyleSheet.create({
     loginButton:{
         left:100,
         backgroundColor:'green',
-
-
     },
     linearGradient: {
         left:100,

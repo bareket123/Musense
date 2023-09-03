@@ -9,6 +9,7 @@ import {LOCAL_SERVER_URL, setToken} from "../redux/actions";
 import {useDispatch, useSelector} from "react-redux";
 import ErrorAlert from "./ErrorAlert";
 import Logo from "./Logo";
+import myFriendsStyle from '../styles/myFriendsStyle'
 
 
 const MyFriends = ({navigation}) => {

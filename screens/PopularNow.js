@@ -16,23 +16,14 @@ import {X_RAPID_API_HOST, X_RAPID_API_KEY} from "../redux/actions";
 import Logo from "./Logo"; // Import useSelector and useDispatch from react-redux
 import * as SplashScreen from "expo-splash-screen";
 import pic from "../images/musicBackGround.jpg";
+import popularStyle from "../styles/popularStyle";
 
 const PopularNow = () => {
     const [songsArray, setSongsArray] = useState([]); // Initialize songsArray as a state
     // const [fontsLoaded] = useFonts({
     //     'Anton-R': require('../assets/fonts/RammettoOne-Regular.ttf')
     // });
-
-    useEffect(() => {
-        try {
-        //   prepare();
-            fetchPlaylist();
-        } catch (error) {
-            console.log("error in fetching " + error);
-        }
-    }, []);
-
-    // useEffect(() => {
+// useEffect(() => {
     //     if (fontsLoaded) {
     //         SplashScreen.hideAsync();
     //     }
@@ -42,6 +33,14 @@ const PopularNow = () => {
     //     await SplashScreen.preventAutoHideAsync();
     // }
 
+    useEffect(() => {
+        try {
+        //   prepare();
+            fetchPlaylist();
+        } catch (error) {
+            console.log("error in fetching " + error);
+        }
+    }, []);
 
 
         function getSong(response) {
@@ -114,28 +113,5 @@ const PopularNow = () => {
 
 }
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor:'pink'
-    },
-
-    playButton: {
-        backgroundColor: 'green',
-        padding: 10,
-        borderRadius: 8,
-        marginTop: 20,
-    },
-    playButtonText: {
-        color: 'white',
-        fontSize: 16,
-        fontWeight: 'bold',
-    },
-
-    SafeAreaView:{
-        justifyContent: 'center',
-        alignItems: 'center',
-    }
-});
 
 export default PopularNow;

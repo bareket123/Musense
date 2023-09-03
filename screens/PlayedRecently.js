@@ -4,6 +4,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import {connect, useSelector} from 'react-redux';
 import { Audio } from 'expo-av';
 import Player from "./Player";
+import  playedRecentlyStyle from '../styles/playedRecentlyStyle'
 
 const PlayedRecently = ( ) => {
     const {playList ,playedRecently} = useSelector(state => state.reducer)
