@@ -52,7 +52,7 @@ function ErrorAlert(props) {
                 break;
 
 
-                ///////////////////////////////constant
+            ///////////////////////////////constant
 
             case 1013:
                 messageForUser = 'SIGN_UP_SUCCESSFULLY';
@@ -60,13 +60,13 @@ function ErrorAlert(props) {
             case 1014:
                 messageForUser = 'LOGIN_SUCCESSFULLY';
                 break;
-                case 1015:
+            case 1015:
                 messageForUser = 'FOLLOWING';
                 break;
-                case 1016:
+            case 1016:
                 messageForUser = 'DELETE';
                 break;
-                case 1017:
+            case 1017:
                 messageForUser = 'SOMETHING_WENT_WRONG';
                 break;
         }
@@ -80,7 +80,7 @@ function ErrorAlert(props) {
     return (
         Alert.alert(type, messageForUser, [{ text: 'OK' ,onPress: handleClose}])
 
-);
+    );
 }
 
 export default ErrorAlert;
