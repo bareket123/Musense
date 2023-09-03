@@ -48,19 +48,20 @@ export default function MusicByFriends ({ navigation }) {
 
 
     return (
+
         <View style={musicByFriendsStyle.container}>
 
        <View>
            {
                playlistByFriends.length>0?
                    <View>
-                       <Text>listening to songs your friends love</Text>
+                       <Text style={{color:'white'}}>listening to songs your friends love</Text>
                        <Player songList={playlistByFriends} page={'playlist'} toggleFavorite={null}/>
 
                    </View>
                    :
                    <View>
-                       <Text>Looks like no one has added any songs yet </Text>
+                       <Text style={{color:'white'}}>Looks like no one has added any songs yet </Text>
                        <Button title={"go search for more friends"} onPress={()=>{navigation.navigate('Search Friends')}}/>
 
                    </View>
