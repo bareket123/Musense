@@ -1,6 +1,6 @@
-
 import React, { useState } from 'react';
 import { Alert } from 'react-native';
+import alertStyle from "./alertStyle";
 
 function ErrorAlert(props) {
     let messageForUser='';
