@@ -137,13 +137,13 @@ const Drawer=createDrawerNavigator();
             <>
                 <Stack.Screen name='Home' component={HomeScreen} />
                 <Stack.Screen name='Popular' component={PopularNow} />
-                <Stack.Screen name='artist' component={MusicByArist}/>
-                <Stack.Screen name='friends' component={MusicByFriends}/>
-                <Stack.Screen name='playlist' component={MyPlaylist}/>
-                <Stack.Screen name='played' component={PlayedRecently}/>
-                <Stack.Screen name='My Friends' component={MyFriends}/>
-                <Stack.Screen name='Search Friends' component={SearchFriends}/>
-                <Stack.Screen name='Personalized Recommendations' component={PersonalRecommendations}/>
+                <Stack.Screen name='Playlist' component={MyPlaylist}/>
+                <Stack.Screen name='Played' component={PlayedRecently}/>
+                <Stack.Screen name='Search Artists' component={MusicByArist}/>
+                <Stack.Screen name='Search friends' component={SearchFriends}/>
+                <Stack.Screen name='My friends' component={MyFriends}/>
+                <Stack.Screen name="Friends Music" component={MusicByFriends}/>
+                <Stack.Screen name='Recommendations' component={PersonalRecommendations}/>
             </>
         }
 
