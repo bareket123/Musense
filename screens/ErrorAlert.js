@@ -37,7 +37,6 @@ function ErrorAlert(props) {
                 messageForUser = 'ERROR PLAYLIST NOT EXIST';
                 break;
 
-
             case 1009:
                 messageForUser = 'ERROR_IN_ANSWERS_DETAILS';
                 break;
