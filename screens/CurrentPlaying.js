@@ -6,7 +6,7 @@ import { playAudio, pauseAudio,setVolume,getVolume,reloadSong} from "./playAudio
 import {useFonts} from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { Animated, Easing } from 'react-native';
-import { Slider,Icon } from '@rneui/themed';
+import { Slider } from '@rneui/themed';
 import  currentPlayingStyle from '../styles/currentPlayingStyle';
 
 
