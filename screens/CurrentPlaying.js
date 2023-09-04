@@ -7,7 +7,7 @@ import {useFonts} from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { Animated, Easing } from 'react-native';
 import { Slider,Icon } from '@rneui/themed';
-
+import  currentPlayingStyle from '../styles/currentPlayingStyle';
 
 
 
@@ -128,18 +128,18 @@ const CurrentPlaying= ({ currentSong, setSong, allSongs })=>{
       <ImageBackground source={{uri:currentSong.coverImage}} style={{width: '100%', height: '100%' }} resizeMode={'cover'}>
           {
               fontsLoaded &&
-              <Text style={styles.overlayText}>currently playing...</Text>
+              <Text style={currentPlayingStyle.overlayText}>currently playing...</Text>
 
           }
-          <View style={styles.overlayContainer}/>
-          <View style={styles.closeButton}>
+          <View style={currentPlayingStyle.overlayContainer}/>
+          <View style={currentPlayingStyle.closeButton}>
               <TouchableOpacity onPress={() => { setSong(undefined), pauseAudio() }}>
                   <Text style={{ fontSize: 20, color: 'white',fontWeight:'bold' }} >X</Text>
               </TouchableOpacity>
           </View>
 
           <Animated.Image source={{ uri: currentSong.coverImage }} style={[
-                      styles.overlayImage,
+                      currentPlayingStyle.overlayImage,
                       {
                           transform: [{ rotate: spinValue.interpolate({
                                   inputRange: [0, 1],
@@ -148,21 +148,21 @@ const CurrentPlaying= ({ currentSong, setSong, allSongs })=>{
                       },
                   ]} />
 
-                          <View style={styles.middleContainer}>
+                          <View style={currentPlayingStyle.middleContainer}>
                               {
                                   fontsLoaded&&
-                                  <View style={styles.middleContainer}>
+                                  <View style={currentPlayingStyle.middleContainer}>
                                       <Text style={{fontSize:30,fontFamily:'Arch'}} numberOfLines={1}>{currentSong.title}</Text>
                                       <Text style={{fontSize:20,fontFamily:'Arch'}}>{currentSong.artist}</Text>
                                   </View>
                               }
 
                       </View>
-          <View style={styles.volumeControls}>
-              <Ionicons name={mute ? "volume-mute" : "md-volume-high"} size={24} color="white" style={styles.volumeIcon} onPress={toggleMute} />
+          <View style={currentPlayingStyle.volumeControls}>
+              <Ionicons name={mute ? "volume-mute" : "md-volume-high"} size={24} color="white" style={currentPlayingStyle.volumeIcon} onPress={toggleMute} />
 
               <Slider
-                  style={styles.volumeSlider}
+                  style={currentPlayingStyle.volumeSlider}
                   value={getVolume()}
                   minimumValue={0}
                   maximumValue={1}
@@ -178,22 +178,22 @@ const CurrentPlaying= ({ currentSong, setSong, allSongs })=>{
 
           </View>
 
-                  <View style={styles.controlButtons}>
+                  <View style={currentPlayingStyle.controlButtons}>
                       <TouchableHighlight>
-                          <Ionicons name="refresh-outline"  color="white"  style={styles.controlIcon} onPress={reloadSong} />
+                          <Ionicons name="refresh-outline"  color="white"  style={currentPlayingStyle.controlIcon} onPress={reloadSong} />
                       </TouchableHighlight>
                       <TouchableHighlight
                           underlayColor="rgba(255, 255, 255, 0.5)" // White glow on black background
                           onPress={() => replaceSong('next')}
-                          style={styles.controlButton}
+                          style={currentPlayingStyle.controlButton}
                       >
-                          <AntDesign name="forward" color="white" style={styles.controlIcon} />
+                          <AntDesign name="forward" color="white" style={currentPlayingStyle.controlIcon} />
                       </TouchableHighlight>
 
                       <TouchableHighlight
                           underlayColor="rgba(255, 255, 255, 0.2)" // White glow on black background
                           onPress={() =>{playMusic(currentSong)} }
-                          style={styles.controlButton}
+                          style={currentPlayingStyle.controlButton}
                       >
                           <AntDesign name={pressedPlaying ? 'pausecircleo' : 'playcircleo'} size={50} style={{marginLeft:5,marginRight:5}} color="white" />
                       </TouchableHighlight>
@@ -201,9 +201,9 @@ const CurrentPlaying= ({ currentSong, setSong, allSongs })=>{
                       <TouchableHighlight
                           underlayColor="rgba(255, 255, 255, 0.2)" // White glow on black background
                           onPress={() => replaceSong('previous')}
-                          style={styles.controlButton}
+                          style={currentPlayingStyle.controlButton}
                       >
-                          <AntDesign name="banckward" color="white" style={styles.controlIcon} />
+                          <AntDesign name="banckward" color="white" style={currentPlayingStyle.controlIcon} />
                       </TouchableHighlight>
 
                   </View>
@@ -214,75 +214,6 @@ const CurrentPlaying= ({ currentSong, setSong, allSongs })=>{
 
     );
 
-
 }
-
-
-const styles = StyleSheet.create({
-    overlayContainer: {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        backgroundColor: 'rgba(255, 255, 255, 0.3)',
-        blur: 5,
-    },
-    closeButton: {
-        position: 'absolute',
-        top: 16, // Adjust the top position as needed
-        right: 16,
-
-    },
-    overlayText: {
-        color: 'white',
-        fontFamily: 'RammettoOne',
-        alignSelf:'center',
-        fontSize:20,
-    },
-    overlayImage: {
-        width: 300,
-        height: 300,
-        borderRadius: 200,
-        borderColor: 'rgba(128, 128, 128, 0.5)',
-        borderWidth:10,
-         alignSelf: 'center',
-
-    },
-    controlButtons: {
-        flexDirection: 'row',
-        alignSelf: 'center',
-        justifyContent:'center',
-        right:20,
-    },
-    controlButton: {
-        overflow: 'hidden',
-        marginHorizontal: 5,
-    },
-    controlIcon: {
-        fontSize: 40,
-        marginLeft:5,
-        marginRight:5,
-    },
-    volumeControls: {
-        flexDirection: 'row',
-        alignSelf: 'center',
-        marginBottom:5,
-    },
-    volumeIcon: {
-        marginLeft: 5,
-    },
-    volumeSlider: {
-        width: 300,
-        height:20,
-        marginLeft: 5,
-        marginTop: 5,
-    },
-    middleContainer: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginBottom:10,
-    },
-});
 
 export default CurrentPlaying;
