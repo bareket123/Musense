@@ -47,65 +47,23 @@ const HomeScreen = ({ navigation }) => {
                         />
                         <Text style={homeStyle.caption}>Popular Music</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={()=>{ navigation.navigate('played')}}>
+                    <TouchableOpacity onPress={()=>{ navigation.navigate('Played')}}>
                         <Image source={require('../images/playrecently.gif')} style={homeStyle.image}/>
                         <Text style={homeStyle.caption}>Played Recently</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={()=>{ navigation.navigate('artist')}}>
+                    <TouchableOpacity onPress={()=>{ navigation.navigate('Search Artists')}}>
                         <Image source={require('../images/music.png')} style={homeStyle.image}/>
                         <Text style={homeStyle.caption}> Music by Artist</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={()=>{ navigation.navigate('friends')}}>
+                    <TouchableOpacity onPress={()=>{ navigation.navigate('Friends Music')}}>
                         <Image source={require('../images/friends.gif')} style={homeStyle.image}/>
                         <Text style={homeStyle.caption}>Played Music by Friends</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={()=>{ navigation.navigate('playlist')}}>
+                    <TouchableOpacity onPress={()=>{ navigation.navigate('Playlist')}}>
                         <Image source={require('../images/playlist2.gif')} style={homeStyle.image}/>
                         <Text style={homeStyle.caption}>my playlist</Text>
                     </TouchableOpacity>
                 </View>
-
-                <NavigationContainer independent={true}>
-                    <Tab.Navigator
-
-                        screenOptions={{
-                            tabBarStyle: [
-                                {
-                                    display: 'flex',
-                                    backgroundColor:'black'
-                                },
-                                null,
-                            ],
-                        }}>
-                        <Tab.Screen
-                            name="Search Friends"
-                            component={SearchFriends}
-                            options={{
-                                tabBarIcon: ({ color, size }) => (
-                                    <MaterialIcons
-                                        name="person-search"
-                                        style={{ left: 0, justifyContent: 'space-around', backgroundColor: 'black' }}
-                                        size={size}
-                                        color='white'
-                                        onPress={() => { navigation.navigate('Search Friends') }}
-                                    />
-                                ),
-                            }}
-                        />
-
-                        <Tab.Screen
-                            name="My Friends"
-                            component={MyFriends}
-                            options={{
-                                tabBarIcon: ({ color, size,style }) => (
-                                    <FontAwesome5 name="user-friends"
-                                                  size={24}
-                                                  color="white"
-                                                  onPress={() => { navigation.navigate('My Friends') }} />   ),
-                            }}
-                        />
-                    </Tab.Navigator>
-                </NavigationContainer>
             </SafeAreaView>
         </ScrollView>
     );

@@ -5,7 +5,7 @@ import {ScrollView}  from 'react-native-virtualized-view'
 import Questionnaire from "./Questionnaire";
 import axios from "axios";
 import Player from "./Player";
-import {LOCAL_SERVER_URL} from "../redux/actions";
+import {LOCAL_SERVER_URL, X_RAPID_API_HOST7, X_RAPID_API_KEY, X_RAPID_API_KEY2} from "../redux/actions";
 import Logo from "./Logo";
 
 
@@ -63,8 +63,8 @@ const PersonalRecommendations = () => {
                 const options = {
                     method: 'GET',
                     headers: {
-                        'X-RapidAPI-Key': '77f4e88fbcmsh34c35cf21256c6ap1326abjsn36b18c917e58',
-                        'X-RapidAPI-Host': 'shazam-api7.p.rapidapi.com'
+                        'X-RapidAPI-Key': X_RAPID_API_KEY2,
+                        'X-RapidAPI-Host': X_RAPID_API_HOST7,
                     }
                 };
 
@@ -85,8 +85,8 @@ const PersonalRecommendations = () => {
                 const artist1Songs = {
                     method: 'GET',
                     headers: {
-                        'X-RapidAPI-Key': '5ce6d5700cmsh0a744fbf3438d5ep10c2eejsn280c47bdb245',
-                        'X-RapidAPI-Host': 'shazam-api7.p.rapidapi.com'
+                        'X-RapidAPI-Key': X_RAPID_API_KEY,
+                        'X-RapidAPI-Host': X_RAPID_API_HOST7,
                     }
                 };
                 fetch('https://shazam-api7.p.rapidapi.com/search?term='+allAnswers.artist1+'&limit=5', artist1Songs)
@@ -105,8 +105,8 @@ const PersonalRecommendations = () => {
                 const artist2Songs = {
                     method: 'GET',
                     headers: {
-                        'X-RapidAPI-Key': '5ce6d5700cmsh0a744fbf3438d5ep10c2eejsn280c47bdb245',
-                        'X-RapidAPI-Host': 'shazam-api7.p.rapidapi.com'
+                        'X-RapidAPI-Key': X_RAPID_API_KEY,
+                        'X-RapidAPI-Host': X_RAPID_API_HOST7,
                     }
                 }
                 fetch('https://shazam-api7.p.rapidapi.com/search?term='+allAnswers.artist2+'&limit=5', artist2Songs)
@@ -126,8 +126,8 @@ const PersonalRecommendations = () => {
                 const favoriteSong = {
                     method: 'GET',
                     headers: {
-                        'X-RapidAPI-Key': '5ce6d5700cmsh0a744fbf3438d5ep10c2eejsn280c47bdb245',
-                        'X-RapidAPI-Host': 'shazam.p.rapidapi.com'
+                        'X-RapidAPI-Key': X_RAPID_API_KEY,
+                        'X-RapidAPI-Host': X_RAPID_API_HOST7,
                     }
                 };
 
@@ -149,8 +149,8 @@ const PersonalRecommendations = () => {
             const songList = {
                 method: 'GET',
                 headers: {
-                    'X-RapidAPI-Key': '77f4e88fbcmsh34c35cf21256c6ap1326abjsn36b18c917e58',
-                    'X-RapidAPI-Host': 'shazam-api7.p.rapidapi.com'
+                    'X-RapidAPI-Key': X_RAPID_API_KEY2,
+                    'X-RapidAPI-Host': X_RAPID_API_HOST7,
                 }
             };
 

@@ -50,7 +50,6 @@ export default function MusicByFriends ({ navigation }) {
     return (
 
         <View style={musicByFriendsStyle.container}>
-
        <View>
            {
                playlistByFriends.length>0?

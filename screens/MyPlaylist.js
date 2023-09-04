@@ -33,23 +33,20 @@ export default function MyPlaylist({ navigation }) {
 
 
     return (
-        <View style={myPlaylistStyle.container}>
-
         <View>
             <Text>{"\n"}</Text>
-            <Text style={{color:'white'}}>My Playlist:</Text>
+            <Text>My Playlist:</Text>
             {
                 myPlaylist.length>0?
                     <Player songList={myPlaylist} page={'playlist'} toggleFavorite={null}/>
                     :
-                    <Text style={{color:'white'}}>you haven't had songs</Text>
+                    <Text>you haven't had songs</Text>
 
             }
             {
                 messageCode!==0&&
                 <ErrorAlert message={messageCode}/>
             }
-        </View>
         </View>
     );
 }

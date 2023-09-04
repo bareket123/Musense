@@ -4,6 +4,17 @@ import {setPlayedRecently} from "../redux/actions";
 let sound = null;
 let volume = 0.5; // Initial volume
 
+export const reloadSong=async ()=> {
+    try {
+        if (sound._loaded) {
+            await sound.stopAsync();
+            await sound.playAsync();
+        }
+    } catch (error) {
+        console.error('Error reloading the song:', error);
+    }
+}
+
 export const playAudio = async (song, dispatch) => {
     if (sound) {
         await sound.unloadAsync();
@@ -43,3 +54,4 @@ export const setVolume = async (newVolume) => {
 export const getVolume = () => {
     return volume; // Return the current volume
 };
+

@@ -1,5 +1,5 @@
 import {LOCAL_SERVER_URL, setPlaylist,setDeleteSong} from "../redux/actions";
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import {Button, FlatList, Image, Text, TouchableOpacity, View} from "react-native";
 import {AntDesign, Feather, Ionicons} from "@expo/vector-icons";
 import {useSelector,useDispatch} from "react-redux";
@@ -38,11 +38,17 @@ export default function Player ({ songList,page,toggleFavorite  }) {
     }
 
     const renderSong = ({ item }) => (
-        <View>
+        <View style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)', borderRadius: 20, margin: 5}}>
             <View style={{ padding: 20, flexDirection: 'row', alignItems: 'center', left: '20%'}}>
                 <TouchableOpacity style={{flex:1}}  onPress={()=>{pressSong(item)}}>
-                    <Text style={{color:'white',fontWeight:'bold'}}>{item.title}</Text>
-                    <Text style={{color:'white'}}>{item.artist}</Text>
+                    <View style={{flexDirection:'row'}}>
+                        <Image source={{uri:item.coverImage}} style={{width:60,height:60,marginRight:10}}/>
+                        <View style={{flexDirection:'column'}}>
+                            <Text style={{color:'white',fontWeight:'bold',marginLeft:20,fontSize:17}}>{item.title}</Text>
+                            <Text style={{color:'white',marginLeft:20}}>{item.artist}</Text>
+                        </View>
+                    </View>
+
                 </TouchableOpacity>
                 {
                     page==='list'?
@@ -58,10 +64,6 @@ export default function Player ({ songList,page,toggleFavorite  }) {
                 }
 
             </View>
-            <View style={{ alignItems:'center' }} >
-
-            </View>
-
         </View>
     )
     const deleteSong=async (song) => {
@@ -109,15 +111,20 @@ export default function Player ({ songList,page,toggleFavorite  }) {
     return(
         <View>
             {
-                (currentlyPlaying!==undefined) &&
-                <CurrentPlaying currentSong={currentlyPlaying} setSong={setCurrentlyPlaying} allSongs={songList} />
-            }
-            <FlatList
-                data={songList}
-                renderItem={renderSong}
-                keyExtractor={(item, index) => index.toString()}
+                (currentlyPlaying!==undefined) ?
+                    <View>
+                        <CurrentPlaying currentSong={currentlyPlaying} setSong={setCurrentlyPlaying} allSongs={songList} />
+                    </View>
+                    :
+                    <FlatList
+                        data={songList}
+                        renderItem={renderSong}
+                        keyExtractor={(item, index) => index.toString()}
+                        contentContainerStyle={{ minHeight: '100%' }}
+                    />
 
-            />
+            }
+
         </View>
     )
 

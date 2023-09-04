@@ -99,7 +99,7 @@ const CustomDrawer = props => {
                         bottom: 0,
                         width: '100%',
                         backgroundColor: '#f6f6f6',
-                        padding: 20,
+                        padding: 10,
                         borderTopWidth: 1,
                         borderTopColor: '#ddd',
                     }}
@@ -124,11 +124,11 @@ const Drawer=createDrawerNavigator();
         screenOptions={{
             headerShown: true,
             headerStyle: {
-                backgroundColor: 'transparent',
-                elevation: 0,
+                backgroundColor: 'black',
                 shadowOpacity: 0,
             },
             headerTitle: '',
+            headerTintColor:'white',
         }}
         drawerContent={props => <CustomDrawer {...props} />}
     >

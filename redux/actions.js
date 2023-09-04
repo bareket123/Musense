@@ -6,9 +6,10 @@ export const SET_IS_LOGGED_IN = 'SET_IS_LOGGED_IN'
 export const SET_DELETE_FROM_PLAYLIST= 'SET_DELETE_FROM_PLAYLIST'
 export const SET_PICTURE= 'SET_PICTURE'
 export const RESET_STATE = 'RESET_STATE';
-export const LOCAL_SERVER_URL='http://10.100.102.7:8989';
+export const LOCAL_SERVER_URL='http://10.0.0.1:8989';
 
-export const X_RAPID_API_KEY='5ce6d5700cmsh0a744fbf3438d5ep10c2eejsn280c47bdb245';
+export const X_RAPID_API_KEY='29f3773d28msh4005745bd43a895p1a71acjsnc5350d1468dc';
+export const X_RAPID_API_KEY2='77f4e88fbcmsh34c35cf21256c6ap1326abjsn36b18c917e58';
 export const X_RAPID_API_HOST ='shazam.p.rapidapi.com'
 export const X_RAPID_API_HOST7 ='shazam-api7.p.rapidapi.com'
 export const setPlaylist = newSong => dispatch => {

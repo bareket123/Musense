@@ -24,6 +24,7 @@
     "@react-navigation/native": "^6.1.6",
     "@react-navigation/stack": "^6.3.16",
     "@reduxjs/toolkit": "^1.9.5",
+    "@rneui/themed": "^4.0.0-rc.8",
     "@unimodules/core": "^7.1.2",
     "axios": "^1.4.0",
     "expo": "~48.0.10",
@@ -37,6 +38,7 @@
     "expo-updates": "~0.16.4",
     "fetch": "^1.1.0",
     "lodash": "^4.17.21",
+    "lottie-react-native": "5.1.4",
     "rapidapi-connect": "^0.0.6",
     "react": "18.2.0",
     "react-dom": "18.2.0",
@@ -61,8 +63,7 @@
     "redux": "^4.2.1",
     "redux-thunk": "^2.4.2",
     "swiper": "^10.1.0",
-    "validator": "^13.9.0",
-    "lottie-react-native": "5.1.4"
+    "validator": "^13.9.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"
