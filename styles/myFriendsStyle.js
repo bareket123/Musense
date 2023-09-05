@@ -71,7 +71,16 @@ const myFriendsStyle = StyleSheet.create({
         paddingHorizontal: 10,
 
     },
-
+    followText: {
+        color: 'white',
+        marginLeft: 10,
+        fontWeight: 'bold',
+    },
+    followIcon: {
+        height: 25,
+        width: 30,
+        marginBottom: 5,
+    },
 });
 
 export default myFriendsStyle;
