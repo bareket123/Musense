@@ -71,7 +71,7 @@ async function handleLout(){
 
 const CustomDrawer = props => {
     return (
-        <ScrollView style={{ flex: 1 }}>
+        <ScrollView >
             <DrawerContentScrollView {...props}>
                 <View
                     style={{

@@ -1,14 +1,14 @@
 import {Image, Text, TouchableOpacity, View, TouchableHighlight, Dimensions, ImageBackground,StyleSheet} from "react-native";
 import {AntDesign, FontAwesome, Ionicons} from "@expo/vector-icons";
 import React, {useEffect, useState} from "react";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import { playAudio, pauseAudio,setVolume,getVolume,reloadSong} from "./playAudio";
 import {useFonts} from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { Animated, Easing } from 'react-native';
-// import { Slider } from '@rneui/themed';
+//import { Slider } from '@rneui/themed';
 import  currentPlayingStyle from '../styles/currentPlayingStyle';
-
+import {setIsSongPlaying} from '../redux/actions'
 
 
 const spinValue = new Animated.Value(0);
@@ -17,6 +17,7 @@ const CurrentPlaying= ({ currentSong, setSong, allSongs })=>{
     const [pressedPlaying, setPressedPlaying] = useState(false);
     const [mute, setMute] = useState(false);
     const [spinAnimation, setSpinAnimation] = useState(null);
+
     const dispatch = useDispatch();
 
 
@@ -121,11 +122,15 @@ const CurrentPlaying= ({ currentSong, setSong, allSongs })=>{
         }
 
     };
-
+const closePlaying = () => {
+    setSong(undefined);
+    dispatch(setIsSongPlaying(false));
+        pauseAudio();
+}
 
     return (
 
-      <ImageBackground source={{uri:currentSong.coverImage}} style={{width: '100%', height: '100%' }} resizeMode={'cover'}>
+      <ImageBackground source={{uri:currentSong.coverImage}}>
           {
               fontsLoaded &&
               <Text style={currentPlayingStyle.overlayText}>currently playing...</Text>
@@ -133,7 +138,7 @@ const CurrentPlaying= ({ currentSong, setSong, allSongs })=>{
           }
           <View style={currentPlayingStyle.overlayContainer}/>
           <View style={currentPlayingStyle.closeButton}>
-              <TouchableOpacity onPress={() => { setSong(undefined), pauseAudio() }}>
+              <TouchableOpacity onPress={closePlaying}>
                   <Text style={{ fontSize: 20, color: 'white',fontWeight:'bold' }} >X</Text>
               </TouchableOpacity>
           </View>

@@ -1,5 +1,5 @@
-import {LOCAL_SERVER_URL, setPlaylist,setDeleteSong} from "../redux/actions";
-import React, {useState} from "react";
+import {LOCAL_SERVER_URL, setPlaylist,setDeleteSong,setIsSongPlaying} from "../redux/actions";
+import React, {useEffect, useState} from "react";
 import {Button, FlatList, Image, Text, TouchableOpacity, View} from "react-native";
 import {AntDesign, Feather, Ionicons} from "@expo/vector-icons";
 import {useSelector,useDispatch} from "react-redux";
@@ -8,7 +8,7 @@ import axios from "axios";
 import CurrentPlaying from "./CurrentPlaying";
 import {pauseAudio} from "./playAudio";
 
-export default function Player ({ songList,page,toggleFavorite  }) {
+export default function Player ({ songList,page,toggleFavorite}) {
     const dispatch = useDispatch();
     const [currentlyPlaying,setCurrentlyPlaying]=useState({});
     const {token,playList} = useSelector(state => state.reducer);
@@ -19,10 +19,11 @@ export default function Player ({ songList,page,toggleFavorite  }) {
                 setCurrentlyPlaying(undefined);
         }, [])
     );
-
     const pressSong=async (song) => {
         setCurrentlyPlaying(song);
+       dispatch(setIsSongPlaying(true));
         await pauseAudio();
+
 
 
     }
@@ -38,7 +39,7 @@ export default function Player ({ songList,page,toggleFavorite  }) {
     }
 
     const renderSong = ({ item }) => (
-        <View style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)', borderRadius: 20, margin: 5}}>
+        <View style={{     backgroundColor: page === 'recently' ? 'rgba(128, 128, 128, 0.3)':'rgba(0, 0, 0, 0.5)',borderRadius: 20, margin: 5}}>
             <View style={{ padding: 20, flexDirection: 'row', alignItems: 'center', left: '20%'}}>
                 <TouchableOpacity style={{flex:1}}  onPress={()=>{pressSong(item)}}>
                     <View style={{flexDirection:'row'}}>
@@ -51,11 +52,9 @@ export default function Player ({ songList,page,toggleFavorite  }) {
 
                 </TouchableOpacity>
                 {
-                    page==='list'?
-                        <AntDesign onPress={() => {
-                            toggleFavorite(item.songIndex);
-                            addLovedSongs(item);
-                        }} name="heart"  size={30} color={ isSongInPlaylist(item.url) || item.isFavorite ? 'red' : 'green'}/>
+                    page==='list' ||  page==='recently'?
+                        <AntDesign onPress={() => {toggleFavorite(item.songIndex);addLovedSongs(item);}}
+                                   name="heart"  size={30} color={ isSongInPlaylist(item.url) || item.isFavorite ? 'red' : 'green'}/>
                         :
                         <TouchableOpacity style={{ marginLeft: 50 }} onPress={() =>deleteSong(item)}>
                             <AntDesign name="delete" size={24} color="white" />
@@ -112,9 +111,8 @@ export default function Player ({ songList,page,toggleFavorite  }) {
         <View>
             {
                 (currentlyPlaying!==undefined) ?
-                    <View>
                         <CurrentPlaying currentSong={currentlyPlaying} setSong={setCurrentlyPlaying} allSongs={songList} />
-                    </View>
+
                     :
                     <FlatList
                         data={songList}
