@@ -76,6 +76,7 @@ const myFriendsStyle = StyleSheet.create({
         marginLeft: 10,
         fontWeight: 'bold',
     },
+
     followIcon: {
         height: 25,
         width: 30,

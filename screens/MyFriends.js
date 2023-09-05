@@ -57,9 +57,6 @@ const MyFriends = ({navigation}) => {
     }
 
 
-
-
-
     const renderItem=({item})=>(
 
         <View style={{ padding: 20, flexDirection: 'row', alignItems: 'center', left: '20%' }}>
