@@ -6,7 +6,7 @@ import { playAudio, pauseAudio,setVolume,getVolume,reloadSong} from "./playAudio
 import {useFonts} from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { Animated, Easing } from 'react-native';
-import { Slider } from '@rneui/themed';
+// import { Slider } from '@rneui/themed';
 import  currentPlayingStyle from '../styles/currentPlayingStyle';
 
 
@@ -161,19 +161,19 @@ const CurrentPlaying= ({ currentSong, setSong, allSongs })=>{
           <View style={currentPlayingStyle.volumeControls}>
               <Ionicons name={mute ? "volume-mute" : "md-volume-high"} size={24} color="white" style={currentPlayingStyle.volumeIcon} onPress={toggleMute} />
 
-              <Slider
-                  style={currentPlayingStyle.volumeSlider}
-                  value={getVolume()}
-                  minimumValue={0}
-                  maximumValue={1}
-                  step={0.05}
-                  onValueChange={handleVolumeChange}
-                  minimumTrackTintColor={'black'}
-                  maximumTrackTintColor={'white'}
-                  thumbStyle={{ height: 20, width: 20, backgroundColor: 'rgba(255, 255, 255, 0.8)' }}
-                  trackStyle={{ height: 5, backgroundColor: 'transparent' }}
+              {/*<Slider*/}
+              {/*    style={currentPlayingStyle.volumeSlider}*/}
+              {/*    value={getVolume()}*/}
+              {/*    minimumValue={0}*/}
+              {/*    maximumValue={1}*/}
+              {/*    step={0.05}*/}
+              {/*    onValueChange={handleVolumeChange}*/}
+              {/*    minimumTrackTintColor={'black'}*/}
+              {/*    maximumTrackTintColor={'white'}*/}
+              {/*    thumbStyle={{ height: 20, width: 20, backgroundColor: 'rgba(255, 255, 255, 0.8)' }}*/}
+              {/*    trackStyle={{ height: 5, backgroundColor: 'transparent' }}*/}
 
-              />
+              {/*/>*/}
 
 
           </View>
