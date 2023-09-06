@@ -2,61 +2,33 @@ import { StyleSheet } from 'react-native';
 
 const musicByFriendsStyle = StyleSheet.create({
 
-    viewStyle:{
-        justifyContent: 'center',
-        flexDirection: 'row',
-        alignItems: 'center',
+  image:{
+      width: '100%',
+      height: '100%',
+  },
+  mainTitle:{
+      color: 'white',
+      fontSize: 20,
+      fontFamily: 'RammettoOne',
+      alignSelf:'center',
+  },
+  subtitle:{
+      color: 'white',
+      fontSize: 18,
+      marginLeft:5,
+  },
+    noFriendsText:{
+        color: 'lightgrey',
+        fontSize:30,
+        alignSelf:'center',
+        marginTop:100
     },
-    background: {
-        width: '100%',
-        height: '100%',
-        resizeMode: 'cover',
-    },
-    container: {
-        flex: 1,
-        backgroundColor: 'black',
-    },
-    buttonExit: {
-        backgroundColor: 'orange',
-        borderRadius: 50,
-        padding: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginBottom: 20,
-        width: 200,
-        shadowColor: 'black',
-        position: 'absolute',
-        left: '30%',
-        marginLeft: -50,
-    },
-    Button: {
-        backgroundColor: 'orange',
-        borderRadius: 10,
-        padding: 10,
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginBottom: 20,
-        width: 200,
-        shadowColor: 'black',
-        position: 'absolute',
-        left: '70%',
-        marginLeft: -100,
-    },
-    buttonText: {
-        color: 'white',
-        fontSize: 21,
-        fontWeight: 'bold',
-    },
-    headerText: {
-        justifyContent: 'center',
-        fontSize: 23,
-        fontWeight: 'bold',
-        marginBottom: 50,
-        color:'orange',
-        shadowColor:'white'
-    },
-
-
+  buttonText:{
+      color:'lightgrey',
+      alignSelf:'center',
+      fontSize:45,
+      fontWeight:'bold'
+  },
 
 });
 export default musicByFriendsStyle;

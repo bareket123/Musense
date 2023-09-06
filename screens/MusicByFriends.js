@@ -2,19 +2,18 @@ import React, {useEffect, useState} from 'react';
 import {
     View,
     Text,
-    ScrollView,
-    FlatList,
-    StyleSheet,
-    ImageBackground,
     Button,
     TouchableOpacity,
-    Image
+    Image, ImageBackground
 } from 'react-native';
 import axios from "axios";
 import {useSelector} from "react-redux";
 import Player from "./Player";
 import {LOCAL_SERVER_URL} from "../redux/actions";
 import ErrorAlert from "./ErrorAlert";
+import {useFonts} from "expo-font";
+import * as SplashScreen from "expo-splash-screen";
+import {FontAwesome} from "@expo/vector-icons";
 import  musicByFriendsStyle from '../styles/musicByFriendsStyle'
 
 export default function MusicByFriends ({ navigation }) {
@@ -22,7 +21,26 @@ export default function MusicByFriends ({ navigation }) {
     const {token} = useSelector(state => state.reducer);
     const[messageCode, setMessageCode] = useState(0);
 
+    const [fontsLoaded] = useFonts({
+        'RammettoOne': require('../assets/Fonts/RammettoOne-Regular.ttf')
+    });
+    useEffect(() => {
+        try {
+            prepare();
+        } catch (error) {
+            console.log("error in fetching " + error);
+        }
+    }, []);
 
+    useEffect(() => {
+        if (fontsLoaded) {
+            SplashScreen.hideAsync();
+        }
+    }, [fontsLoaded]);
+
+    async function prepare() {
+        await SplashScreen.preventAutoHideAsync();
+    }
     const getPlaylistByFriends=async ()=>{
 
         if (token!==null){
@@ -43,36 +61,55 @@ export default function MusicByFriends ({ navigation }) {
         getPlaylistByFriends().then(r => {})
     })
 
+    function toggleFavorite(id) {
+
+        const updatedArray = playlistByFriends.map((song, i) => {
+            if (song.id === id) {
+                return {...song, isFavorite: !song.isFavorite};
+            }
+            return song;
+        });
+        setPlaylistByFriends(updatedArray);
+    }
+
 
 
 
 
     return (
+        <ImageBackground source={require('../images/friendsMusic.png')} style={musicByFriendsStyle.image} resizeMode={'cover'}>
+<View>
+    {
+        playlistByFriends.length > 0 ?
+            <View>
+                <View>
+                    {fontsLoaded && (
+                        <Text style={musicByFriendsStyle.mainTitle}>Friendship in Music</Text>
+                    )}
+                    <Text style={musicByFriendsStyle.subtitle}>
+                        listening to songs your friends love
+                    </Text>
+                    <Player songList={playlistByFriends} page={'playlistFriends'} toggleFavorite={toggleFavorite}/>
+                </View>
+            </View>
+            :
+            <View>
+                <Text style={musicByFriendsStyle.noFriendsText}>Looks like no one has added any songs yet 😧 </Text>
+                <TouchableOpacity onPress={()=>{navigation.navigate('Search friends')}}>
+                    <Text style={musicByFriendsStyle.buttonText}>Press here to find more friends</Text>
+                    <FontAwesome name="arrow-left" size={50} color="black" style={{alignSelf:'center'}} />
+                </TouchableOpacity>
 
-        <View style={musicByFriendsStyle.container}>
-       <View>
-           {
-               playlistByFriends.length>0?
-                   <View>
-                       <Text style={{color:'white'}}>listening to songs your friends love</Text>
-                       <Player songList={playlistByFriends} page={'playlist'} toggleFavorite={null}/>
+            </View>
 
-                   </View>
-                   :
-                   <View>
-                       <Text style={{color:'white'}}>Looks like no one has added any songs yet </Text>
-                       <Button title={"go search for more friends"} onPress={()=>{navigation.navigate('Search Friends')}}/>
-
-                   </View>
-
-           }
+    }
            {
                messageCode!==0&&
                <ErrorAlert message={messageCode}/>
            }
-       </View>
-        </View>
 
+               </View>
+        </ImageBackground>
     );
 };
 

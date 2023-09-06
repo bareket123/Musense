@@ -1,18 +1,17 @@
 import {LOCAL_SERVER_URL, setPlaylist,setDeleteSong,setIsSongPlaying} from "../redux/actions";
 import React, {useEffect, useState} from "react";
 import {Button, FlatList, Image, Text, TouchableOpacity, View} from "react-native";
-import {AntDesign, Feather, Ionicons} from "@expo/vector-icons";
+import {AntDesign, Feather, Ionicons, MaterialIcons} from "@expo/vector-icons";
 import {useSelector,useDispatch} from "react-redux";
 import {useFocusEffect} from "@react-navigation/native";
 import axios from "axios";
 import CurrentPlaying from "./CurrentPlaying";
-import {pauseAudio} from "./playAudio";
+import {pauseAudio,playPlaylist} from "./playAudio";
 
 export default function Player ({ songList,page,toggleFavorite}) {
     const dispatch = useDispatch();
     const [currentlyPlaying,setCurrentlyPlaying]=useState({});
     const {token,playList} = useSelector(state => state.reducer);
-
     useFocusEffect(
         React.useCallback(() => {
             if (currentlyPlaying!==undefined)
@@ -24,9 +23,8 @@ export default function Player ({ songList,page,toggleFavorite}) {
        dispatch(setIsSongPlaying(true));
         await pauseAudio();
 
-
-
     }
+
 
 
     function addLovedSongs(song) {
@@ -40,39 +38,37 @@ export default function Player ({ songList,page,toggleFavorite}) {
 
     const renderSong = ({ item }) => (
         <View style={{     backgroundColor: page === 'recently' ? 'rgba(128, 128, 128, 0.3)':'rgba(0, 0, 0, 0.5)',borderRadius: 20, margin: 5}}>
-            <View style={{ padding: 20, flexDirection: 'row', alignItems: 'center', left: '20%'}}>
-                <TouchableOpacity style={{flex:1}}  onPress={()=>{pressSong(item)}}>
-                    <View style={{flexDirection:'row'}}>
-                        <Image source={{uri:item.coverImage}} style={{width:60,height:60,marginRight:10}}/>
-                        <View style={{flexDirection:'column'}}>
-                            <Text style={{color:'white',fontWeight:'bold',marginLeft:20,fontSize:17}}>{item.title}</Text>
-                            <Text style={{color:'white',marginLeft:20}}>{item.artist}</Text>
+            <View style={{ padding: 20, flexDirection: 'row', alignItems: 'center', left: '20%' }}>
+                <TouchableOpacity style={{ flex: 1 }} onPress={() => { pressSong(item) }}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                        <Image source={{ uri: item.coverImage }} style={{ width: 60, height: 60, marginRight: 10 }} />
+                        <View style={{ flex: 1 }}>
+                            <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 17 }}>{item.title}</Text>
+                            <Text style={{ color: 'white' }}>{item.artist}</Text>
                         </View>
                     </View>
-
                 </TouchableOpacity>
-                {
-                    page==='list' ||  page==='recently'?
-                        <AntDesign onPress={() => {toggleFavorite(item.songIndex);addLovedSongs(item);}}
-                                   name="heart"  size={30} color={ isSongInPlaylist(item.url) || item.isFavorite ? 'red' : 'green'}/>
-                        :
-                        <TouchableOpacity style={{ marginLeft: 50 }} onPress={() =>deleteSong(item)}>
-                            <AntDesign name="delete" size={24} color="white" />
-                        </TouchableOpacity>
-
+                {page === 'list' || page === 'recently' || page==='playlistFriends' ?
+                    <AntDesign onPress={() => { toggleFavorite(page==='playlistFriends'?item.id:item.songIndex); addLovedSongs(item); }}
+                               name="heart" size={30} color={isSongInPlaylist(item.url) || item.isFavorite ? 'red' : 'green'} />
+                    :
+                    <TouchableOpacity style={{ marginLeft: 50 }} onPress={() => deleteSong(item)}>
+                        <AntDesign name="delete" size={24} color="white" />
+                    </TouchableOpacity>
                 }
-
             </View>
+
         </View>
     )
     const deleteSong=async (song) => {
         const response = await axios.create({baseURL: LOCAL_SERVER_URL}).post('/delete-song?songId=' + song.id);
-        if (response.data.success){
-            alert("delete")
-            dispatch(setDeleteSong(song))
-        }else {
-            alert(response.data.errorCode)
-        }
+            if (response.data.success){
+                alert("delete")
+                dispatch(setDeleteSong(song))
+            }else {
+                alert(response.data.errorCode)
+            }
+
     }
     const sendPlaylistToServer = async (song) => {
         if (token !== null) {
@@ -109,6 +105,9 @@ export default function Player ({ songList,page,toggleFavorite}) {
 
     return(
         <View>
+
+            {/*<MaterialIcons name="playlist-play" size={24} color="white" onPress={()=>{playPlaylist(songList, setCurrentlyPlaying, dispatch).then(r  =>{console.log()})}}/>*/}
+            {/*<MaterialIcons name="playlist-play" size={24} color="green" onPress={()=>{pauseAudio()}}/>*/}
             {
                 (currentlyPlaying!==undefined) ?
                         <CurrentPlaying currentSong={currentlyPlaying} setSong={setCurrentlyPlaying} allSongs={songList} />
