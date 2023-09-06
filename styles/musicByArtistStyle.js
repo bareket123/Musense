@@ -1,77 +1,45 @@
 import { StyleSheet } from 'react-native';
 
 const musicByArtistStyle = StyleSheet.create({
-    viewStyle:{
-        justifyContent: 'center',
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
+
     background: {
         width: '100%',
         height: '100%',
         resizeMode: 'cover',
     },
-    buttonExit: {
-        backgroundColor: 'blue',
-        borderRadius: 50,
-        padding: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginBottom: 20,
-        width: 200,
-        shadowColor: 'black',
-        position: 'absolute',
-        left: '30%',
-        marginLeft: -50,
-    },
-    Button: {
-        backgroundColor: 'blue',
-        borderRadius: 10,
-        padding: 10,
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginBottom: 20,
-        width: 200,
-        shadowColor: 'black',
-        position: 'absolute',
-        left: '70%',
-        marginLeft: -100,
-    },
-    buttonText: {
-        color: 'white',
-        fontSize: 21,
-        fontWeight: 'bold',
-    },
-    headerText: {
-        justifyContent: 'center',
-        fontSize: 23,
-        fontWeight: 'bold',
-        marginBottom: 50,
-        color:'blue',
-        shadowColor:'white'
-    },
-    textInput:{
-        justifyContent: 'center',
-        padding: 10,
-        paddingLeft: 60,
-        width: 300,
-        backgroundColor:'antiquewhite'
-    },
-    container: {
-        flex: 1,
-        backgroundColor:'pink',
-        flexDirection:'row'
-    },
+
     searchStyle: {
         flexDirection:'row',
         justifyContent: 'space-between',
         height: 40,
         borderColor: 'black',
         borderWidth: 5,
-        borderRadius: 20, // Make it circular by setting borderRadius to half of the height
+        borderRadius: 20,
         paddingHorizontal: 10,
+        backgroundColor: 'rgba(255,253,253,0.77)',
     },
 
+    cardContainer: {
+        borderWidth: 2,
+        borderColor: 'white',
+        borderRadius: 10,
+        marginBottom:30,
+        marginLeft:20,
+        marginRight:20,
+        marginTop:10,
+    },
+
+    textTitle : {
+        alignItems:'center'
+    },
+
+    textHeader : {
+        fontSize:30,
+        color: 'white',
+        textShadowColor: 'rgba(53,205,236,0.9)',
+        textShadowOffset: { width: 2, height: 2 },
+        textShadowRadius: 4
+    },
 });
 
 export default musicByArtistStyle;

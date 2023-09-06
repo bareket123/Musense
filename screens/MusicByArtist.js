@@ -22,8 +22,6 @@ import Logo from "./Logo";
 import  musicByArtistStyle from '../styles/musicByArtistStyle'
 
 
-
-
 export default function MusicByArtist ({ navigation }) {
 
     const [currentArray,setCurrentArray]=useState([]);
@@ -35,7 +33,6 @@ export default function MusicByArtist ({ navigation }) {
         React.useCallback(() => {
             setShowSongs(false);
             setCurrentArray([]);
-
         }, [])
     );
 
@@ -56,14 +53,12 @@ export default function MusicByArtist ({ navigation }) {
                 coverImage: song.images?.play!==undefined? song.images.play :'',
                 isFavorite: false,
             };
-
             tempArray.push(currentSong);
         });
         setCurrentArray(tempArray)
         currentArray.map((song,index) =>{
             console.log(song)
         })
-
     }
 
 
@@ -83,7 +78,6 @@ export default function MusicByArtist ({ navigation }) {
             .then(response => getAllSongByName(response.tracks.hits))
             .catch(err => console.error("There is error in fetching data: "+err));
         setShowSongs(true);
-
         setSearchText('');
     }
 
@@ -98,37 +92,34 @@ export default function MusicByArtist ({ navigation }) {
         setCurrentArray(updatedArray);
     }
 
-
-
-
-
     return (
-        <View>
-            <View style={musicByArtistStyle.searchStyle} >
-
-                <TextInput
-                    placeholder="Search song or artist..."
-                    onChangeText={handleSearch}
-                    value={searchText}
-                />
-                <Fontisto name="search" onPress={search} size={20} color="black" />
+        <ImageBackground source={require('../images/musicWaves.gif')} style={musicByArtistStyle.background}>
+            <View style={musicByArtistStyle.textTitle} >
+                { (
+                    <Text style={musicByArtistStyle.textHeader}>Search song or artist...</Text>
+                )}
             </View>
-            {
-
+            <View>
+                <View style={musicByArtistStyle.searchStyle} >
+                    <TextInput
+                        placeholder="Search song or artist..."
+                        onChangeText={handleSearch}
+                        value={searchText}
+                    />
+                    <Fontisto name="search" onPress={search} size={20} color="black" />
+                </View>
+                {
                     showSongs&&
-                <View>
-                    {currentArray.length===0&& <Logo/>}
-                    <Player songList={currentArray} page={'list'} toggleFavorite={toggleFavorite}/>
+                    <View>
+                        {currentArray.length===0&& <Logo/>}
+                        {/*{currentArray.length > 0 && (                 //תנאי שרק אם יש שיר יופיע מסגרת*/}
+                        {/*    <View style={musicByArtistStyle.cardContainer}>*/}
+                        <Player songList={currentArray} page={'list'} toggleFavorite={toggleFavorite}/>
+                        {/*</View>*/}
+                        {/*)}*/}
                     </View>
-
-
-
-            }
-
-
-        </View>
-
-
+                }
+            </View>
+        </ImageBackground>
     );
 };
-
