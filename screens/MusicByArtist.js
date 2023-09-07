@@ -93,7 +93,7 @@ export default function MusicByArtist ({ navigation }) {
     }
 
     return (
-        <ImageBackground source={require('../images/musicWaves.gif')} style={musicByArtistStyle.background}>
+        <ImageBackground source={require('../images/searchArtist.gif')} style={musicByArtistStyle.background}>
             <View style={musicByArtistStyle.textTitle} >
                 { (
                     <Text style={musicByArtistStyle.textHeader}>Search song or artist...</Text>

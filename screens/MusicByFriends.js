@@ -77,7 +77,7 @@ export default function MusicByFriends ({ navigation }) {
 
 
     return (
-        <ImageBackground source={require('../images/friendsMusic.png')} style={musicByFriendsStyle.image} resizeMode={'cover'}>
+        <ImageBackground source={require('../images/musicByFriends.png')} style={musicByFriendsStyle.image} resizeMode={'cover'}>
 <View>
     {
         playlistByFriends.length > 0 ?

@@ -91,7 +91,7 @@ const PopularNow = () => {
         return (
 
 
-            <ImageBackground source={require('../images/popular.png')} resizeMode={'cover'}  >
+            <ImageBackground source={require('../images/popularNow.png')} resizeMode={'cover'}  >
                 <View style={{alignItems:'center',backgroundColor:'black'}} >
                     { (
                         fontsLoaded&&
