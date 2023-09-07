@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
-import {View, TextInput, StyleSheet, TouchableOpacity, Text, Image} from 'react-native';
-import {Fontisto, SimpleLineIcons} from '@expo/vector-icons';
+import { View, TextInput, StyleSheet, ImageBackground, TouchableOpacity, Text, Image, ScrollView } from 'react-native';
+import {Fontisto,Ionicons, SimpleLineIcons} from '@expo/vector-icons';
 import axios from "axios";
 import {LOCAL_SERVER_URL, setToken} from "../redux/actions";
 import {useSelector} from "react-redux";
@@ -24,9 +24,16 @@ const SearchFriends = ({ navigation }) => {
 
     useFocusEffect(
         React.useCallback(() => {
-            // setFoundUser(null)
+            setSearchFriend('');
+            setUsersFromServer();
         }, [])
     );
+    const handleClearSearch = () => {
+        setSearchFriend('');
+        setFoundUser(false);
+        setUsersFromServer();
+    }
+
     useEffect(() => {
         const timer = setTimeout(() => {
             setShowLogo(false);
@@ -44,7 +51,7 @@ const SearchFriends = ({ navigation }) => {
         tempFilteredUsers.length===0 ?
             setFilteredUsers(allUsers):
             setFilteredUsers(tempFilteredUsers)
-         setFoundUser(tempFilteredUsers.length!==0)
+        setFoundUser(tempFilteredUsers.length!==0)
     }
 
     useEffect(() => {
@@ -91,49 +98,49 @@ const SearchFriends = ({ navigation }) => {
 
     }
 
-const create_SSE_Connection=()=>{
-    try {
-        if (foundUser!==null) {
-            //     const eventSource = new RNEventSource(LOCAL_SERVER_URL + '/sse-handler?token=' + token+'&friendUsername='+foundUser.username);
-            //     eventSource.onMessage('message', (event) => {
-            //         alert("fgreg")
-            //         alert(event.type); // message
-            //         if (event.data) {
-            //             alert(event.data);
-            //             console.log(event.data)
-            //         } else {
-            //
-            //             alert('Event data is empty or null.');
-            //         }
-            //     });
-            // }else {
-            //     alert("nulll")
-            // }
-            const sse = new EventSource(LOCAL_SERVER_URL + '/sse-handler?token=' + token + '&friendUsername=' + foundUser.username);
-            sse.onmessage = (message) => {
-                const data = message.data;
-                alert(data)
-                console.log("this is: "+ data)
+    const create_SSE_Connection=()=>{
+        try {
+            if (foundUser!==null) {
+                //     const eventSource = new RNEventSource(LOCAL_SERVER_URL + '/sse-handler?token=' + token+'&friendUsername='+foundUser.username);
+                //     eventSource.onMessage('message', (event) => {
+                //         alert("fgreg")
+                //         alert(event.type); // message
+                //         if (event.data) {
+                //             alert(event.data);
+                //             console.log(event.data)
+                //         } else {
+                //
+                //             alert('Event data is empty or null.');
+                //         }
+                //     });
+                // }else {
+                //     alert("nulll")
+                // }
+                const sse = new EventSource(LOCAL_SERVER_URL + '/sse-handler?token=' + token + '&friendUsername=' + foundUser.username);
+                sse.onmessage = (message) => {
+                    const data = message.data;
+                    alert(data)
+                    console.log("this is: "+ data)
+                }
             }
-
+        } catch (error) {
+            console.error('Error creating event source:', error);
         }
-    } catch (error) {
-        console.error('Error creating event source:', error);
     }
-}
+
     const followingRequest = async (user)=>{
         if (token!==''){
             // if(user.following){
             //    await unfollowFriend(user);
             // }else {
-              const  response = await axios.create({baseURL: LOCAL_SERVER_URL}).post('/follow-friend?token=' + token +'&friendUsername='+user.username);
-                if (response.data.success){
-                    setMessageCode(FOLLOWING);
-                    user.following = true ;
-                    //create_SSE_Connection()
-                }else {
-                    setMessageCode(response.data.errorCode);
-                }
+            const  response = await axios.create({baseURL: LOCAL_SERVER_URL}).post('/follow-friend?token=' + token +'&friendUsername='+user.username);
+            if (response.data.success){
+                setMessageCode(FOLLOWING);
+                user.following = true ;
+                //create_SSE_Connection()
+            }else {
+                setMessageCode(response.data.errorCode);
+            }
             // }
 
         }else {
@@ -142,61 +149,79 @@ const create_SSE_Connection=()=>{
         setMessageCode(0)
     }
 
-    // const unfollowFriend=async(friend) => {
-    //     const response = await axios.create({baseURL: LOCAL_SERVER_URL}).post('/delete-friend?token='+token+'&friendUsername='+friend.username);
-    //     if (response.data.success){
-    //         friend.following=false;
-    //         alert("delete")
-    //
-    //     }else {
-    //         alert(response.data.errorCode)
-    //     }
-    // }
+    const unfollowFriend = async (friend) => {
+        const response = await axios.create({ baseURL: LOCAL_SERVER_URL }).post('/delete-friend?token=' + token + '&friendUsername=' + friend.username);
+        if (response.data.success) {
+
+            setUsersFromServer().then(r=>{})
+            alert("delete");
+        } else {
+            alert(response.data.errorCode);
+        }
+    };
 
     return (
-        <View>
-            <View style={searchFriendsStyle.searchStyle}>
-                <TextInput
-                    placeholder="Search Friends..."
-                    onChangeText={handleSearch}
-                    value={searchFriend}
+        <ImageBackground source={require('../images/searchFriends.gif')} style={searchFriendsStyle.background}>
+            <View style={searchFriendsStyle.textTitle} >
+                {(
+                    <Text style={searchFriendsStyle.textHeader}>Search Friends...</Text>
+                )}
+            </View>
+            <View>
+                <View style={searchFriendsStyle.searchStyle}>
 
-                />
+                    <TextInput
+                        placeholder="Search Friends...🔎"
+                        onChangeText={handleSearch}
+                        value={searchFriend}
+                    />
+                    <Ionicons
+                        name="close-circle"
+                        size={24}
+                        color="grey"
+                        onPress={handleClearSearch}
+                    />
+                </View>
+                <ScrollView>
+                    {
+                        filteredUsers.length !== 0 &&
+                        filteredUsers.map((user,index) => (
+                            <View key={index} style={{ flexDirection: 'row' }}>
+
+                                <View style={searchFriendsStyle.frame}>
+                                    <View style={{ marginTop:10}}>
+                                        <View key={user.id} style={{ flexDirection: 'row' }}>
+                                            <View style={{ marginLeft: 25 }}>
+                                                <Image
+                                                    source={{
+                                                        uri: user.picture !== "" ? user.picture : 'https://t4.ftcdn.net/jpg/02/29/75/83/360_F_229758328_7x8jwCwjtBMmC6rgFzLFhZoEpLobB6L8.jpg',
+                                                    }}
+                                                    style={searchFriendsStyle.image}
+                                                />
+                                            </View>
+                                            <View >
+                                                <Text style={searchFriendsStyle.username}> {user.username}</Text>
+                                            </View>
+                                            <TouchableOpacity onPress={() => !user.following ? followingRequest(user) : unfollowFriend(user)}>
+                                                <View style={searchFriendsStyle.followingRequest}>
+                                                    <SimpleLineIcons name="user-follow" size={24} color="white" style={searchFriendsStyle.followIcon} />
+                                                    <Text style={searchFriendsStyle.followText}>{user.following ? "Unfollow" : "Follow"}</Text>
+                                                </View>
+                                            </TouchableOpacity>
+                                        </View>
+                                    </View>
+                                </View>
+                            </View>
+                        ))
+                    }
+                </ScrollView>
                 {
-                    !foundUser && searchFriend!=='' &&
-                    <Text> {"Oops! We couldn't find: "+ searchFriend  }  </Text>
-
+                    (messageCode !== 0 && !isAlertShown) &&
+                    <ErrorAlert message={messageCode} />
                 }
             </View>
-            {
-                filteredUsers.length !== 0 &&
-                filteredUsers.map((user) => (
-                    <View key={user.id} style={{ flexDirection: 'row' }}>
-                        <TouchableOpacity onPress={() => followingRequest(user)}>
-                            <View style={{ height: 100, width: 180, alignItems: 'center' }}>
-                                <SimpleLineIcons name="user-follow" size={24} color="black" style={{ height: 30, width: 50, marginBottom: 5 }} />
-                                <Text>{user.following ? "Unfollow" : "Follow"}</Text>
-                            </View>
-                        </TouchableOpacity>
-                        <View style={{ marginLeft: 100 }}>
-                            <Text style={{ height: 50, width: 50 }}> {user.username}</Text>
-                        </View>
-                        <Image
-                            source={{
-                                uri: user.picture !== "" ? user.picture : 'https://t4.ftcdn.net/jpg/02/29/75/83/360_F_229758328_7x8jwCwjtBMmC6rgFzLFhZoEpLobB6L8.jpg',
-                            }}
-                            style={{ width: 60, height: 60, borderRadius: 30 }}
-                        />
-                    </View>
-                ))
-            }
-            {
-               ( messageCode !== 0 && !isAlertShown)&&
-                <ErrorAlert message={messageCode}/>
-            }
-        </View>
+        </ImageBackground>
     );
 };
-
 
 export default SearchFriends;
