@@ -64,9 +64,9 @@ const MyFriends = ({navigation}) => {
                 </View>
                 <Text style={myFriendsStyle.username}>{item.username}</Text>
                 <TouchableOpacity style={{ height: 50, width: 100, alignItems:'center', marginLeft: 100}} onPress={()=>{deleteFriend(item).then(r=>console.log("delete friend"))}} >
-                    <View style={myFriendsStyle.followingRequest}>
+                    <View style={myFriendsStyle.removeUser}>
                         <Entypo name="remove-user" size={24} color="white" style={myFriendsStyle.removeIcon} />
-                        <Text  style={myFriendsStyle.followText}>remove user</Text>
+                        <Text  style={myFriendsStyle.removeText}>remove user</Text>
                     </View>
                 </TouchableOpacity>
             </View>
@@ -88,7 +88,7 @@ const MyFriends = ({navigation}) => {
                         </View>
                         :
                         <View>
-                            <Text style={{color:'white'}} >Looks like you haven't added any friends yet  </Text>
+                            <Text style={{color:'white'}}>Looks like you haven't added any friends yet  </Text>
 
                         </View>
 

@@ -64,6 +64,7 @@ const myFriendsStyle = StyleSheet.create({
         marginTop:10
     },
 
+
 });
 
 export default myFriendsStyle;
