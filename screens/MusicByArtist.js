@@ -25,8 +25,9 @@ import  musicByArtistStyle from '../styles/musicByArtistStyle'
 export default function MusicByArtist ({ navigation }) {
 
     const [currentArray,setCurrentArray]=useState([]);
-    const [searchText, setSearchText] = useState('');
+    const [searchText, setSearchText] = useState("");
     const [showSongs, setShowSongs] = useState(false);
+    const [isFoundSearch, setIsFoundSearch] = useState(true);
 
 
     useFocusEffect(
@@ -44,26 +45,32 @@ export default function MusicByArtist ({ navigation }) {
 
     function getAllSongByName(response) {
         let tempArray=[]
-        response.map((song,index) => {
-            const currentSong = {
-                songIndex: index,
-                title: song.heading.title!==undefined? song.heading.title: '',
-                artist: song.heading.subtitle!==undefined? song.heading.subtitle:'',
-                url: song.stores?.apple.previewurl!==undefined?song.stores?.apple.previewurl : '',
-                coverImage: song.images?.play!==undefined? song.images.play :'',
-                isFavorite: false,
-            };
-            tempArray.push(currentSong);
-        });
-        setCurrentArray(tempArray)
-        currentArray.map((song,index) =>{
-            console.log(song)
-        })
+        if (response&&response?.tracks?.hits){
+            response.tracks.hits.map((song,index) => {
+                const currentSong = {
+                    songIndex: index,
+                    title: song.heading.title!==undefined? song.heading.title: '',
+                    artist: song.heading.subtitle!==undefined? song.heading.subtitle:'',
+                    url: song.stores?.apple.previewurl!==undefined?song.stores?.apple.previewurl : '',
+                    coverImage: song.images?.play!==undefined? song.images.play :'',
+                    isFavorite: false,
+                };
+                tempArray.push(currentSong);
+            });
+            setCurrentArray(tempArray)
+            currentArray.map((song,index) =>{
+                console.log(song)
+            })
+        }else {
+            setIsFoundSearch(false)
+        }
+
     }
 
 
     const search= ()=> {
-        console.log("this is the text "+searchText)
+        setIsFoundSearch(true)
+        console.log("This is the user search "+searchText)
         setSearchText('');
         const songs = {
             method: 'GET',
@@ -75,8 +82,8 @@ export default function MusicByArtist ({ navigation }) {
 
         fetch('https://shazam-api7.p.rapidapi.com/search?term='+searchText+'&limit=5', songs)
             .then(response => response.json())
-            .then(response => getAllSongByName(response.tracks.hits))
-            .catch(err => console.error("There is error in fetching data: "+err));
+            .then(response => getAllSongByName(response))
+             .catch(err => {setIsFoundSearch(false), console.log("there is error in search "+err)});
         setShowSongs(true);
         setSearchText('');
     }
@@ -111,7 +118,8 @@ export default function MusicByArtist ({ navigation }) {
                 {
                     showSongs&&
                     <View>
-                        {currentArray.length===0&& <Logo/>}
+                        {(currentArray.length===0&&isFoundSearch) &&<Logo/>}
+                        {!isFoundSearch&&<Text style={{color:'white',fontSize:20 ,marginTop:30,alignSelf:'center'}}>Oops! Couldn't find what you're after. Give it another shot!</Text>}
                         {/*{currentArray.length > 0 && (                 //תנאי שרק אם יש שיר יופיע מסגרת*/}
                         {/*    <View style={musicByArtistStyle.cardContainer}>*/}
                         <Player songList={currentArray} page={'list'} toggleFavorite={toggleFavorite}/>

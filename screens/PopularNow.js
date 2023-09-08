@@ -36,14 +36,14 @@ const PopularNow = () => {
 
         function getSong(response) {
             let tempArray = []
-            if (response!==undefined){
+            if (response){
                 response?.tracks.map((song, index) => {
                     const currentSong = {
                         songIndex: index,
-                        title: song.title,
-                        artist: song.subtitle,
-                        url: song.hub.actions[1].uri,
-                        coverImage: song.images.background,
+                        title: song.title?song.title:'',
+                        artist: song.subtitle?song.subtitle:'',
+                        url: song?.hub?.actions[1]?.uri? song.hub.actions[1].uri:'',
+                        coverImage: song?.images?.background?song.images.background:'',
                         isFavorite: false // Initialize as not favorite//////////////////////////////////
 
                     };
@@ -54,7 +54,7 @@ const PopularNow = () => {
                 setSongsArray(tempArray)
 
             }else {
-                alert("Error,something went wrong ")
+                console.log("Error from Popular,something wrong with fetching songs ")
             }
 
         }

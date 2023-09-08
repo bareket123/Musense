@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Text, View} from "react-native";
+import {Button, ImageBackground, Text, View} from "react-native";
 import {useSelector} from "react-redux";
 import {ScrollView}  from 'react-native-virtualized-view'
 import Questionnaire from "./Questionnaire";
@@ -7,7 +7,9 @@ import axios from "axios";
 import Player from "./Player";
 import {LOCAL_SERVER_URL, X_RAPID_API_HOST7, X_RAPID_API_KEY, X_RAPID_API_KEY2} from "../redux/actions";
 import Logo from "./Logo";
-
+import {useFonts} from "expo-font";
+import * as SplashScreen from "expo-splash-screen";
+import recommendationsStyle from '../styles/personalRecommendationsStyle'
 
 const PersonalRecommendations = () => {
     const {token} = useSelector(state => state.reducer);
@@ -19,11 +21,25 @@ const PersonalRecommendations = () => {
     const [combinedSongList, setCombinedSongList] = useState([]);
     const [questionnaireData, setQuestionnaireData] = useState(null);
 
+    const [fontsLoaded] = useFonts({
+        'loveYa': require('../assets/Fonts/LoveYaLikeASister-Regular.ttf'),
+
+    });
+    useEffect(()=>{
+        if (fontsLoaded) {
+            SplashScreen.hideAsync();
+        }
+        async function prepare() {
+            await SplashScreen.preventAutoHideAsync();
+        }
+        prepare();
+    },[fontsLoaded])
+
     const handleQuestionnaireSubmit = (data) => {
         setQuestionnaireData(data);
     };
     useEffect(() => {
-        if (playlistByGenre.length > 0 && artist1Playlist.length > 0 && artist2Playlist.length > 0 && listByFavorite.length > 0) {
+        if ((playlistByGenre.length > 0 && artist1Playlist.length > 0 && artist2Playlist.length > 0) || listByFavorite.length > 0) {
             const combinedList = [...playlistByGenre, ...artist1Playlist, ...artist2Playlist, ...listByFavorite];
             const shuffleCombinedList=shuffleArray(combinedList)
             setCombinedSongList(shuffleCombinedList);
@@ -41,8 +57,14 @@ const PersonalRecommendations = () => {
     useEffect(()=>{
         getPlaylistByGenre();
         getArtist1Playlist();
-        getArtist2Playlist();
-        getFavoriteSong()
+       getArtist2Playlist();
+        const timeoutId = setTimeout(() => {
+            getFavoriteSong()
+        }, 5000);
+        setTimeout(() => {
+            clearTimeout(timeoutId);
+        }, 5000);
+
     },[allAnswers])
 
 
@@ -85,13 +107,13 @@ const PersonalRecommendations = () => {
                 const artist1Songs = {
                     method: 'GET',
                     headers: {
-                        'X-RapidAPI-Key': X_RAPID_API_KEY,
+                        'X-RapidAPI-Key': X_RAPID_API_KEY2,
                         'X-RapidAPI-Host': X_RAPID_API_HOST7,
                     }
                 };
                 fetch('https://shazam-api7.p.rapidapi.com/search?term='+allAnswers.artist1+'&limit=5', artist1Songs)
                     .then(response => response.json())
-                    .then(response => setArtistSong(response.tracks.hits,1))
+                    .then(response => setArtistSong(response,1))
                     .catch(err => console.error("There is error in fetching data: "+err));
             }
         }catch (error){
@@ -105,14 +127,14 @@ const PersonalRecommendations = () => {
                 const artist2Songs = {
                     method: 'GET',
                     headers: {
-                        'X-RapidAPI-Key': X_RAPID_API_KEY,
+                        'X-RapidAPI-Key': X_RAPID_API_KEY2,
                         'X-RapidAPI-Host': X_RAPID_API_HOST7,
                     }
                 }
                 fetch('https://shazam-api7.p.rapidapi.com/search?term='+allAnswers.artist2+'&limit=5', artist2Songs)
                     .then(response => response.json())
-                    .then(response => setArtistSong(response.tracks.hits,2))
-                    .catch(err => console.error("There is error in fetching data: "+err));
+                    .then(response => setArtistSong(response,2))
+                    .catch(err => console.error("There is error in Artist fetching data: "+err));
             }
 
         }catch (error){
@@ -126,14 +148,14 @@ const PersonalRecommendations = () => {
                 const favoriteSong = {
                     method: 'GET',
                     headers: {
-                        'X-RapidAPI-Key': X_RAPID_API_KEY,
+                        'X-RapidAPI-Key': X_RAPID_API_KEY2,
                         'X-RapidAPI-Host': X_RAPID_API_HOST7,
                     }
                 };
 
                 fetch('https://shazam-api7.p.rapidapi.com/search?term='+allAnswers.favoriteSong+'&limit=5', favoriteSong)
                     .then(response => response.json())
-                    .then(response => getByFavorite(response.tracks.hits[0].track.key))
+                    .then(response => getByFavorite(response.tracks.hits[0].key))
                     .catch(err => console.error(err));
             }
 
@@ -143,8 +165,8 @@ const PersonalRecommendations = () => {
         }
     }
     const getByFavorite=async (songKey) => {
-
-        if (allAnswers != null && songKey !== null) {
+        console.log(songKey)
+        if (allAnswers != null && songKey) {
             console.log(songKey)
             const songList = {
                 method: 'GET',
@@ -154,9 +176,9 @@ const PersonalRecommendations = () => {
                 }
             };
 
-            fetch('https://shazam-api7.p.rapidapi.com/songs/list-recommendations?id='+songKey+'&limit=10', songList)
+            fetch('https://shazam-api7.p.rapidapi.com/songs/list-recommendations?id='+songKey+'&limit=5', songList)
                 .then(response => response.json())
-                .then(response => setRelatedSongList(response.tracks))
+                .then(response => setRelatedSongList(response))
                 .catch(err => console.error("error from favorite "+err));
         } else {
             console.log("song key is empty");
@@ -165,15 +187,15 @@ const PersonalRecommendations = () => {
 
     const setRelatedSongList=(response)=>{
         let tempSongs=[];
-        if (response!==undefined){
-            response.map((song,index)=>{
+        if (response&&response.tracks){
+            response.tracks.map((song,index)=>{
                 if (song!==undefined){
                     const currentSong = {
                         songIndex:index,
-                        title: song.title!==undefined? song.title: '',
-                        artist: song.subtitle!==undefined? song.subtitle:'',
-                        url: song.hub?.actions[1]?.uri!==undefined?song.hub?.actions[1]?.uri : '',
-                        coverImage: song.images?.background!==undefined? song.images.background :'',
+                        title: song.title? song.title: '',
+                        artist: song.subtitle? song.subtitle:'',
+                        url: song.hub?.actions[1]?.uri?song.hub?.actions[1]?.uri : '',
+                        coverImage: song.images?.background? song.images.background :'',
                         isFavorite:false
                     };
                     tempSongs.push(currentSong);
@@ -194,9 +216,8 @@ const PersonalRecommendations = () => {
 
     const setArtistSong=(response,artist)=>{
         let tempArray=[]
-       console.log("\n"+response+"\n")
-        if (response!==undefined){
-            response.map((song,index) => {
+        if (response && response.tracks.hits){
+            response.tracks.hits.map((song,index) => {
                 const currentSong = {
                     songIndex: index,
                     title: song.heading.title!==undefined? song.heading.title: '',
@@ -211,39 +232,46 @@ const PersonalRecommendations = () => {
                 tempArray.push(currentSong);
                 if (artist===1){
                     setArtist1Playlist(tempArray);
+                   // console.log(artist1Playlist)
                 }else {
                     setArtist2Playlist(tempArray);
 
                 }
+
             });
         }else {
             console.log("response is undefined")
         }
 
+
     }
+
+
 
     const setSongs=(response)=>{
         let tempArray = []
-        if (response!==undefined){
+        if (response && response.tracks){
             response.tracks.map((song, index) => {
-                const currentSong = {
-                    songIndex: index,
-                    title: song.title,
-                    artist: song.subtitle,
-                    url: song.hub.actions[1].uri,
-                    coverImage: song.images.background,
-                    isFavorite:false
+                if (song){
+                    const currentSong = {
+                        songIndex: index,
+                        title: song.title,
+                        artist: song.subtitle,
+                        url: song.hub.actions[1].uri,
+                        coverImage: song.images.background,
+                        isFavorite:false
 
 
 
-                };
+                    };
 
-                tempArray.push(currentSong);
+                    tempArray.push(currentSong);
+                }
             });
 
             setPlaylistByGenre(tempArray);
         }else {
-            console.log("genre response is undefined")
+            console.log("Genre response is undefined ")
         }
 
 
@@ -255,6 +283,7 @@ const PersonalRecommendations = () => {
         }
         return array;
     }
+
     function toggleFavorite(index) {
         const updatedArray = combinedSongList.map((song, i) => {
             if (i === index) {
@@ -271,20 +300,23 @@ const PersonalRecommendations = () => {
     return (
 
 
-        <View>
+        <ImageBackground source={require('../images/recommendationsBackground.gif')} resizeMode={'cover'}>
             {
                 allAnswers===null?
                     <Questionnaire onSubmit={handleQuestionnaireSubmit}/>
                     :
                     <View>
-                        <Text>Your Personal Groove</Text>
+                        {
+                            fontsLoaded&&
+                            <Text style={recommendationsStyle.mainTitle}>Your  Personal Groove</Text>
+                        }
                         {combinedSongList.length===0&& <Logo/>}
                         <Player songList={combinedSongList} page={'list'} toggleFavorite={toggleFavorite}/>
                     </View>
             }
 
 
-        </View>
+        </ImageBackground>
     );
 };
 
