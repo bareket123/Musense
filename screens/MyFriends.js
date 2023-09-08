@@ -88,7 +88,7 @@ const MyFriends = ({navigation}) => {
                         </View>
                         :
                         <View>
-                            <Text style={{color:'white',alignItems:'center'}}>Looks like you haven't added any friends yet  </Text>
+                            <Text style={{color:'white'}}>Looks like you haven't added any friends yet  </Text>
 
                         </View>
 
