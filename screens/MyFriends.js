@@ -64,9 +64,9 @@ const MyFriends = ({navigation}) => {
                 </View>
                 <Text style={myFriendsStyle.username}>{item.username}</Text>
                 <TouchableOpacity style={{ height: 50, width: 100, alignItems:'center', marginLeft: 100}} onPress={()=>{deleteFriend(item).then(r=>console.log("delete friend"))}} >
-                    <View style={myFriendsStyle.removeUser}>
+                    <View style={myFriendsStyle.followingRequest}>
                         <Entypo name="remove-user" size={24} color="white" style={myFriendsStyle.removeIcon} />
-                        <Text  style={myFriendsStyle.removeText}>remove user</Text>
+                        <Text  style={myFriendsStyle.followText}>remove user</Text>
                     </View>
                 </TouchableOpacity>
             </View>
@@ -74,7 +74,7 @@ const MyFriends = ({navigation}) => {
     )
 
     return (
-        <ImageBackground source={require('../images/whQ.gif')} style={myFriendsStyle.background}>
+        <ImageBackground source={require('../images/myFriends.gif')} style={myFriendsStyle.background}>
             <View>
                 {
                     myFriends.length!==0?
@@ -88,12 +88,8 @@ const MyFriends = ({navigation}) => {
                         </View>
                         :
                         <View>
-                            <Text style={myFriendsStyle.noFriends}>Looks like you haven't added any friends yet  </Text>
-                            <View style={myFriendsStyle.customButton}>
-                                <TouchableOpacity onPress={() => { navigation.navigate('Search friends') }}>
-                                    <Text style={myFriendsStyle.buttonText}>Go search for more friends</Text>
-                                </TouchableOpacity>
-                            </View>
+                            <Text style={{color:'white'}} >Looks like you haven't added any friends yet  </Text>
+
                         </View>
 
                 }
