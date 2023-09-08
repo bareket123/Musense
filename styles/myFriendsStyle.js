@@ -1,87 +1,75 @@
 import { StyleSheet } from 'react-native';
 
 const myFriendsStyle = StyleSheet.create({
-    viewStyle:{
-        justifyContent: 'center',
-        flexDirection: 'row',
-        alignItems: 'center',
+
+    followText: {
+        color: 'white',
+        fontWeight: 'bold',
+        marginTop:-6,
     },
+
+    removeIcon: {
+        height: 20,
+        width: 30,
+        marginBottom: 5,
+        marginTop:-12,
+    },
+
     background: {
         width: '100%',
         height: '100%',
         resizeMode: 'cover',
     },
-    buttonExit: {
-        backgroundColor: 'blue',
-        borderRadius: 50,
-        padding: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginBottom: 20,
-        width: 200,
-        shadowColor: 'black',
-        position: 'absolute',
-        left: '30%',
-        marginLeft: -50,
+
+    textTitle : {
+        alignItems:'center'
     },
-    Button: {
-        backgroundColor: 'blue',
-        borderRadius: 10,
-        padding: 10,
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginBottom: 20,
-        width: 200,
-        shadowColor: 'black',
-        position: 'absolute',
-        left: '70%',
-        marginLeft: -100,
-    },
-    buttonText: {
+
+    textHeader : {
+        fontSize: 30,
         color: 'white',
-        fontSize: 21,
+        textShadowColor: 'rgba(248,78,239,0.6)',
+        textShadowOffset: { width: 2, height: 2 },
+        textShadowRadius: 4
+    },
+
+    username: {
         fontWeight: 'bold',
+        height: 50,
+        width: 50,
+        color: "white",
+        marginLeft: -80,
+        marginTop:-30
     },
-    headerText: {
-        justifyContent: 'center',
-        fontSize: 23,
-        fontWeight: 'bold',
-        marginBottom: 50,
-        color:'blue',
-        shadowColor:'white'
+
+    followingRequest: {
+        height: 100,
+        width: 180,
+        alignItems: 'center',
+        marginLeft: 50
     },
-    textInput:{
-        justifyContent: 'center',
-        padding: 10,
-        paddingLeft: 60,
-        width: 300,
-        backgroundColor:'antiquewhite'
-    },
-    container: {
-        padding: 10,
-        backgroundColor: 'black',
-    },
-    searchStyle: {
-        flexDirection:'row',
-        justifyContent: 'space-between',
-        height: 40,
-        borderColor: 'black',
-        borderWidth: 5,
+
+    frame: {
+        backgroundColor: 'rgba(19,19,19,0.5)',
         borderRadius: 20,
-        paddingHorizontal: 10,
-
-    },
-    followText: {
-        color: 'white',
-        marginLeft: 10,
-        fontWeight: 'bold',
+        margin: 5,
+        height:80
     },
 
-    followIcon: {
-        height: 25,
-        width: 30,
-        marginBottom: 5,
+
+
+    image : {
+        width: 60,
+        height: 60,
+        borderRadius: 30 ,
+        marginRight:100,
+        marginTop:10
     },
+
+
+
+
+
 });
 
 export default myFriendsStyle;

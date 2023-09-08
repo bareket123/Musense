@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {Video} from "expo-av";
-import {FlatList, Image, ScrollView, Text, TouchableOpacity, View} from "react-native";
+import {FlatList, Image, ScrollView,ImageBackground, Text, TouchableOpacity, View} from "react-native";
 import {NavigationContainer} from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
@@ -11,17 +11,13 @@ import ErrorAlert from "./ErrorAlert";
 import Logo from "./Logo";
 import myFriendsStyle from '../styles/myFriendsStyle'
 
-
 const MyFriends = ({navigation}) => {
     const [myFriends,setMyFriends]=useState([]);
-   const {token} = useSelector(state => state.reducer);
+    const {token} = useSelector(state => state.reducer);
     const[messageCode, setMessageCode] = useState(0);
-
-
 
     useEffect(() => {
         fetchMyFriends().then();
-
     },[myFriends]);
 
     const fetchMyFriends = async () => {
@@ -46,7 +42,6 @@ const MyFriends = ({navigation}) => {
         setMessageCode(0);
     }
 
-
     const deleteFriend=async(friend) => {
         const response = await axios.create({baseURL: LOCAL_SERVER_URL}).post('/delete-friend?token='+token+'&friendUsername='+friend.username);
         if (response.data.success){
@@ -56,65 +51,53 @@ const MyFriends = ({navigation}) => {
         }
     }
 
-
     const renderItem=({item})=>(
-
-        <View style={{ padding: 20, flexDirection: 'row', alignItems: 'center', left: '20%' }}>
-            <View style={{ marginLeft: -20 }}>
-
-                <Image
-                    source={{
-                        uri: item.picture!==''?item.picture : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS3J7fax0r25yrhXbt64ICXsKZ-Clm_txAxmw&usqp=CAU',
-                    }}
-                    style={{ width: 60, height: 60, borderRadius: 30 , marginRight:20}}
-                />
+        <View style={myFriendsStyle.frame}>
+            <View style={{ padding: 25, flexDirection: 'row', alignItems: 'center' ,marginTop:10,}}>
+                <View style={{ marginLeft: 3,marginTop:-55}}>
+                    <Image
+                        source={{
+                            uri: item.picture!==''?item.picture : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS3J7fax0r25yrhXbt64ICXsKZ-Clm_txAxmw&usqp=CAU',
+                        }}
+                        style={myFriendsStyle.image}
+                    />
+                </View>
+                <Text style={myFriendsStyle.username}>{item.username}</Text>
+                <TouchableOpacity style={{ height: 50, width: 100, alignItems:'center', marginLeft: 100}} onPress={()=>{deleteFriend(item).then(r=>console.log("delete friend"))}} >
+                    <View style={myFriendsStyle.followingRequest}>
+                        <Entypo name="remove-user" size={24} color="white" style={myFriendsStyle.removeIcon} />
+                        <Text  style={myFriendsStyle.followText}>remove user</Text>
+                    </View>
+                </TouchableOpacity>
             </View>
-
-            <Text style={{marginRight:20,  color:'white',marginTop:15,fontWeight: 'bold'}}>{item.username}</Text>
-
-            <TouchableOpacity style={{ height: 50, width: 100, alignItems:'center', marginLeft: 110}} onPress={()=>{deleteFriend(item).then(r=>console.log("delete friend"))}} >
-                <Entypo name="remove-user" size={24} color="white" style={myFriendsStyle.followIcon} />
-                <Text  style={myFriendsStyle.followText}>remove user</Text>
-            </TouchableOpacity>
-
         </View>
     )
 
-
-
-
-
-
-
-
     return (
-        <View>
-            <View style={myFriendsStyle.container}>
-
-            {
-                myFriends.length!==0?
-                    <View>
-                        <Text style={{fontWeight:'bold', color:'white'}} >my friends: </Text>
-                        <FlatList data={myFriends} renderItem={renderItem}/>
-                    </View>
-                    :
-                    <View>
-                        <Text style={{fontWeight:'bold', color:'white'}}>Looks like you haven't added any friends yet  </Text>
-
-                    </View>
-
-            }
-            {
-                messageCode!==0&&
-                <ErrorAlert message={messageCode}/>
-            }
+        <ImageBackground source={require('../images/myFriends.gif')} style={myFriendsStyle.background}>
+            <View>
+                {
+                    myFriends.length!==0?
+                        <View>
+                            <View style={myFriendsStyle.textTitle} >
+                                { (
+                                    <Text style={myFriendsStyle.textHeader} >my friends: </Text>
+                                )}
+                                <FlatList data={myFriends} renderItem={renderItem }/>
+                            </View>
+                        </View>
+                        :
+                        <View>
+                            <Text style={{color:'white'}} >Looks like you haven't added any friends yet  </Text>
+                        </View>
+                }
+                {
+                    messageCode!==0&&
+                    <ErrorAlert message={messageCode}/>
+                }
             </View>
-        </View>
+        </ImageBackground>
     );
 };
 
 export default MyFriends;
-
-
-
-
