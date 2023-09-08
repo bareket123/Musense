@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native';
 
 const myFriendsStyle = StyleSheet.create({
 
-    followText: {
+    removeText: {
         color: 'white',
         fontWeight: 'bold',
         marginTop:-6,
@@ -42,7 +42,7 @@ const myFriendsStyle = StyleSheet.create({
         marginTop:-30
     },
 
-    followingRequest: {
+    removeUser: {
         height: 100,
         width: 180,
         alignItems: 'center',
@@ -56,8 +56,6 @@ const myFriendsStyle = StyleSheet.create({
         height:80
     },
 
-
-
     image : {
         width: 60,
         height: 60,
@@ -65,10 +63,6 @@ const myFriendsStyle = StyleSheet.create({
         marginRight:100,
         marginTop:10
     },
-
-
-
-
 
 });
 
