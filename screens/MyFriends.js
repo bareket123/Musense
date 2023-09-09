@@ -50,7 +50,6 @@ const MyFriends = ({navigation}) => {
             alert(response.data.errorCode)
         }
     }
-
     const renderItem=({item})=>(
         <View style={myFriendsStyle.frame}>
             <View style={{ padding: 25, flexDirection: 'row', alignItems: 'center' ,marginTop:10,}}>
@@ -75,31 +74,30 @@ const MyFriends = ({navigation}) => {
 
     return (
         <ImageBackground source={require('../images/myFriends.gif')} style={myFriendsStyle.background}>
-            <View>
-                {
-                    myFriends.length!==0?
-                        <View>
-                            <View style={myFriendsStyle.textTitle} >
-                                { (
-                                    <Text style={myFriendsStyle.textHeader} >my friends: </Text>
-                                )}
-                                <FlatList data={myFriends} renderItem={renderItem }/>
+            <ScrollView>
+                <View>
+                    {
+                        myFriends.length!==0?
+                            <View>
+                                <View style={myFriendsStyle.textTitle} >
+                                    { (
+                                        <Text style={myFriendsStyle.textHeader} >my friends: </Text>
+                                    )}
+                                    <FlatList data={myFriends} renderItem={renderItem }/>
+                                </View>
                             </View>
-                        </View>
-                        :
-                        <View>
-                            <Text style={{color:'white'}}>Looks like you haven't added any friends yet  </Text>
-
-                        </View>
-
-                }
-                {
-                    messageCode!==0&&
-                    <ErrorAlert message={messageCode}/>
-                }
-            </View>
+                            :
+                            <View>
+                                <Text style={{color:'white'}}>Looks like you haven't added any friends yet  </Text>
+                            </View>
+                    }
+                    {
+                        messageCode!==0&&
+                        <ErrorAlert message={messageCode}/>
+                    }
+                </View>
+            </ScrollView>
         </ImageBackground>
     );
 };
-
 export default MyFriends;
