@@ -15,6 +15,7 @@ import {useFonts} from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import {FontAwesome} from "@expo/vector-icons";
 import  musicByFriendsStyle from '../styles/musicByFriendsStyle'
+import globalStyles from "../styles/globalStyles";
 
 export default function MusicByFriends ({ navigation }) {
     const [playlistByFriends,setPlaylistByFriends]=useState([]);
@@ -77,19 +78,20 @@ export default function MusicByFriends ({ navigation }) {
 
 
     return (
-        <ImageBackground source={require('../images/musicByFriends.png')} style={musicByFriendsStyle.image} resizeMode={'cover'}>
-<View>
+        <ImageBackground source={require('../images/musicByFriends.png')} style={globalStyles.flexProp} resizeMode={'cover'} >
     {
         playlistByFriends.length > 0 ?
-            <View>
-                <View>
+            <View style={globalStyles.flexProp}>
+                <View style={globalStyles.flexProp}>
                     {fontsLoaded && (
                         <Text style={musicByFriendsStyle.mainTitle}>Friendship in Music</Text>
                     )}
                     <Text style={musicByFriendsStyle.subtitle}>
                         listening to songs your friends love
                     </Text>
-                    <Player songList={playlistByFriends} page={'playlistFriends'} toggleFavorite={toggleFavorite}/>
+                    <View style={globalStyles.flexProp}>
+                        <Player songList={playlistByFriends} page={'playlistFriends'} toggleFavorite={toggleFavorite}/>
+                    </View>
                 </View>
             </View>
             :
@@ -108,7 +110,7 @@ export default function MusicByFriends ({ navigation }) {
                <ErrorAlert message={messageCode}/>
            }
 
-               </View>
+
         </ImageBackground>
     );
 };

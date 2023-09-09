@@ -6,7 +6,7 @@ import {X_RAPID_API_HOST, X_RAPID_API_KEY} from "../redux/actions";
 import Logo from "./Logo"; // Import useSelector and useDispatch from react-redux
 import * as SplashScreen from "expo-splash-screen";
 import popularStyle from "../styles/popularStyle";
-
+import globalStyles from "../styles/globalStyles";
 const PopularNow = () => {
     const [songsArray, setSongsArray] = useState([]); // Initialize songsArray as a state
     const [fontsLoaded] = useFonts({
@@ -90,21 +90,21 @@ const PopularNow = () => {
 
         return (
 
-
-            <ImageBackground source={require('../images/popularNow.png')} resizeMode={'cover'}  >
-                <View style={{alignItems:'center',backgroundColor:'black'}} >
-                    { (
-                        fontsLoaded&&
-                        <Text style={{ fontSize:26,color: 'white',fontFamily:'RammettoOne',
-                            textShadowColor: 'rgba(255, 255, 255, 0.6)', // Change text shadow color to white with opacity
-                            textShadowOffset: { width: 2, height: 2 },
-                            textShadowRadius: 4
-                             }}   >Hottest Hits of the Moment</Text>
-                    )}
-                </View>
-                   {songsArray.length===0 && <Logo/>}
+            songsArray.length>0?
+                <ImageBackground source={require('../images/popularNow.png')} resizeMode={'cover'} style={globalStyles.flexProp}  >
+                    <View style={popularStyle.viewStyle}>
+                        { (
+                            fontsLoaded&&
+                            <Text style={popularStyle.mainTitle}>Hottest Hits of the Moment</Text>
+                        )}
+                    </View>
+                    <View style={globalStyles.flexProp}>
                     <Player songList={songsArray} page={'list'} toggleFavorite={toggleFavorite}/>
-              </ImageBackground>
+                   </View>
+                </ImageBackground>
+                :
+                <Logo/>
+
 
 
         );

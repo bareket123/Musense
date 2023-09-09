@@ -1,25 +1,20 @@
 import { StyleSheet } from 'react-native';
 const popularStyle = StyleSheet.create({
 
-container: {
-    flex: 1,
-        backgroundColor:'pink'
+ flexPro:{
+     flex:1
+ } ,
+mainTitle:{
+    fontSize:26,color: 'white',fontFamily:'RammettoOne',
+    textShadowColor: 'rgba(255, 255, 255, 0.6)', // Change text shadow color to white with opacity
+    textShadowOffset: { width: 2, height: 2 },
+    textShadowRadius: 4
 },
-playButton: {
-    backgroundColor: 'green',
-        padding: 10,
-        borderRadius: 8,
-        marginTop: 20,
-},
-playButtonText: {
-    color: 'white',
-        fontSize: 16,
-        fontWeight: 'bold',
-},
-SafeAreaView:{
-    justifyContent: 'center',
-        alignItems: 'center',
-},
+    viewStyle:{
+        alignItems:'center',
+        backgroundColor:'black'
+    }
+
 
 });
     export default popularStyle;

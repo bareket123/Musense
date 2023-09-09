@@ -10,6 +10,7 @@ import Logo from "./Logo";
 import {useFonts} from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import recommendationsStyle from '../styles/personalRecommendationsStyle'
+import globalStyles from "../styles/globalStyles";
 
 const PersonalRecommendations = () => {
     const {token} = useSelector(state => state.reducer);
@@ -55,26 +56,31 @@ const PersonalRecommendations = () => {
 
 
     useEffect(()=>{
-        getPlaylistByGenre();
-        getArtist1Playlist();
-       getArtist2Playlist();
-        const timeoutId = setTimeout(() => {
-            getFavoriteSong()
-        }, 5000);
-        setTimeout(() => {
-            clearTimeout(timeoutId);
-        }, 5000);
+        // getPlaylistByGenre();
+        // getArtist1Playlist();
+        // getArtist2Playlist();
+        // const timeoutId = setTimeout(() => {
+        //     getFavoriteSong()
+        // }, 5000);
+        // setTimeout(() => {
+        //     clearTimeout(timeoutId);
+        // }, 5000);
 
     },[allAnswers])
 
 
     const getAnswers =async () => {
-        const response = await axios.create({baseURL: LOCAL_SERVER_URL}).get('/get-user-preferences?token=' + token)
-        if(response.data.success){
-            setAllAnswers(response.data.userPreferences)
-        }else {
-            console.log("not found answers: "+response.data.errorCode)
+        try {
+            const response = await axios.create({baseURL: LOCAL_SERVER_URL}).get('/get-user-preferences?token=' + token)
+            if(response.data.success){
+                setAllAnswers(response.data.userPreferences)
+            }else {
+                console.log("not found answers: "+response.data.errorCode)
+            }
+        }catch (error){
+            console.log("error getting answers from server: "+error )
         }
+
     }
 
 
@@ -92,8 +98,8 @@ const PersonalRecommendations = () => {
 
                 fetch('https://shazam-api7.p.rapidapi.com/charts/get-top-songs-in_world_by_genre?genre='+allAnswers.genre+'&limit=10', options)
                     .then(response => response.json())
-                    .then(response => setSongs(response))
-                    .catch(err => console.error("from genre "+ err));
+                    .then(response =>setSongs(response))
+                    .catch(err => console.log("from genre "+ err));
             }
         }catch (error){
             console.log("error from playlist by genre "+ error);
@@ -114,7 +120,7 @@ const PersonalRecommendations = () => {
                 fetch('https://shazam-api7.p.rapidapi.com/search?term='+allAnswers.artist1+'&limit=5', artist1Songs)
                     .then(response => response.json())
                     .then(response => setArtistSong(response,1))
-                    .catch(err => console.error("There is error in fetching data: "+err));
+                    .catch(err => console.log("There is error in fetching data: "+err));
             }
         }catch (error){
             console.log("error fetching artist "+ error)
@@ -134,7 +140,7 @@ const PersonalRecommendations = () => {
                 fetch('https://shazam-api7.p.rapidapi.com/search?term='+allAnswers.artist2+'&limit=5', artist2Songs)
                     .then(response => response.json())
                     .then(response => setArtistSong(response,2))
-                    .catch(err => console.error("There is error in Artist fetching data: "+err));
+                    .catch(err => console.log("There is error in Artist fetching data: "+err));
             }
 
         }catch (error){
@@ -155,8 +161,8 @@ const PersonalRecommendations = () => {
 
                 fetch('https://shazam-api7.p.rapidapi.com/search?term='+allAnswers.favoriteSong+'&limit=5', favoriteSong)
                     .then(response => response.json())
-                    .then(response => getByFavorite(response.tracks.hits[0].key))
-                    .catch(err => console.error(err));
+                    .then(response => getByFavorite(response?.tracks?.hits[0]?.key))
+                    .catch(err => console.log("there is error in favoriteSong "+err));
             }
 
 
@@ -179,7 +185,7 @@ const PersonalRecommendations = () => {
             fetch('https://shazam-api7.p.rapidapi.com/songs/list-recommendations?id='+songKey+'&limit=5', songList)
                 .then(response => response.json())
                 .then(response => setRelatedSongList(response))
-                .catch(err => console.error("error from favorite "+err));
+                .catch(err => console.log("error from favorite "+err));
         } else {
             console.log("song key is empty");
         }
@@ -195,7 +201,7 @@ const PersonalRecommendations = () => {
                         title: song.title? song.title: '',
                         artist: song.subtitle? song.subtitle:'',
                         url: song.hub?.actions[1]?.uri?song.hub?.actions[1]?.uri : '',
-                        coverImage: song.images?.background? song.images.background :'',
+                        coverImage: song?.images?.background? song.images.background :'',
                         isFavorite:false
                     };
                     tempSongs.push(currentSong);
@@ -215,15 +221,16 @@ const PersonalRecommendations = () => {
 
 
     const setArtistSong=(response,artist)=>{
+        console.log(response.tracks)
         let tempArray=[]
         if (response && response.tracks.hits){
             response.tracks.hits.map((song,index) => {
                 const currentSong = {
                     songIndex: index,
-                    title: song.heading.title!==undefined? song.heading.title: '',
-                    artist: song.heading.subtitle!==undefined? song.heading.subtitle:'',
-                    url: song.stores?.apple.previewurl!==undefined?song.stores?.apple.previewurl : '',
-                    coverImage: song.images?.play!==undefined? song.images.play :'',
+                    title: song?.heading?.title? song.heading.title: '',
+                    artist: song?.heading?.subtitle? song.heading.subtitle:'',
+                    url: song?.stores?.apple?.previewurl?song.stores?.apple.previewurl : '',
+                    coverImage: song?.images?.play? song.images.play :'',
                     isFavorite:false
 
 
@@ -232,7 +239,7 @@ const PersonalRecommendations = () => {
                 tempArray.push(currentSong);
                 if (artist===1){
                     setArtist1Playlist(tempArray);
-                   // console.log(artist1Playlist)
+                    // console.log(artist1Playlist)
                 }else {
                     setArtist2Playlist(tempArray);
 
@@ -298,25 +305,29 @@ const PersonalRecommendations = () => {
 
 
     return (
+        combinedSongList.length>0 || allAnswers==null?
+
+            <ImageBackground source={require('../images/recommendationsBackground.gif')} resizeMode={'cover'} style={globalStyles.flexProp} >
+                {
+                    allAnswers===null?
+                        <Questionnaire onSubmit={handleQuestionnaireSubmit}/>
+                        :
+                        <View style={globalStyles.flexProp}>
+                            {
+                                fontsLoaded&&
+                                <Text style={recommendationsStyle.mainTitle}>Your Personal Groove</Text>
+                            }
+                             <View style={globalStyles.flexProp}>
+                                <Player songList={combinedSongList} page={'list'} toggleFavorite={toggleFavorite}/>
+                            </View>
+                        </View>
+                }
 
 
-        <ImageBackground source={require('../images/recommendationsBackground.gif')} resizeMode={'cover'}>
-            {
-                allAnswers===null?
-                    <Questionnaire onSubmit={handleQuestionnaireSubmit}/>
-                    :
-                    <View>
-                        {
-                            fontsLoaded&&
-                            <Text style={recommendationsStyle.mainTitle}>Your  Personal Groove</Text>
-                        }
-                        {combinedSongList.length===0&& <Logo/>}
-                        <Player songList={combinedSongList} page={'list'} toggleFavorite={toggleFavorite}/>
-                    </View>
-            }
+            </ImageBackground>
 
-
-        </ImageBackground>
+            :
+            <Logo/>
     );
 };
 

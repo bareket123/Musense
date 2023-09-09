@@ -10,6 +10,7 @@ import {useDispatch} from "react-redux";
 import ErrorAlert from "./ErrorAlert";
 import Logo from "./Logo";
 import  myPlaylistStyle from '../styles/myPlaylistStyle'
+import globalStyles from "../styles/globalStyles";
 
 export default function MyPlaylist({ navigation }) {
      const {token } = useSelector(state => state.reducer);
@@ -17,13 +18,18 @@ export default function MyPlaylist({ navigation }) {
     const[messageCode, setMessageCode] = useState(0);
 
     const getPlaylist=async ()=>{
-        const response = await axios.create({baseURL: LOCAL_SERVER_URL}).post('/get-playlist?token=' + token);
-        if (response.data.success){
-          setMyPlaylist(response.data.playlist)
-        }else{
-            setMessageCode(response.data.errorCode);
+        try {
+            const response = await axios.create({baseURL: LOCAL_SERVER_URL}).post('/get-playlist?token=' + token);
+            if (response.data.success){
+                setMyPlaylist(response.data.playlist)
+            }else{
+                setMessageCode(response.data.errorCode);
+            }
+            setMessageCode(0);
+
+        }catch (error){
+            console.log(error)
         }
-        setMessageCode(0);
 
     }
 
@@ -33,12 +39,15 @@ export default function MyPlaylist({ navigation }) {
 
 
     return (
-        <View>
+        <View style={globalStyles.flexProp}>
             <Text>{"\n"}</Text>
             <Text>My Playlist:</Text>
             {
                 myPlaylist.length>0?
-                    <Player songList={myPlaylist} page={'playlist'} toggleFavorite={null}/>
+                    <View style={globalStyles.flexProp}>
+                        <Player songList={myPlaylist} page={'playlist'} toggleFavorite={null}/>
+                    </View>
+
                     :
                     <Text>you haven't had songs</Text>
 

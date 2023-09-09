@@ -9,6 +9,7 @@ import { Animated, Easing } from 'react-native';
 //import { Slider } from '@rneui/themed';
 import  currentPlayingStyle from '../styles/currentPlayingStyle';
 import {setIsSongPlaying} from '../redux/actions'
+import globalStyles from "../styles/globalStyles";
 
 
 const spinValue = new Animated.Value(0);
@@ -130,7 +131,7 @@ const closePlaying = () => {
 
     return (
 
-      <ImageBackground source={{uri:currentSong.coverImage}}>
+      <ImageBackground source={{uri:currentSong.coverImage}} >
           {
               fontsLoaded &&
               <Text style={currentPlayingStyle.overlayText}>currently playing...</Text>
