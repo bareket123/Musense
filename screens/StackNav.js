@@ -16,17 +16,19 @@ import PersonalRecommendations from "./PersonalRecommendations";
 import {useDispatch, useSelector} from "react-redux";
 import {LOCAL_SERVER_URL, resetState, setPlaylist} from "../redux/actions";
 import axios from "axios";
+import {PLAYLIST_NOT_EXIST} from "./Constans";
+import ErrorAlert from "./ErrorAlert";
 
 
 
 export default function StackNav (){
     const {username,token}= useSelector(state => state.reducer);
     const dispatch = useDispatch(); // Get the dispatch function
+    const [messageCode, setMessageCode] = useState(0);
+    const {isLoggedIn}= useSelector(state => state.reducer);
+    const {picture}= useSelector(state => state.reducer);
 
-const {isLoggedIn}= useSelector(state => state.reducer);
-const {picture}= useSelector(state => state.reducer);
-
-const Stack = createStackNavigator();
+    const Stack = createStackNavigator();
 
     useEffect(()=>{
     getPlaylist().then(() => {console.log("get playlist from server")})
@@ -38,7 +40,8 @@ const Stack = createStackNavigator();
                 dispatch(setPlaylist(song))
             })
         }else {
-            console.log("playlist undefided")
+            console.log("playlist undefined")
+            setMessageCode(PLAYLIST_NOT_EXIST)
         }
     }
     const getPlaylist=async ()=>{
@@ -49,7 +52,9 @@ const Stack = createStackNavigator();
                    setThePlaylistInStore(response.data.playlist)
 
                }else{
-                   alert(response.data.errorCode)
+                   console.log(response.data.errorCode)
+                   setMessageCode(response.data.errorCode)
+
                }}
 
         }catch (error){
@@ -153,6 +158,11 @@ const Drawer=createDrawerNavigator();
                 // ? (
             <Stack.Screen name='login' component={Login} />
         }
+        {
+            messageCode !== 0 &&
+            <ErrorAlert message={messageCode} />
+        }
+
 
     </Drawer.Navigator>
 
