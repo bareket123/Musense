@@ -6,6 +6,7 @@ import Player from "./Player";
 import { LOCAL_SERVER_URL } from "../redux/actions";
 import ErrorAlert from "./ErrorAlert";
 import myPlaylistStyle from '../styles/myPlaylistStyle';
+import globalStyles from "../styles/globalStyles";
 
 export default function MyPlaylist({ navigation }) {
     const { token } = useSelector(state => state.reducer);
@@ -27,9 +28,8 @@ export default function MyPlaylist({ navigation }) {
     }, [myPlaylist])
 
     return (
-        <ImageBackground source={require('../images/myPlaylist.jpg')} style={myPlaylistStyle.background}>
-            <ScrollView>
-                <View>
+        <ImageBackground source={require('../images/myPlaylist.jpg')} resizeMode={'cover'} style={globalStyles.flexProp} >
+                <View style={globalStyles.flexProp}>
                     {myPlaylist.length > 0 && (
                         <View style={myPlaylistStyle.textTitle}>
                             <Text style={myPlaylistStyle.textHeader}>My Playlist:</Text>
@@ -51,7 +51,7 @@ export default function MyPlaylist({ navigation }) {
                     )}
                     {messageCode !== 0 && <ErrorAlert message={messageCode} />}
                 </View>
-            </ScrollView>
+
         </ImageBackground>
     );
 }

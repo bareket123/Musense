@@ -3,8 +3,7 @@ import { StyleSheet } from 'react-native';
 const playedRecentlyStyle = StyleSheet.create({
     backgroundView:{
         backgroundColor:'black',
-        width:'100%',
-        height:'100%'
+        flex:1
 
     },
     mainTitle:{
@@ -26,6 +25,7 @@ const playedRecentlyStyle = StyleSheet.create({
 
     },
     searchView:{
+
         flexDirection:'row',
         width:350,
         alignSelf:'center',

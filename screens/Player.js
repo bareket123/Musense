@@ -34,10 +34,10 @@ export default function Player ({ songList,page,toggleFavorite}) {
 
 
     function addLovedSongs(song) {
-        if (!song.isFavorite){
+        if (!isSongInPlaylist(song.url)){
             sendPlaylistToServer(song).then(r => {dispatch(setPlaylist(song))})
         }else {
-            setMessageCode(FAVORITE_REMOVED)
+           // setMessageCode(FAVORITE_REMOVED)
         }
 
     }

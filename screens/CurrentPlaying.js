@@ -7,19 +7,44 @@ import {useFonts} from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { Animated, Easing } from 'react-native';
 import  currentPlayingStyle from '../styles/currentPlayingStyle';
-import {setIsSongPlaying} from '../redux/actions'
+import {LOCAL_SERVER_URL, setIsSongPlaying} from '../redux/actions'
 import globalStyles from "../styles/globalStyles";
+import axios from "axios";
 // import {Slider} from "@rneui/themed";
 
 
 const spinValue = new Animated.Value(0);
 const CurrentPlaying= ({ currentSong, setSong, allSongs })=>{
+    const {token} = useSelector(state => state.reducer);
     const [previousVolume, setPreviousVolume] = useState(0.5);
     const [pressedPlaying, setPressedPlaying] = useState(false);
     const [mute, setMute] = useState(false);
     const [spinAnimation, setSpinAnimation] = useState(null);
 
     const dispatch = useDispatch();
+
+    const sendPlayedRecentlyToServer = async (song) => {
+        if (token !== null) {
+            try {
+                const encodedTitle = encodeURIComponent(song.title);
+                const encodedArtist = encodeURIComponent(song.artist);
+                const encodedUrl = encodeURIComponent(song.url);
+                const encodedCoverImage = encodeURIComponent(song.coverImage);
+                const encodedIsPlayed = encodeURIComponent(true);
+
+                const url = `${LOCAL_SERVER_URL}/add-song?token=${token}&title=${encodedTitle}&artist=${encodedArtist}&url=${encodedUrl}&coverImage=${encodedCoverImage}&isPlayed=${encodedIsPlayed}`;
+                const response = await axios.post(url);
+
+                if (response.data.success) {
+                    console.log("Updated successfully");
+                } else {
+                    alert(response.data.errorCode);
+                }
+            } catch (error) {
+                console.error("Error while sending request:", error.message);
+            }
+        }
+    };
 
 
 
@@ -42,6 +67,7 @@ const CurrentPlaying= ({ currentSong, setSong, allSongs })=>{
     async function playSound(song) {
         setPressedPlaying(true);
         setSong(song)
+        sendPlayedRecentlyToServer(song)
         await playAudio(song, dispatch); // Dispatch the action to add the song to playedRecently state in redux
 
     }

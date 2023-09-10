@@ -1,5 +1,4 @@
 import { Audio } from "expo-av";
-import {setPlayedRecently} from "../redux/actions";
 
 let sound = null;
 let volume = 0.5; // Initial volume
@@ -28,7 +27,7 @@ export const playAudio = async (song, dispatch) => {
         await sound.setVolumeAsync(volume);
 
         await sound.playAsync();
-        dispatch(setPlayedRecently(song));
+       // dispatch(setPlayedRecently(song));
     } catch (error) {
         console.error("Error playing audio: ", error);
     }
