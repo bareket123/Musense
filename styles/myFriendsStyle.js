@@ -26,11 +26,11 @@ const myFriendsStyle = StyleSheet.create({
     },
 
     textHeader : {
-        fontSize: 30,
+        fontSize: 40,
         color: 'white',
         textShadowColor: 'rgba(248,78,239,0.6)',
-        textShadowOffset: { width: 2, height: 2 },
-        textShadowRadius: 4
+        textShadowOffset: { width: 5, height: 2 },
+        textShadowRadius: 8
     },
 
     username: {
@@ -56,12 +56,42 @@ const myFriendsStyle = StyleSheet.create({
         height:80
     },
 
+    noFriends : {
+        fontSize:30,
+        color: 'white',
+        textShadowColor: 'rgb(255,255,255)',
+        textShadowOffset: { width: 2, height: 2 },
+        textShadowRadius: 4,
+        alignSelf:'center',
+        marginTop:30,
+    },
+
     image : {
         width: 60,
         height: 60,
         borderRadius: 30 ,
         marginRight:100,
         marginTop:10
+    },
+
+    customButton: {
+        backgroundColor: 'black',
+        borderColor: 'white',
+        borderWidth: 5,
+        borderRadius: 20,
+        paddingHorizontal: 10,
+        height: 50,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop:570,
+        width: 300,
+        transform: [{ translateX: -50 }, { translateY: 0 }],
+    },
+
+    buttonText: {
+        color: 'white',
+        fontSize: 16,
+        fontWeight: 'bold',
     },
 
 });
