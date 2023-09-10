@@ -11,6 +11,7 @@ import ErrorAlert from "./ErrorAlert";
 import Logo from "./Logo";
 import myFriendsStyle from '../styles/myFriendsStyle'
 import globalStyles from "../styles/globalStyles";
+import {DELETE} from "./Constans";
 
 const MyFriends = ({ navigation }) => {
     const [myFriends, setMyFriends] = useState([]);
@@ -18,8 +19,11 @@ const MyFriends = ({ navigation }) => {
     const [messageCode, setMessageCode] = useState(0);
 
     useEffect(() => {
-        fetchMyFriends().then();
+        setTimeout(() => {
+            fetchMyFriends().then();
+        }, 2000);
     }, [myFriends]);
+
 
     const fetchMyFriends = async () => {
         if (token !== '') {
@@ -46,9 +50,9 @@ const MyFriends = ({ navigation }) => {
     const deleteFriend = async (friend) => {
         const response = await axios.create({ baseURL: LOCAL_SERVER_URL }).post('/delete-friend?token=' + token + '&friendUsername=' + friend.username);
         if (response.data.success) {
-            alert("delete")
+            setMessageCode(DELETE);
         } else {
-            alert(response.data.errorCode)
+            setMessageCode(response.data.errorCode)
         }
     }
 
@@ -100,12 +104,12 @@ const MyFriends = ({ navigation }) => {
                             </View>
 
                     }
-                    {
-                        messageCode !== 0 &&
-                        <ErrorAlert message={messageCode} />
-                    }
-                </View>
 
+                </View>
+            {
+                messageCode !== 0 &&
+                <ErrorAlert message={messageCode} />
+            }
         </ImageBackground>
     );
 };
