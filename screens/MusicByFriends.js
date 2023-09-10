@@ -42,21 +42,25 @@ export default function MusicByFriends ({ navigation }) {
     async function prepare() {
         await SplashScreen.preventAutoHideAsync();
     }
-    const getPlaylistByFriends=async ()=>{
-
-        if (token!==null){
-            const response = await axios.create({baseURL: LOCAL_SERVER_URL}).get('/get-friends-playlist?token=' + token);
-            if (response.data.success){
-                setPlaylistByFriends(response.data.playlistByFriends);
-            }else {
-                setMessageCode(response.data.errorCode)
+    const getPlaylistByFriends=async ()=> {
+        try {
+            if (token !== null) {
+                const response = await axios.create({baseURL: LOCAL_SERVER_URL}).get('/get-friends-playlist?token=' + token);
+                if (response.data.success) {
+                    setPlaylistByFriends(response.data.playlistByFriends);
+                } else {
+                    setMessageCode(response.data.errorCode)
+                }
+            } else {
+                console.log(" friends: token is empty")
             }
-        }else {
-            console.log(" friends: token is empty")
-        }
-        setMessageCode(0);
+            setMessageCode(0);
 
+        } catch (error) {
+            console.log("error getting friends playlist " + error)
+        }
     }
+
 
     useEffect(()=>{
         getPlaylistByFriends().then(r => {})
@@ -99,7 +103,7 @@ export default function MusicByFriends ({ navigation }) {
                 <Text style={musicByFriendsStyle.noFriendsText}>Looks like no one has added any songs yet 😧 </Text>
                 <TouchableOpacity onPress={()=>{navigation.navigate('Search friends')}}>
                     <Text style={musicByFriendsStyle.buttonText}>Press here to find more friends</Text>
-                    <FontAwesome name="arrow-left" size={50} color="black" style={{alignSelf:'center'}} />
+                    <FontAwesome name="arrow-left" size={50} color="white" style={{alignSelf:'center'}} />
                 </TouchableOpacity>
 
             </View>

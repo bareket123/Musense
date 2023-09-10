@@ -6,14 +6,15 @@ import {useSelector,useDispatch} from "react-redux";
 import {useFocusEffect} from "@react-navigation/native";
 import axios from "axios";
 import CurrentPlaying from "./CurrentPlaying";
-import {pauseAudio,playPlaylist} from "./playAudio";
-import {ScrollView} from "react-native-virtualized-view";
+import {pauseAudio} from "./playAudio";
+import playerStyle from "../styles/playerStyle";
 import globalStyles from "../styles/globalStyles";
 
 export default function Player ({ songList,page,toggleFavorite}) {
     const dispatch = useDispatch();
     const [currentlyPlaying,setCurrentlyPlaying]=useState({});
     const {token,playList} = useSelector(state => state.reducer);
+
     useFocusEffect(
         React.useCallback(() => {
             if (currentlyPlaying!==undefined)
@@ -39,14 +40,14 @@ export default function Player ({ songList,page,toggleFavorite}) {
     }
 
     const renderSong = ({ item }) => (
-        <View style={{     backgroundColor: page === 'recently' ? 'rgba(128, 128, 128, 0.3)':'rgba(0, 0, 0, 0.5)',borderRadius: 20, margin: 5}}>
-            <View style={{ padding: 20, flexDirection: 'row', alignItems: 'center' }}>
-                <TouchableOpacity style={{ flex: 1 }} onPress={() => { pressSong(item) }}>
-                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <Image source={{ uri: item.coverImage }} style={{ width: 60, height: 60, marginRight: 10 }} />
-                        <View style={{ flex: 1 }}>
-                            <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 17 }}>{item.title}</Text>
-                            <Text style={{ color: 'white' }}>{item.artist}</Text>
+        <View style={[playerStyle.mainView,{backgroundColor: page === 'recently' ? 'rgba(128, 128, 128, 0.3)':'rgba(0, 0, 0, 0.5)'}]}>
+            <View style={playerStyle.secondView}>
+                <TouchableOpacity style={globalStyles.flexProp} onPress={() => { pressSong(item) }}>
+                    <View style={playerStyle.center}>
+                        <Image source={{ uri: item.coverImage }} style={playerStyle.songImage } />
+                        <View style={globalStyles.flexProp}>
+                            <Text style={playerStyle.songTitle}>{item.title}</Text>
+                            <Text style={playerStyle.songArtist}>{item.artist}</Text>
                         </View>
                     </View>
                 </TouchableOpacity>
@@ -56,7 +57,7 @@ export default function Player ({ songList,page,toggleFavorite}) {
                                name="heart" size={30} color={isSongInPlaylist(item.url) || item.isFavorite ? 'red' : 'green'} />
                     :
                     page!=='recently'&&
-                    <TouchableOpacity style={{ marginLeft: 50 }} onPress={() => deleteSong(item)}>
+                    <TouchableOpacity style={playerStyle.deleteButton} onPress={() => deleteSong(item)}>
                         <AntDesign name="delete" size={24} color="white" />
                     </TouchableOpacity>
                 }

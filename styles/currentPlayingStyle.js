@@ -14,7 +14,11 @@ const currentPlayingStyle=StyleSheet.create({
         position: 'absolute',
         top: 16, // Adjust the top position as needed
         right: 16,
-
+    },
+    closeButtonText:{
+        fontSize: 20,
+        color: 'black',
+        fontWeight:'bold'
     },
     overlayText: {
         color: 'white',
@@ -35,7 +39,8 @@ const currentPlayingStyle=StyleSheet.create({
         flexDirection: 'row',
         alignSelf: 'center',
         justifyContent:'center',
-        right:20,
+
+        backgroundColor:'rgba(0, 0, 0, 0.1)'
     },
     controlButton: {
         overflow: 'hidden',
@@ -64,6 +69,14 @@ const currentPlayingStyle=StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         marginBottom:10,
+    },
+    songTitle:{
+        fontSize:30,
+        fontFamily:'Arch'
+    },
+    songArtist:{
+        fontSize:20,
+        fontFamily:'Arch'
     },
 
 

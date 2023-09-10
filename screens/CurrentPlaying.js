@@ -6,10 +6,10 @@ import { playAudio, pauseAudio,setVolume,getVolume,reloadSong} from "./playAudio
 import {useFonts} from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { Animated, Easing } from 'react-native';
-//import { Slider } from '@rneui/themed';
 import  currentPlayingStyle from '../styles/currentPlayingStyle';
 import {setIsSongPlaying} from '../redux/actions'
 import globalStyles from "../styles/globalStyles";
+// import {Slider} from "@rneui/themed";
 
 
 const spinValue = new Animated.Value(0);
@@ -140,7 +140,7 @@ const closePlaying = () => {
           <View style={currentPlayingStyle.overlayContainer}/>
           <View style={currentPlayingStyle.closeButton}>
               <TouchableOpacity onPress={closePlaying}>
-                  <Text style={{ fontSize: 20, color: 'white',fontWeight:'bold' }} >X</Text>
+                  <Text style={currentPlayingStyle.closeButtonText} >X</Text>
               </TouchableOpacity>
           </View>
 
@@ -158,8 +158,8 @@ const closePlaying = () => {
                               {
                                   fontsLoaded&&
                                   <View style={currentPlayingStyle.middleContainer}>
-                                      <Text style={{fontSize:30,fontFamily:'Arch'}} numberOfLines={1}>{currentSong.title}</Text>
-                                      <Text style={{fontSize:20,fontFamily:'Arch'}}>{currentSong.artist}</Text>
+                                      <Text style={currentPlayingStyle.songTitle} numberOfLines={1}>{currentSong.title}</Text>
+                                      <Text style={currentPlayingStyle.songArtist}>{currentSong.artist}</Text>
                                   </View>
                               }
 
@@ -197,9 +197,9 @@ const closePlaying = () => {
                       </TouchableHighlight>
 
                       <TouchableHighlight
-                          underlayColor="rgba(255, 255, 255, 0.2)" // White glow on black background
+                          underlayColor="rgba(255, 255, 255, 0.5)" // White glow on black background
                           onPress={() =>{playMusic(currentSong)} }
-                          style={currentPlayingStyle.controlButton}
+                          style={currentPlayingStyle.controlButton }
                       >
                           <AntDesign name={pressedPlaying ? 'pausecircleo' : 'playcircleo'} size={50} style={{marginLeft:5,marginRight:5}} color="white" />
                       </TouchableHighlight>
