@@ -5,7 +5,7 @@ import axios from "axios";
 import { LOCAL_SERVER_URL, setToken } from "../redux/actions";
 import { useSelector } from "react-redux";
 import ErrorAlert from "./ErrorAlert";
-import { FOLLOWING } from "./Constans";
+import {DELETE, FOLLOWING} from "./Constans";
 import { useFocusEffect } from '@react-navigation/native';
 import EventSource from "react-native-event-source";
 import Logo from "./Logo";
@@ -70,7 +70,7 @@ const SearchFriends = ({ navigation }) => {
                 setAllUsers(response.data.myFriends);
                 setFilteredUsers(response.data.myFriends)
             } else {
-                alert(response.data.errorCode)
+                setMessageCode(response.data.errorCode)
             }
         } else {
             console.log("token is empty")
@@ -112,9 +112,9 @@ const SearchFriends = ({ navigation }) => {
         const response = await axios.create({ baseURL: LOCAL_SERVER_URL }).post('/delete-friend?token=' + token + '&friendUsername=' + friend.username);
         if (response.data.success) {
             setUsersFromServer().then(r => { });
-            alert("delete");
+            setMessageCode(DELETE);
         } else {
-            alert(response.data.errorCode);
+            setMessageCode(response.data.errorCode);
         }
     };
 
