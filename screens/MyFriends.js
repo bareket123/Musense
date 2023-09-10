@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import ErrorAlert from "./ErrorAlert";
 import Logo from "./Logo";
 import myFriendsStyle from '../styles/myFriendsStyle'
+import globalStyles from "../styles/globalStyles";
 
 const MyFriends = ({ navigation }) => {
     const [myFriends, setMyFriends] = useState([]);
@@ -74,14 +75,14 @@ const MyFriends = ({ navigation }) => {
     )
 
     return (
-        <ImageBackground source={require('../images/myFriends.gif')} style={myFriendsStyle.background}>
-            <ScrollView>
-                <View>
+        <ImageBackground source={require('../images/myFriends.gif')} resizeMode={'cover'} style={globalStyles.flexProp}>
+
+                <View style={globalStyles.flexProp}>
 
                     {
                         myFriends.length !== 0 ?
-                            <View>
-                                <View style={myFriendsStyle.textTitle} >
+                            <View style={globalStyles.flexProp}>
+                                <View style={[globalStyles.flexProp,myFriendsStyle.textTitle]} >
                                     {(
                                         <Text style={myFriendsStyle.textHeader} >my friends: </Text>
                                     )}
@@ -104,7 +105,7 @@ const MyFriends = ({ navigation }) => {
                         <ErrorAlert message={messageCode} />
                     }
                 </View>
-            </ScrollView>
+
         </ImageBackground>
     );
 };

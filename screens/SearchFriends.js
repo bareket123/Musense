@@ -10,6 +10,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import EventSource from "react-native-event-source";
 import Logo from "./Logo";
 import searchFriendsStyle from "../styles/searchFriendsStyle";
+import globalStyles from "../styles/globalStyles";
 
 
 const SearchFriends = ({ navigation }) => {
@@ -118,7 +119,7 @@ const SearchFriends = ({ navigation }) => {
     };
 
     return (
-        <ImageBackground source={require('../images/searchFriends.gif')} style={searchFriendsStyle.background}>
+        <ImageBackground source={require('../images/searchFriends.gif')} style={globalStyles.flexProp} resizeMode={'cover'}>
             <ScrollView>
                 <View style={searchFriendsStyle.textTitle} >
                     {(
@@ -140,11 +141,11 @@ const SearchFriends = ({ navigation }) => {
                             onPress={handleClearSearch}
                         />
                     </View>
-                    <ScrollView>
+
                         {
                             filteredUsers.length !== 0 &&
                             filteredUsers.map((user, index) => (
-                                <View key={index} style={{ flexDirection: 'row' }}>
+                                <View key={index} style={{ flexDirection: 'row',flex:1 }}>
 
                                     <View style={searchFriendsStyle.frame}>
                                         <View style={{ marginTop: 10 }}>
@@ -172,7 +173,7 @@ const SearchFriends = ({ navigation }) => {
                                 </View>
                             ))
                         }
-                    </ScrollView>
+
                     {
                         (messageCode !== 0 && !isAlertShown) &&
                         <ErrorAlert message={messageCode} />

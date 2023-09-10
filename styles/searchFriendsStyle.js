@@ -9,6 +9,7 @@ const searchFriendsStyle = StyleSheet.create({
     },
 
     searchStyle: {
+        flex:1,
         flexDirection:'row',
         justifyContent: 'space-between',
         height: 40,
