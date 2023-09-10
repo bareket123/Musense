@@ -68,9 +68,11 @@ function ErrorAlert(props) {
             case 1018:
                 messageForUser = 'Permission to access camera roll is required❗';
                 break;
-
             case 1019:
                 messageForUser='Favorite Removed Successfully'
+                break;
+
+
         }
     }
 

@@ -9,11 +9,14 @@ import CurrentPlaying from "./CurrentPlaying";
 import {pauseAudio} from "./playAudio";
 import playerStyle from "../styles/playerStyle";
 import globalStyles from "../styles/globalStyles";
+import {DELETE, FAVORITE_REMOVED} from "./Constans";
+import ErrorAlert from "./ErrorAlert";
 
 export default function Player ({ songList,page,toggleFavorite}) {
     const dispatch = useDispatch();
     const [currentlyPlaying,setCurrentlyPlaying]=useState({});
     const {token,playList} = useSelector(state => state.reducer);
+    const [messageCode, setMessageCode] = useState(0);
 
     useFocusEffect(
         React.useCallback(() => {
@@ -34,7 +37,7 @@ export default function Player ({ songList,page,toggleFavorite}) {
         if (!song.isFavorite){
             sendPlaylistToServer(song).then(r => {dispatch(setPlaylist(song))})
         }else {
-            alert("no longer favorite")
+            setMessageCode(FAVORITE_REMOVED)
         }
 
     }
@@ -68,10 +71,10 @@ export default function Player ({ songList,page,toggleFavorite}) {
     const deleteSong=async (song) => {
         const response = await axios.create({baseURL: LOCAL_SERVER_URL}).post('/delete-song?songId=' + song.id);
             if (response.data.success){
-                alert("delete")
+                setMessageCode(DELETE)
                 dispatch(setDeleteSong(song))
             }else {
-                alert(response.data.errorCode)
+                setMessageCode(response.data.errorCode)
             }
 
     }
@@ -94,6 +97,7 @@ export default function Player ({ songList,page,toggleFavorite}) {
                 }
             } catch (error) {
                 console.error("Error while sending request:", error.message);
+                setMessageCode(error.message)
             }
         }
     };
@@ -127,6 +131,10 @@ export default function Player ({ songList,page,toggleFavorite}) {
 
             }
 
+            {
+                messageCode !== 0 &&
+                <ErrorAlert message={messageCode} />
+            }
         </View>
     )
 
