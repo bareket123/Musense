@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Alert } from 'react-native';
+import { View, Text, TouchableOpacity, Modal,StyleSheet  } from 'react-native';
+// import { Alert } from 'react-native';
 import  alertStyle from '../styles/alertStyle'
-
+//
 function ErrorAlert(props) {
     let messageForUser='';
     const [visible, setVisible] = useState(true);
@@ -10,31 +11,31 @@ function ErrorAlert(props) {
     if (visible){
         switch (message) {
             case 1000:
-                messageForUser = 'error missing username ';
+                messageForUser = 'Missing Username ⚠️ ';
                 break;
             case 1001:
-                messageForUser = 'error missing password';
+                messageForUser = 'Missing password ⚠️';
                 break;
             case 1002:
-                messageForUser = "error weak password";
+                messageForUser = "Weak password ⚠️";
                 break;
             case 1003:
-                messageForUser = 'error username already exists ';
+                messageForUser = 'Username Already Exists ⚠️';
                 break;
             case 1004:
-                messageForUser = 'error wrong login details ';
+                messageForUser = 'Wrong Login Details ⚠️ ';
                 break;
             case 1005:
-                messageForUser = 'error not found user';
+                messageForUser = 'User Not Found❗';
                 break;
             case 1006:
-                messageForUser = 'error not found friend';
+                messageForUser = 'Friend Not Found❗';
                 break;
             case 1007:
-                messageForUser = 'error wrong song details';
+                messageForUser = 'Wrong Song Details';
                 break;
             case 1008:
-                messageForUser = 'error playlist not exist';
+                messageForUser = 'Playlist Not Exist';
                 break;
             case 1009:
                 messageForUser = 'error in answers details';
@@ -43,27 +44,33 @@ function ErrorAlert(props) {
                 messageForUser = 'error wrong answers details';
                 break;
             case 1011:
-                messageForUser = 'error no such connection';
+                messageForUser = 'No Such Connection ❗';
                 break;
             case 1012:
-                messageForUser = 'image upload failed';
+                messageForUser = 'Image Upload Failed 🖼️⚠️';
                 break;
             ///////////////////////////////constant
             case 1013:
-                messageForUser = 'SignUp successfully';
+                messageForUser = 'Sign Up Successfully';
                 break;
             case 1014:
-                messageForUser = 'LogIn successfully';
+                messageForUser = 'Login Successfully';
                 break;
             case 1015:
-                messageForUser = 'following';
+                messageForUser = 'Following Successfully';
                 break;
             case 1016:
-                messageForUser = 'delete';
+                messageForUser = 'Deleted Successfully ';
                 break;
             case 1017:
-                messageForUser = 'something went wrong';
+                messageForUser = 'Something went Wrong 🥹';
                 break;
+            case 1018:
+                messageForUser = 'Permission to access camera roll is required❗';
+                break;
+
+            case 1019:
+                messageForUser='Favorite Removed Successfully'
         }
     }
 
@@ -73,8 +80,21 @@ function ErrorAlert(props) {
     };
 
     return (
-        Alert.alert(type, messageForUser, [{ text: 'OK' ,onPress: handleClose}])
-
+        <Modal
+            animationType="slide"
+            transparent={true}
+            visible={visible}
+            onRequestClose={()=>handleClose()}
+        >
+            <View style={alertStyle.centeredView}>
+                <View style={alertStyle.alertView}>
+                    <Text style={alertStyle.alertText}> {messageForUser}</Text>
+                    <TouchableOpacity style={alertStyle.closeButton} onPress={handleClose}>
+                        <Text style={alertStyle.closeButtonText }>✖️</Text>
+                    </TouchableOpacity>
+                </View>
+            </View>
+        </Modal>
     );
 }
 
