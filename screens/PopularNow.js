@@ -7,11 +7,14 @@ import Logo from "./Logo"; // Import useSelector and useDispatch from react-redu
 import * as SplashScreen from "expo-splash-screen";
 import popularStyle from "../styles/popularStyle";
 import globalStyles from "../styles/globalStyles";
+import {SOMETHING_WENT_WRONG} from "./Constans";
+import ErrorAlert from "./ErrorAlert";
 const PopularNow = () => {
     const [songsArray, setSongsArray] = useState([]); // Initialize songsArray as a state
     const [fontsLoaded] = useFonts({
         'RammettoOne': require('../assets/Fonts/RammettoOne-Regular.ttf')
     });
+    const [messageCode, setMessageCode] = useState(0);
 
     useEffect(() => {
         try {
@@ -55,6 +58,7 @@ const PopularNow = () => {
 
             }else {
                 console.log("Error from Popular,something wrong with fetching songs ")
+                setMessageCode(SOMETHING_WENT_WRONG)
             }
 
         }
@@ -100,10 +104,18 @@ const PopularNow = () => {
                     </View>
                     <View style={globalStyles.flexProp}>
                     <Player songList={songsArray} page={'list'} toggleFavorite={toggleFavorite}/>
+
                    </View>
                 </ImageBackground>
                 :
-                <Logo/>
+                <View>
+                    {
+                        messageCode !== 0 &&
+                        <ErrorAlert message={messageCode} />
+                    }
+                    <Logo/>
+                </View>
+
 
 
 
