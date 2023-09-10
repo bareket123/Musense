@@ -65,4 +65,5 @@ const myPlaylistStyle = StyleSheet.create({
     },
 
 });
+
 export default myPlaylistStyle;
