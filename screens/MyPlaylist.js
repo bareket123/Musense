@@ -36,7 +36,9 @@ export default function MyPlaylist({ navigation }) {
                         </View>
                     )}
                     {myPlaylist.length > 0 ? (
-                        <Player songList={myPlaylist} page={'playlist'} toggleFavorite={null} />
+                        <View style={globalStyles.flexProp}>
+                            <Player songList={myPlaylist} page={'playlist'} toggleFavorite={null} />
+                        </View>
                     ) : (
                         <View>
                             <Text style={myPlaylistStyle.noPlaylist}>
