@@ -95,7 +95,7 @@ const MyFriends = ({ navigation }) => {
                             </View>
                             :
                             <View>
-                                <Text style={myFriendsStyle.noFriends}>Looks like you haven't added any friends yet  </Text>
+                                <Text style={myFriendsStyle.noFriends}> You haven't added friends</Text>
                                 <View style={myFriendsStyle.customButton}>
                                     <TouchableOpacity onPress={() => { navigation.navigate('Search friends') }}>
                                         <Text style={myFriendsStyle.buttonText}>Go search for more friends</Text>

@@ -63,7 +63,7 @@ const myFriendsStyle = StyleSheet.create({
         textShadowOffset: { width: 2, height: 2 },
         textShadowRadius: 4,
         alignSelf:'center',
-        marginTop:30,
+        marginTop:-10,
     },
 
     image : {
@@ -83,7 +83,7 @@ const myFriendsStyle = StyleSheet.create({
         height: 50,
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop:570,
+        marginTop:15,
         // width: 300,
         // transform: [{ translateX: -50 }, { translateY: 0 }],
     },
