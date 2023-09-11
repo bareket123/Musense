@@ -84,8 +84,8 @@ const myFriendsStyle = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         marginTop:570,
-        width: 300,
-        transform: [{ translateX: -50 }, { translateY: 0 }],
+        // width: 300,
+        // transform: [{ translateX: -50 }, { translateY: 0 }],
     },
 
     buttonText: {

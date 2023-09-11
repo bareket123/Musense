@@ -59,8 +59,8 @@ const myPlaylistStyle = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         marginTop:550,
-        width: 300,
-        transform: [{ translateX: -50 }, { translateY: -5 }],
+        // width: 300,
+        // transform: [{ translateX: -50 }, { translateY: -5 }],
 
     },
 
