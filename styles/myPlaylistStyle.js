@@ -36,7 +36,8 @@ const myPlaylistStyle = StyleSheet.create({
     },
 
     textTitle : {
-        alignItems:'center'
+        alignItems:'center',
+
     },
 
     noPlaylist : {

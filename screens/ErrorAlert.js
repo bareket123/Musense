@@ -7,7 +7,7 @@ function ErrorAlert(props) {
     let messageForUser='';
     const [visible, setVisible] = useState(true);
     let message = props.message;
-    let type=message<1012? 'ERROR':'SUCCESS';
+    let type=message<1013? 'ERROR':'SUCCESS';
     if (visible){
         switch (message) {
             case 1000:
@@ -49,26 +49,29 @@ function ErrorAlert(props) {
             case 1012:
                 messageForUser = 'Image Upload Failed 🖼️⚠️';
                 break;
-            ///////////////////////////////constant
             case 1013:
+                messageForUser='Played Recently is Empty'
+                break;
+            ///////////////////////////////constant
+            case 1014:
                 messageForUser = 'Sign Up Successfully';
                 break;
-            case 1014:
+            case 1015:
                 messageForUser = 'Login Successfully';
                 break;
-            case 1015:
+            case 1016:
                 messageForUser = 'Following Successfully';
                 break;
-            case 1016:
+            case 1017:
                 messageForUser = 'Deleted Successfully ';
                 break;
-            case 1017:
+            case 1018:
                 messageForUser = 'Something went Wrong 🥹';
                 break;
-            case 1018:
+            case 1019:
                 messageForUser = 'Permission to access camera roll is required❗';
                 break;
-            case 1019:
+            case 1020:
                 messageForUser='Favorite Removed Successfully'
                 break;
 

@@ -14,13 +14,18 @@ export default function MyPlaylist({ navigation }) {
     const [messageCode, setMessageCode] = useState(0);
 
     const getPlaylist = async () => {
-        const response = await axios.create({ baseURL: LOCAL_SERVER_URL }).post('/get-playlist?token=' + token);
-        if (response.data.success) {
-            setMyPlaylist(response.data.playlist);
-        } else {
-            setMessageCode(response.data.errorCode);
+        try {
+            const response = await axios.create({ baseURL: LOCAL_SERVER_URL }).post('/get-playlist?token=' + token);
+            if (response.data.success) {
+                setMyPlaylist(response.data.playlist);
+            } else {
+                setMessageCode(response.data.errorCode);
+            }
+            setMessageCode(0);
+        }catch (error){
+            console.log("error getting playlist "+error)
         }
-        setMessageCode(0);
+
     }
 
     useEffect(() => {
@@ -36,9 +41,10 @@ export default function MyPlaylist({ navigation }) {
                         </View>
                     )}
                     {myPlaylist.length > 0 ? (
-                        <View style={globalStyles.flexProp}>
-                            <Player songList={myPlaylist} page={'playlist'} toggleFavorite={null} />
-                        </View>
+                            <View style={globalStyles.flexProp}>
+                                <Player songList={myPlaylist} page={'playlist'} toggleFavorite={null} />
+                            </View>
+
                     ) : (
                         <View>
                             <Text style={myPlaylistStyle.noPlaylist}>

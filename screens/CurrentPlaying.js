@@ -10,6 +10,8 @@ import  currentPlayingStyle from '../styles/currentPlayingStyle';
 import {LOCAL_SERVER_URL, setIsSongPlaying} from '../redux/actions'
 import globalStyles from "../styles/globalStyles";
 import axios from "axios";
+import ErrorAlert from "./ErrorAlert";
+import {Slider} from "@rneui/themed";
 // import {Slider} from "@rneui/themed";
 
 
@@ -20,10 +22,12 @@ const CurrentPlaying= ({ currentSong, setSong, allSongs })=>{
     const [pressedPlaying, setPressedPlaying] = useState(false);
     const [mute, setMute] = useState(false);
     const [spinAnimation, setSpinAnimation] = useState(null);
+    const [messageCode,setMessageCode]=useState(0);
 
     const dispatch = useDispatch();
 
     const sendPlayedRecentlyToServer = async (song) => {
+        setMessageCode(0)
         if (token !== null) {
             try {
                 const encodedTitle = encodeURIComponent(song.title);
@@ -38,7 +42,7 @@ const CurrentPlaying= ({ currentSong, setSong, allSongs })=>{
                 if (response.data.success) {
                     console.log("Updated successfully");
                 } else {
-                    alert(response.data.errorCode);
+                    setMessageCode(response.data.errorCode);
                 }
             } catch (error) {
                 console.error("Error while sending request:", error.message);
@@ -67,7 +71,8 @@ const CurrentPlaying= ({ currentSong, setSong, allSongs })=>{
     async function playSound(song) {
         setPressedPlaying(true);
         setSong(song)
-        sendPlayedRecentlyToServer(song)
+        await sendPlayedRecentlyToServer(song)
+        startSpin();
         await playAudio(song, dispatch); // Dispatch the action to add the song to playedRecently state in redux
 
     }
@@ -94,11 +99,11 @@ const CurrentPlaying= ({ currentSong, setSong, allSongs })=>{
         }
     };
 
-    const playMusic=(song)=>{
-        startSpin();
-        if (pressedPlaying){
+    const playMusic= (song) => {
+
+        if (pressedPlaying) {
             pauseSound()
-        }else {
+        } else {
             playSound(song)
         }
 
@@ -120,6 +125,11 @@ const CurrentPlaying= ({ currentSong, setSong, allSongs })=>{
 
     const startSpin = () => {
         try {
+            if (spinAnimation) {
+                spinAnimation.stop();
+            }
+
+            // Create a new spinning animation
             const animation = Animated.loop(
                 Animated.timing(spinValue, {
                     toValue: 1,
@@ -129,10 +139,12 @@ const CurrentPlaying= ({ currentSong, setSong, allSongs })=>{
                 })
             );
 
+            setSpinAnimation(animation);
+
+            // Start the animation
             animation.start();
 
-            // Store the animation object in state or a ref for later use
-            setSpinAnimation(animation);
+
         }catch (error){
             console.log("error in spinning "+ error)
         }
@@ -239,7 +251,10 @@ const closePlaying = () => {
                       </TouchableHighlight>
 
                   </View>
-
+             {
+              (messageCode !== 0) &&
+              <ErrorAlert message={messageCode} />
+            }
       </ImageBackground>
 
 

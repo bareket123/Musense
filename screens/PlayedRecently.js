@@ -1,4 +1,4 @@
-import  { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {View, Text, TextInput} from 'react-native';
 import { Ionicons, MaterialCommunityIcons} from '@expo/vector-icons';
 import { useDispatch, useSelector} from 'react-redux';
@@ -7,6 +7,8 @@ import  playedRecentlyStyle from '../styles/playedRecentlyStyle'
 import {LOCAL_SERVER_URL} from "../redux/actions";
 import axios from "axios";
 import globalStyles from "../styles/globalStyles";
+import {DELETE} from "./Constans";
+import ErrorAlert from "./ErrorAlert";
 
 
 const PlayedRecently = ( ) => {
@@ -14,7 +16,7 @@ const PlayedRecently = ( ) => {
     const {isPlaying,token } = useSelector(state => state.reducer);
     const [filterSongs, setFilterSongs] = useState([]);
     const [playedRecently, setPlayedRecently] = useState([]);
-    const[messageCode, setMessageCode] = useState(0);
+    const [messageCode,setMessageCode]=useState(0);
 
     useEffect(()=>{
         getPlayedRecently().then(r=>{})
@@ -26,27 +28,29 @@ const PlayedRecently = ( ) => {
             if (response.data.success) {
                 setPlayedRecently(response.data.playedRecently)
             } else {
-                setMessageCode(response.data.errorCode);
+                console.log("not found playedRecently list, error code: "+response.data.errorCode)
             }
-            setMessageCode(0);
+
 
         } catch (error) {
             console.log("error getting playedRecently "+error)
         }
     }
     const deletePlayedRecently = async () => {
+        setMessageCode(0)
         try {
             const response = await axios.create({baseURL: LOCAL_SERVER_URL}).post('/delete-played-recently?token=' + token);
             if (response.data.success) {
-                alert("delete")
+                setMessageCode(DELETE)
             } else {
-                setMessageCode(response.data.errorCode);
+               setMessageCode(response.data.errorCode)
             }
-            setMessageCode(0);
+
 
         } catch (error) {
             console.log("error from delete playedRecently "+error)
         }
+
     }
 
     useEffect(() => {
@@ -98,6 +102,10 @@ const PlayedRecently = ( ) => {
                 <Player songList={searchSong.length > 0 ? filterSongs : playedRecently} page={'recently'} toggleFavorite={null}/>
 
             </View>
+            {
+                (messageCode !== 0) &&
+                <ErrorAlert message={messageCode} />
+            }
 
         </View>
     );
