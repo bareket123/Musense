@@ -40,7 +40,7 @@ export default function MyPlaylist({ navigation }) {
                     ) : (
                         <View>
                             <Text style={myPlaylistStyle.noPlaylist}>
-                                You haven't songs
+                                You haven't added songs
                             </Text>
                             <View style={myPlaylistStyle.customButton}>
                                 <TouchableOpacity onPress={() => { navigation.navigate('Popular') }}>
