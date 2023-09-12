@@ -101,7 +101,7 @@ export default function MusicByFriends ({ navigation }) {
             :
             <View>
                 <Text style={musicByFriendsStyle.noFriendsText}>Looks like no one has added any songs yet 😧 </Text>
-                <TouchableOpacity onPress={()=>{navigation.navigate('Search friends')}}>
+                <TouchableOpacity onPress={()=>{navigation.navigate('Find Friends')}}>
                     <Text style={musicByFriendsStyle.buttonText}>Press here to find more friends</Text>
                     <FontAwesome name="arrow-left" size={50} color="white" style={{alignSelf:'center'}} />
                 </TouchableOpacity>

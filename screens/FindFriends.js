@@ -11,9 +11,10 @@ import EventSource from "react-native-event-source";
 import Logo from "./Logo";
 import searchFriendsStyle from "../styles/searchFriendsStyle";
 import globalStyles from "../styles/globalStyles";
+import {registerIndieID} from "native-notify";
 
 
-const SearchFriends = ({ navigation }) => {
+const FindFriends = ({ navigation }) => {
     const [searchFriend, setSearchFriend] = useState('');
     const [foundUser, setFoundUser] = useState(false);
     const [messageCode, setMessageCode] = useState(0);
@@ -78,34 +79,35 @@ const SearchFriends = ({ navigation }) => {
 
     }
 
-    const create_SSE_Connection = () => {
-        try {
-            if (foundUser !== null) {
-                const sse = new EventSource(LOCAL_SERVER_URL + '/sse-handler?token=' + token + '&friendUsername=' + foundUser.username);
-                sse.onmessage = (message) => {
-                    const data = message.data;
-                    alert(data)
-                    console.log("this is: " + data)
-                }
-            }
-        } catch (error) {
-            console.error('Error creating event source:', error);
-        }
-    }
+
 
     const followingRequest = async (user) => {
-        if (token !== '') {
-            const response = await axios.create({ baseURL: LOCAL_SERVER_URL }).post('/follow-friend?token=' + token + '&friendUsername=' + user.username);
-            if (response.data.success) {
-                setMessageCode(FOLLOWING);
-                user.following = true;
+        try {
+            if (token !== '') {
+                const response = await axios.create({ baseURL: LOCAL_SERVER_URL }).post('/follow-friend?token=' + token + '&friendUsername=' + user.username);
+                if (response.data.success) {
+                    setMessageCode(FOLLOWING);
+                    user.following = true;
+                    console.log(user.username)
+                    await axios.post(`https://app.nativenotify.com/api/indie/notification`, {
+                        subID: `${user.username}`,
+                        appId: 11941,
+                        appToken: '7alrGeOddFsagJZ65YfsHS',
+                        title: 'Following Alert',
+                        message: user.username+' Start Following You!!'
+                    });
+                } else {
+                    setMessageCode(response.data.errorCode);
+                }
             } else {
-                setMessageCode(response.data.errorCode);
+                console.log("token is empty")
             }
-        } else {
-            console.log("token is empty")
+            setMessageCode(0)
+
+        }catch (error){
+            console.log("error in following "+ error)
         }
-        setMessageCode(0)
+
     }
 
     const unfollowFriend = async (friend) => {
@@ -184,5 +186,5 @@ const SearchFriends = ({ navigation }) => {
     );
 };
 
-export default SearchFriends;
+export default FindFriends;
 

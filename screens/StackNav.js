@@ -10,8 +10,8 @@ import MusicByArist from "./MusicByArtist";
 import MusicByFriends from "./MusicByFriends";
 import MyPlaylist from "./MyPlaylist";
 import PlayedRecently from "./PlayedRecently";
-import MyFriends from "./MyFriends";
-import SearchFriends from "./SearchFriends";
+import MyConnections from "./MyConnections";
+import FindFriends from "./FindFriends";
 import PersonalRecommendations from "./PersonalRecommendations";
 import {useDispatch, useSelector} from "react-redux";
 import {LOCAL_SERVER_URL, resetState, setPlaylist} from "../redux/actions";
@@ -22,6 +22,7 @@ import ErrorAlert from "./ErrorAlert";
 
 
 export default function StackNav (){
+
     const {username,token}= useSelector(state => state.reducer);
     const dispatch = useDispatch(); // Get the dispatch function
     const [messageCode, setMessageCode] = useState(0);
@@ -70,7 +71,8 @@ async function handleLout(){
     await AsyncStorage.removeItem('username')
     await AsyncStorage.removeItem('picture')
     dispatch(resetState());
-    console.log("delete")
+    // await axios.delete(`https://app.nativenotify.com/api/app/indie/sub/11941/7alrGeOddFsagJZ65YfsHS/your-indie-sub-id-here`)
+    console.log("log out")
 }
 
 
@@ -145,8 +147,8 @@ const Drawer=createDrawerNavigator();
                 <Stack.Screen name='Playlist' component={MyPlaylist}/>
                 <Stack.Screen name='Played' component={PlayedRecently}/>
                 <Stack.Screen name='Search Artists' component={MusicByArist}/>
-                <Stack.Screen name='Search friends' component={SearchFriends}/>
-                <Stack.Screen name='My friends' component={MyFriends}/>
+                <Stack.Screen name='Find Friends' component={FindFriends}/>
+                <Stack.Screen name='My Connections' component={MyConnections}/>
                 <Stack.Screen name="Friends Music" component={MusicByFriends}/>
                 <Stack.Screen name='Recommendations' component={PersonalRecommendations}/>
             </>

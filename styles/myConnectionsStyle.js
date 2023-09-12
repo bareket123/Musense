@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native';
 
-const myFriendsStyle = StyleSheet.create({
+const myConnectionsStyle = StyleSheet.create({
 
     removeText: {
         color: 'white',
@@ -93,7 +93,20 @@ const myFriendsStyle = StyleSheet.create({
         fontSize: 16,
         fontWeight: 'bold',
     },
+    viewNavigation:{
+        flexDirection: 'row',
+        marginTop:20
+    },
+    subTitles:{
+        color: 'white',
+        fontSize: 20
+    },
+    noFollowers:{
+        color:'white',
+        fontSize:18
+    }
+
 
 });
 
-export default myFriendsStyle;
+export default myConnectionsStyle;

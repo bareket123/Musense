@@ -3,8 +3,7 @@ import {ScrollView, SafeAreaView, TouchableOpacity, Text, StyleSheet, Image,View
 import { FontAwesome5, MaterialIcons} from '@expo/vector-icons';
 import {NavigationContainer} from "@react-navigation/native";
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import SearchFriends from "./SearchFriends";
-import MyFriends from "./MyFriends";
+import SearchFriends from "./FindFriends";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {setToken} from "../redux/actions";
 import {useDispatch} from "react-redux";
