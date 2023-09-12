@@ -52,26 +52,29 @@ function ErrorAlert(props) {
             case 1013:
                 messageForUser='Played Recently is Empty'
                 break;
-            ///////////////////////////////constant
             case 1014:
+                messageForUser='Not Found Followers'
+                break;
+            ///////////////////////////////constant
+            case 1015:
                 messageForUser = 'Sign Up Successfully';
                 break;
-            case 1015:
+            case 1016:
                 messageForUser = 'Login Successfully';
                 break;
-            case 1016:
+            case 1017:
                 messageForUser = 'Following Successfully';
                 break;
-            case 1017:
+            case 1018:
                 messageForUser = 'Deleted Successfully ';
                 break;
-            case 1018:
+            case 1019:
                 messageForUser = 'Something went Wrong 🥹';
                 break;
-            case 1019:
+            case 1020:
                 messageForUser = 'Permission to access camera roll is required❗';
                 break;
-            case 1020:
+            case 1021:
                 messageForUser='Favorite Removed Successfully'
                 break;
 
