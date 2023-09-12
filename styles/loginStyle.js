@@ -90,7 +90,8 @@ const loginStyle = StyleSheet.create({
     },
     warningView:{
         flexDirection: 'row',
-        right:150,
+        alignItems: 'center',  // Center the content vertically
+        marginBottom: 5,
     },
     addImageIcon:{
         marginRight:5,
