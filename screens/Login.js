@@ -143,7 +143,7 @@ export default function Login () {
             if ((usernameInput.length===0|| usernameInput==='')||(password.length===0 ||password==='' )){
                 validToPress=false;
             }
-            if ((checked==='signUp' )&&((!emailValidation(email) || password !== confirmPassword)||(uploadPic===null)))
+            if ((checked==='signUp' )&&((!emailValidation(email) || password !== confirmPassword)||(password.length <6)||(uploadPic===null)))
             {
                 validToPress=false;
 
@@ -298,6 +298,12 @@ export default function Login () {
                                             <View style={[loginStyle.warningView]}>
                                                 <MaterialCommunityIcons name="alert-circle" size={24} color="#8B0000" />
                                                 <Text style={loginStyle.warningText}>Password cannot be empty</Text>
+                                            </View>
+                                        )}
+                                        {(checked==='signUp')&&(hasStartedFillingFields &&(password.length <6 )&&
+                                            <View style={[loginStyle.warningView]}>
+                                                <MaterialCommunityIcons name="alert-circle" size={24} color="#8B0000" />
+                                                <Text style={loginStyle.warningText}>Password is Weak </Text>
                                             </View>
                                         )}
                                         {(checked==='signUp')&& (hasStartedFillingFields) && !uploadPic && (
