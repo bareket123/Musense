@@ -39,6 +39,7 @@
     "fetch": "^1.1.0",
     "lodash": "^4.17.21",
     "lottie-react-native": "5.1.4",
+    "native-notify": "^3.0.8",
     "rapidapi-connect": "^0.0.6",
     "react": "18.2.0",
     "react-dom": "18.2.0",
@@ -63,7 +64,9 @@
     "redux": "^4.2.1",
     "redux-thunk": "^2.4.2",
     "swiper": "^10.1.0",
-    "validator": "^13.9.0"
+    "validator": "^13.9.0",
+    "expo-device": "~5.2.1",
+    "expo-notifications": "~0.18.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"
