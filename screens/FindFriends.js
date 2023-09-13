@@ -111,7 +111,7 @@ const FindFriends = ({ navigation }) => {
     }
 
     const unfollowFriend = async (friend) => {
-        const response = await axios.create({ baseURL: LOCAL_SERVER_URL }).post('/delete-friend?token=' + token + '&friendUsername=' + friend.username);
+        const response = await axios.create({ baseURL: LOCAL_SERVER_URL }).post('/delete-friend?token=' + token + '&friendUsername=' + friend.username+'&deleteStatus=1');
         if (response.data.success) {
             setUsersFromServer().then(r => { });
             setMessageCode(DELETE);
