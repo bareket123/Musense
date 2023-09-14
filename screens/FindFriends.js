@@ -20,7 +20,7 @@ const FindFriends = ({ navigation }) => {
     const [messageCode, setMessageCode] = useState(0);
     const [isAlertShown, setIsAlertShown] = useState(false);
     const [showLogo, setShowLogo] = useState(true);
-    const { token } = useSelector(state => state.reducer);
+    const { token,username } = useSelector(state => state.reducer);
     const [allUsers, setAllUsers] = useState([]);
     const [filteredUsers, setFilteredUsers] = useState([]);
 
@@ -88,14 +88,18 @@ const FindFriends = ({ navigation }) => {
                 if (response.data.success) {
                     setMessageCode(FOLLOWING);
                     user.following = true;
-                    console.log(user.username)
-                    await axios.post(`https://app.nativenotify.com/api/indie/notification`, {
-                        subID: `${user.username}`,
-                        appId: 11941,
-                        appToken: '7alrGeOddFsagJZ65YfsHS',
-                        title: 'Following Alert',
-                        message: user.username+' Start Following You!!'
-                    });
+                    try {
+                        await axios.post(`https://app.nativenotify.com/api/indie/notification`, {
+                            subID: `${user.username}`,
+                            appId: 11941,
+                            appToken: '7alrGeOddFsagJZ65YfsHS',
+                            title: 'Following Alert',
+                            message: username+' Start Following You!!'
+                        });
+                    }catch (error){
+                        console.log("error in send notification "+error)
+                    }
+
                 } else {
                     setMessageCode(response.data.errorCode);
                 }

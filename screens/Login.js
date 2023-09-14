@@ -25,6 +25,7 @@ import * as ImagePicker from 'expo-image-picker';
 import  loginStyle from '../styles/loginStyle'
 import {Animated, Easing } from 'react-native';
 import playedRecentlyStyle from "../styles/playedRecentlyStyle";
+import {registerIndieID} from "native-notify";
 
 
 export default function Login () {
@@ -112,6 +113,8 @@ export default function Login () {
                     setMessageCode(LOGIN_SUCCESSFULLY)
                     if (res.data.success){
                         const token=res.data.token;
+                        registerIndieID(`${usernameInput}`, 11941, '7alrGeOddFsagJZ65YfsHS');
+
                         await AsyncStorage.setItem('token', token);
                         await AsyncStorage.setItem('username', usernameInput);
                         dispatch(setToken(token));

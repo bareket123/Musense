@@ -67,12 +67,17 @@ export default function StackNav (){
 
 
 async function handleLout(){
-    await AsyncStorage.removeItem('token')
-    await AsyncStorage.removeItem('username')
-    await AsyncStorage.removeItem('picture')
-    dispatch(resetState());
-    // await axios.delete(`https://app.nativenotify.com/api/app/indie/sub/11941/7alrGeOddFsagJZ65YfsHS/your-indie-sub-id-here`)
-    console.log("log out")
+        try {
+            await AsyncStorage.removeItem('token')
+            await AsyncStorage.removeItem('username')
+            await AsyncStorage.removeItem('picture')
+            dispatch(resetState());
+            await axios.delete(`https://app.nativenotify.com/api/app/indie/sub/11941/7alrGeOddFsagJZ65YfsHS/`+`${username}`)
+            console.log("log out")
+        }catch (error){
+            console.log("error log out "+ error)
+        }
+
 }
 
 
