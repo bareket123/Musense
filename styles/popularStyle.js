@@ -12,7 +12,7 @@ mainTitle:{
 },
     viewStyle:{
         alignItems:'center',
-        backgroundColor:'black'
+        backgroundColor:'transparent'
     }
 
 

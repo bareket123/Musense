@@ -1,41 +1,8 @@
-import React, {useEffect, useState} from 'react';
 import {ScrollView, SafeAreaView, TouchableOpacity, Text, StyleSheet, Image,View} from 'react-native';
-import { FontAwesome5, MaterialIcons} from '@expo/vector-icons';
-import {NavigationContainer} from "@react-navigation/native";
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import SearchFriends from "./FindFriends";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import {setToken} from "../redux/actions";
-import {useDispatch} from "react-redux";
 import  homeStyle from '../styles/homeStyle'
 
 
 const HomeScreen = ({ navigation }) => {
-    const dispatch = useDispatch(); // Get the dispatch function
-    const [username,setUsername]=useState("");
-    const homeName="home";
-    const loginName="login";
-    const popularName="popular";
-
-    const Tab=createBottomTabNavigator();
-
-    const getToken = async () => {
-        try {
-            const token = await AsyncStorage.getItem('token');
-            if (token !== undefined) {
-                dispatch(setToken(token));
-            }
-
-        } catch (error) {
-            console.log("error while save a token "+ error)
-        }
-
-    }
-    useEffect(  () => {
-
-        getToken().then(r => {console.log("save the token in state")});
-
-    },[])
 
     return (
         <ScrollView style={homeStyle.container}>
@@ -55,12 +22,24 @@ const HomeScreen = ({ navigation }) => {
                         <Text style={homeStyle.caption}> Music by Artist</Text>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={()=>{ navigation.navigate('Friends Music')}}>
-                        <Image source={require('../images/friendsHome.gif')} style={homeStyle.image}/>
+                        <Image source={require('../images/FriendsMusicHome.gif')} style={homeStyle.image}/>
                         <Text style={homeStyle.caption}>Played Music by Friends</Text>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={()=>{ navigation.navigate('Playlist')}}>
                         <Image source={require('../images/playlistHome.gif')} style={homeStyle.image}/>
                         <Text style={homeStyle.caption}>my playlist</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={()=>{ navigation.navigate('Find Friends')}}>
+                        <Image source={require('../images/findFriends.gif')} style={homeStyle.image}/>
+                        <Text style={homeStyle.caption}>Find Friends</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={()=>{ navigation.navigate('My Connections')}}>
+                        <Image source={require('../images/MtConnectionsHome.gif')} style={homeStyle.image}/>
+                        <Text style={homeStyle.caption}>My Connections</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={()=>{ navigation.navigate('Recommendations')}}>
+                        <Image source={require('../images/recommendationsHome.gif')} style={homeStyle.image}/>
+                        <Text style={homeStyle.caption}>Recommendations</Text>
                     </TouchableOpacity>
                 </View>
             </SafeAreaView>

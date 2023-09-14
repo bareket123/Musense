@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {createStackNavigator} from "@react-navigation/stack";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import {Image, ScrollView, Text, TouchableOpacity, View} from "react-native";
+import {Image, ImageBackground, ScrollView, Text, TouchableOpacity, View} from "react-native";
 import {createDrawerNavigator, DrawerContentScrollView, DrawerItemList} from "@react-navigation/drawer";
 import HomeScreen from "./HomeScreen";
 import Login from "./Login";
@@ -18,13 +18,16 @@ import {LOCAL_SERVER_URL, resetState, setPlaylist} from "../redux/actions";
 import axios from "axios";
 import {PLAYLIST_NOT_EXIST} from "./Constans";
 import ErrorAlert from "./ErrorAlert";
+import StackNavStyle from "../styles/StackNavStyle";
+import {AntDesign, Ionicons} from "@expo/vector-icons";
+import { DrawerItem } from "@react-navigation/drawer";
 
 
 
 export default function StackNav (){
 
     const {username,token}= useSelector(state => state.reducer);
-    const dispatch = useDispatch(); // Get the dispatch function
+    const dispatch = useDispatch();
     const [messageCode, setMessageCode] = useState(0);
     const {isLoggedIn}= useSelector(state => state.reducer);
     const {picture}= useSelector(state => state.reducer);
@@ -82,49 +85,62 @@ async function handleLout(){
 
 
 const CustomDrawer = props => {
-    return (
-        <ScrollView >
-            <DrawerContentScrollView {...props}>
-                <View
-                    style={{
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                        alignItems: 'center',
-                        padding: 20,
-                        backgroundColor: '#f6f6f6',
-                        marginBottom: 20,
-                    }}
-                >
-                    <View>
-                        <Text style={{ fontSize: 18 }}>Hello {isLoggedIn ? username : 'guest'}</Text>
-                    </View>
-                    <Image
-                        source={{
-                            uri: picture!==''?picture:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS3J7fax0r25yrhXbt64ICXsKZ-Clm_txAxmw&usqp=CAU',
-                        }}
-                        style={{ width: 60, height: 60, borderRadius: 30 }}
-                    />
-                </View>
-                <DrawerItemList {...props} />
-                <TouchableOpacity
-                    style={{
-                        bottom: 0,
-                        width: '100%',
-                        backgroundColor: '#f6f6f6',
-                        padding: 10,
-                        borderTopWidth: 1,
-                        borderTopColor: '#ddd',
-                    }}
-                    onPress={handleLout}
-                >
-                    {
-                        isLoggedIn &&
-                        <Text>Log Out</Text>
+    const drawerItems = [
+        { name: "Home", screen: "Home", icon: "home-outline" },
+        { name: "Popular", screen: "Popular", icon: "flame-outline" },
+        { name: "Playlist", screen: "Playlist", icon: "play-circle-outline" },
+        { name: "Played", screen: "Played", icon: "musical-notes-outline" },
+        { name: "Search Artists", screen: "Search Artists", icon: "search" },
+        { name: "Find Friends", screen: "Find Friends", icon: "people" },
+        { name: "My Connections", screen: "My Connections", icon: "globe" },
+        { name: "Friends Music", screen: "Friends Music", icon: "headset" },
+        { name: "Recommendations", screen: "Recommendations", icon: "heart" },
 
-                    }
-                </TouchableOpacity>
+    ];
+    return (
+        <ScrollView>
+            <DrawerContentScrollView {...props}>
+       <ImageBackground source={{uri:'https://wallpapercrafter.com/sizes/1366x768/87115-lines-simple-background-abstract-hd-4k-dark-black-dribbble-oled.jpg'}}>
+                         <View style={StackNavStyle.userView}>
+                             <View>
+                                 <Text style={StackNavStyle.userViewTitle}>Hello {isLoggedIn ? username : 'guest'}</Text>
+                             </View>
+                             <Image
+                                source={{uri: picture!==''?picture:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS3J7fax0r25yrhXbt64ICXsKZ-Clm_txAxmw&usqp=CAU'}}
+                                style={StackNavStyle.userImage}
+                            />
+                        </View>
+                {
+                    isLoggedIn&&
+                    drawerItems.map((item, index) => (
+                            <DrawerItem
+
+                                key={index}
+                                label={item.name}
+                                labelStyle={StackNavStyle.labelStyle}
+                                icon={({ size }) => (
+                                    <Ionicons name={item.icon} color={'white'} size={size} />
+                                )}
+                                onPress={() => props.navigation.navigate(item.screen)}
+                                style={{
+                                    borderTopWidth: index!==0?1:0,
+                                    borderTopColor: '#ddd'
+                                }}
+                            />
+                        ))
+                }
+
+                {
+                    isLoggedIn &&
+                    <TouchableOpacity style={StackNavStyle.logOutButton} onPress={handleLout}>
+                        <AntDesign name="logout" size={24} color='#9B2335' style={{alignSelf:'center'}} />
+                         <Text style={StackNavStyle.logOutText}>  Log Out</Text>
+                    </TouchableOpacity>
+                }
+            </ImageBackground>
             </DrawerContentScrollView>
         </ScrollView>
+
     );
 };
 
@@ -134,15 +150,18 @@ const Drawer=createDrawerNavigator();
 
     <Drawer.Navigator
         screenOptions={{
+
             headerShown: true,
-            headerStyle: {
-                backgroundColor: 'black',
-                shadowOpacity: 0,
-            },
+            headerStyle: {backgroundColor: 'black', shadowOpacity: 0},
             headerTitle: '',
             headerTintColor:'white',
+            drawerStyle:{backgroundColor:'black'},
+            drawerLabel:{color:'white'}
+
         }}
-        drawerContent={props => <CustomDrawer {...props} />}
+
+        drawerContent={props => <CustomDrawer {...props} /> }
+
     >
         {
             isLoggedIn &&
@@ -162,7 +181,6 @@ const Drawer=createDrawerNavigator();
         {
 
             !isLoggedIn &&
-                // ? (
             <Stack.Screen name='login' component={Login} />
         }
         {
