@@ -1,11 +1,12 @@
 import { StyleSheet } from 'react-native';
 
 const playedRecentlyStyle = StyleSheet.create({
+
     backgroundView:{
         backgroundColor:'black',
         flex:1
-
     },
+
     mainTitle:{
         color:'white',
         fontSize:26,
@@ -16,32 +17,25 @@ const playedRecentlyStyle = StyleSheet.create({
         textShadowRadius: 1,
         marginBottom:15,
     },
+
     searchTextInput:{
         alignSelf: 'center',
         fontSize:20,
         marginRight:60,
         color:'white'
-
-
     },
-    searchView:{
 
+    searchView:{
         flexDirection:'row',
         width:350,
         alignSelf:'center',
         backgroundColor: 'rgba(128, 128, 128, 0.3)',
         borderColor: 'transparent',
         borderWidth: 5,
-        borderRadius: 10, // Make it circular by setting borderRadius to half of the height
+        borderRadius: 10,
         marginBottom:10,
-
     },
 
-    searchIcon:{
-        alignContent:'center',
-        marginLeft:1,
-       fontSize:40
-    },
     clear:{
         marginLeft: 10,
         fontSize:20

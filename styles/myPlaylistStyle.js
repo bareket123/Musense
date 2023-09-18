@@ -2,24 +2,6 @@ import { StyleSheet } from 'react-native';
 
 const myPlaylistStyle = StyleSheet.create({
 
-    background: {
-        width: '100%',
-        height: '100%',
-        resizeMode: 'cover',
-    },
-
-    button:{
-        flexDirection:'row',
-        justifyContent: 'space-between',
-        height: 50,
-        borderColor: 'black',
-        borderWidth: 5,
-        borderRadius: 20,
-        paddingHorizontal: 10,
-        backgroundColor: 'rgba(255, 255, 255, 0.77)',
-        color: 'black',
-    },
-
     buttonText: {
         color: 'black',
         fontSize: 16,
@@ -60,9 +42,6 @@ const myPlaylistStyle = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         marginTop:0,
-        // width: 300,
-        // transform: [{ translateX: -50 }, { translateY: -5 }],
-
     },
 
 });

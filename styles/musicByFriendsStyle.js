@@ -2,27 +2,26 @@ import { StyleSheet } from 'react-native';
 
 const musicByFriendsStyle = StyleSheet.create({
 
-  image:{
-      width: '100%',
-      height: '100%',
-  },
   mainTitle:{
       color: 'white',
       fontSize: 20,
       fontFamily: 'RammettoOne',
       alignSelf:'center',
   },
+
   subtitle:{
       color: 'white',
       fontSize: 18,
       marginLeft:5,
   },
+
     noFriendsText:{
         color: 'lightgrey',
         fontSize:30,
         alignSelf:'center',
         marginTop:100
     },
+
   buttonText:{
       color:'lightgrey',
       alignSelf:'center',
@@ -31,4 +30,5 @@ const musicByFriendsStyle = StyleSheet.create({
   },
 
 });
+
 export default musicByFriendsStyle;

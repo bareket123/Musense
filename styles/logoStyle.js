@@ -11,6 +11,7 @@ const logoStyle = StyleSheet.create({
         resizeMode: "contain",
         backgroundColor: 'black',
     },
+
     text: {
         position: 'absolute',
         top: 0,
@@ -20,5 +21,7 @@ const logoStyle = StyleSheet.create({
        color:'white',
         fontSize:17,
     },
+
 });
+
 export default logoStyle;

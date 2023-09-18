@@ -10,34 +10,33 @@ const questionnaireStyle= StyleSheet.create({
         fontWeight:'bold',
         shadowColor:'white'
     },
+
     subtitle:{
         alignSelf:'center',
         color:'white',
         fontSize: 18,
-
         shadowColor:'white'
-
     },
+
     title: {
         color:'white',
         padding:30,
         fontSize: 24,
         fontWeight:'bold',
         shadowColor:'white'
-
     },
+
     cardContainer: {
-        borderWidth: 2, // Add border to create a frame-like appearance
+        borderWidth: 2,
         borderColor: 'white',
-        borderRadius: 10, // Adjust the value to control the roundness of the edges
+        borderRadius: 10,
         marginBottom:30,
         marginLeft:20,
         marginRight:20,
         marginTop:10,
-
-
 },
-answerInput: {
+
+    answerInput: {
         width: 200,
         height: 30,
         padding: 10,
@@ -46,18 +45,20 @@ answerInput: {
         marginBottom: 10,
         backgroundColor: '#e8e8e8'
     },
+
     radioButton: {
         flexDirection: 'row',
         marginBottom: 10,
         shadowColor:'green'
     },
+
     radioButtonLabel: {
         color: 'white',
         fontWeight: 'normal',
         fontSize: 20,
         marginLeft: 10,
-
     },
+
      artistMenu1 : {
         backgroundColor: '#e8e8e8',
          borderColor: 'white',
@@ -65,26 +66,27 @@ answerInput: {
         marginTop: 5,
         maxHeight: 150,
         elevation: 2,
-
     },
+
     artist2menu : {
         backgroundColor: '#e8e8e8',
         borderColor: 'white',
         borderWidth: 2,
-
-
     },
+
     artistText:{
         color:'black',
         fontWeight:'bold',
         alignSelf:'center',
         fontSize:18,
     },
+
     textInputView:{
         flexDirection:'row',
         alignItems:'center'
     }
 
     });
+
 export default questionnaireStyle;
 

@@ -2,19 +2,13 @@ import { StyleSheet } from 'react-native';
 
 const alertStyle = StyleSheet.create({
 
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: 'pink',
-    },
     centeredView: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: 'rgba(0, 0, 0, 0.5)',
-
     },
+
     alertView: {
         backgroundColor: 'black',
         padding: 20,
@@ -23,8 +17,8 @@ const alertStyle = StyleSheet.create({
         borderColor:'white',
         borderStyle:'solid',
         borderWidth:10
-
     },
+
     alertText: {
         textAlign: 'center',
         marginBottom: 10,
@@ -32,18 +26,20 @@ const alertStyle = StyleSheet.create({
         color:'white',
         fontSize:25,
         fontStyle:'italic'
-
     },
+
     closeButton: {
         marginTop: 10,
         padding: 10,
         backgroundColor: 'black',
         borderRadius: 5,
     },
+
     closeButtonText: {
         color: 'white',
         fontWeight: 'bold',
     },
+
 });
 
 export default alertStyle;

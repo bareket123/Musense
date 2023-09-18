@@ -19,16 +19,6 @@ const musicByArtistStyle = StyleSheet.create({
         backgroundColor: 'rgba(255,253,253,0.77)',
     },
 
-    cardContainer: {
-        borderWidth: 2,
-        borderColor: 'white',
-        borderRadius: 10,
-        marginBottom:30,
-        marginLeft:20,
-        marginRight:20,
-        marginTop:10,
-    },
-
     textTitle : {
         alignItems:'center'
     },

@@ -15,11 +15,11 @@ const myConnectionsStyle = StyleSheet.create({
         marginTop:-12,
     },
 
-    background: {
-        width: '100%',
-        height: '100%',
-        resizeMode: 'cover',
-    },
+    // background: {
+    //     width: '100%',
+    //     height: '100%',
+    //     resizeMode: 'cover',
+    // },
 
     textTitle : {
         alignItems:'center'
@@ -84,8 +84,6 @@ const myConnectionsStyle = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         marginTop:15,
-        // width: 300,
-        // transform: [{ translateX: -50 }, { translateY: 0 }],
     },
 
     buttonText: {
@@ -93,19 +91,21 @@ const myConnectionsStyle = StyleSheet.create({
         fontSize: 16,
         fontWeight: 'bold',
     },
+
     viewNavigation:{
         flexDirection: 'row',
         marginTop:20
     },
+
     subTitles:{
         color: 'white',
         fontSize: 20
     },
+
     noFollowers:{
         color:'white',
         fontSize:18
-    }
-
+    },
 
 });
 
