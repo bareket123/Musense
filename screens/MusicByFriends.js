@@ -1,10 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {
-    View,
-    Text,
-    TouchableOpacity,
-    ImageBackground
-} from 'react-native';
+import {View, Text, TouchableOpacity, ImageBackground} from 'react-native';
 import axios from "axios";
 import {useSelector} from "react-redux";
 import Player from "./Player";
@@ -16,14 +11,15 @@ import {FontAwesome} from "@expo/vector-icons";
 import  musicByFriendsStyle from '../styles/musicByFriendsStyle'
 import globalStyles from "../styles/globalStyles";
 
+
 export default function MusicByFriends ({ navigation }) {
     const [playlistByFriends,setPlaylistByFriends]=useState([]);
     const {token} = useSelector(state => state.reducer);
     const[messageCode, setMessageCode] = useState(0);
-
     const [fontsLoaded] = useFonts({
         'RammettoOne': require('../assets/Fonts/RammettoOne-Regular.ttf')
     });
+
     useEffect(() => {
         try {
             prepare();
@@ -41,6 +37,7 @@ export default function MusicByFriends ({ navigation }) {
     async function prepare() {
         await SplashScreen.preventAutoHideAsync();
     }
+
     const getPlaylistByFriends=async ()=> {
         try {
             if (token !== null) {
@@ -54,19 +51,16 @@ export default function MusicByFriends ({ navigation }) {
                 console.log(" friends: token is empty")
             }
             setMessageCode(0);
-
         } catch (error) {
             console.log("error getting friends playlist " + error)
         }
     }
-
 
     useEffect(()=>{
         getPlaylistByFriends().then(() => {})
     })
 
     function toggleFavorite(id) {
-
         const updatedArray = playlistByFriends.map((song) => {
             if (song.id === id) {
                 return {...song, isFavorite: !song.isFavorite};
@@ -75,10 +69,6 @@ export default function MusicByFriends ({ navigation }) {
         });
         setPlaylistByFriends(updatedArray);
     }
-
-
-
-
 
     return (
         <ImageBackground source={require('../images/musicByFriends.png')} style={globalStyles.flexProp} resizeMode={'cover'} >
@@ -104,20 +94,12 @@ export default function MusicByFriends ({ navigation }) {
                     <Text style={musicByFriendsStyle.buttonText}>Press here to find more friends</Text>
                     <FontAwesome name="arrow-left" size={50} color="white" style={{alignSelf:'center'}} />
                 </TouchableOpacity>
-
             </View>
-
     }
            {
                messageCode!==0&&
                <ErrorAlert message={messageCode}/>
            }
-
-
         </ImageBackground>
     );
 };
-
-
-
-

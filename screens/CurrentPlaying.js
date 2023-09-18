@@ -21,7 +21,6 @@ const CurrentPlaying= ({ currentSong, setSong, allSongs })=>{
     const [mute, setMute] = useState(false);
     const [spinAnimation, setSpinAnimation] = useState(null);
     const [messageCode,setMessageCode]=useState(0);
-
     const dispatch = useDispatch();
 
     const sendPlayedRecentlyToServer = async (song) => {
@@ -33,10 +32,9 @@ const CurrentPlaying= ({ currentSong, setSong, allSongs })=>{
                 const encodedUrl = encodeURIComponent(song.url);
                 const encodedCoverImage = encodeURIComponent(song.coverImage);
                 const encodedIsPlayed = encodeURIComponent(true);
-
                 const url = `${LOCAL_SERVER_URL}/add-song?token=${token}&title=${encodedTitle}&artist=${encodedArtist}&url=${encodedUrl}&coverImage=${encodedCoverImage}&isPlayed=${encodedIsPlayed}`;
-                const response = await axios.post(url);
 
+                const response = await axios.post(url);
                 if (response.data.success) {
                     console.log("Updated successfully");
                 } else {
@@ -47,8 +45,6 @@ const CurrentPlaying= ({ currentSong, setSong, allSongs })=>{
             }
         }
     };
-
-
 
     const [fontsLoaded] = useFonts({
         'RammettoOne': require('../assets/Fonts/RammettoOne-Regular.ttf'),
@@ -72,8 +68,8 @@ const CurrentPlaying= ({ currentSong, setSong, allSongs })=>{
         await sendPlayedRecentlyToServer(song)
         startSpin();
         await playAudio(song, dispatch); // Dispatch the action to add the song to playedRecently state in redux
-
     }
+
     async function pauseSound() {
         setPressedPlaying(false);
         stopSpin();
@@ -98,26 +94,22 @@ const CurrentPlaying= ({ currentSong, setSong, allSongs })=>{
     };
 
     const playMusic= (song) => {
-
         if (pressedPlaying) {
             pauseSound()
         } else {
             playSound(song)
         }
-
     }
+
     const replaceSong=(action)=> {
         const currentIndex = allSongs.findIndex(song=>song.url ===currentSong.url);
         let newIndex;
         pauseSound().then(() => {});
-
         if (action==='next'){
             newIndex = (currentIndex+1) % allSongs.length;
-
         }else {
             newIndex = (currentIndex -1) % allSongs.length;
         }
-
         setSong(allSongs[newIndex]);
     }
 
@@ -126,7 +118,6 @@ const CurrentPlaying= ({ currentSong, setSong, allSongs })=>{
             if (spinAnimation) {
                 spinAnimation.stop();
             }
-
             // Create a new spinning animation
             const animation = Animated.loop(
                 Animated.timing(spinValue, {
@@ -138,15 +129,11 @@ const CurrentPlaying= ({ currentSong, setSong, allSongs })=>{
             );
 
             setSpinAnimation(animation);
-
             // Start the animation
             animation.start();
-
-
         }catch (error){
             console.log("error in spinning "+ error)
         }
-
     };
 
     const stopSpin = () => {
@@ -157,8 +144,8 @@ const CurrentPlaying= ({ currentSong, setSong, allSongs })=>{
         }catch (error){
             console.log("error in stop spinning "+ error)
         }
-
     };
+
 const closePlaying = () => {
     setSong(undefined);
     dispatch(setIsSongPlaying(false));
@@ -166,7 +153,6 @@ const closePlaying = () => {
 }
 
     return (
-
       <ImageBackground source={{uri:currentSong.coverImage}} >
           {
               fontsLoaded &&
@@ -179,7 +165,6 @@ const closePlaying = () => {
                   <Text style={currentPlayingStyle.closeButtonText} >X</Text>
               </TouchableOpacity>
           </View>
-
           <Animated.Image source={{ uri: currentSong.coverImage }} style={[
                       currentPlayingStyle.overlayImage,
                       {
@@ -189,7 +174,6 @@ const closePlaying = () => {
                               }) }],
                       },
                   ]} />
-
                           <View style={currentPlayingStyle.middleContainer}>
                               {
                                   fontsLoaded&&
@@ -198,11 +182,9 @@ const closePlaying = () => {
                                       <Text style={currentPlayingStyle.songArtist}>{currentSong.artist}</Text>
                                   </View>
                               }
-
                       </View>
           <View style={currentPlayingStyle.volumeControls}>
               <Ionicons name={mute ? "volume-mute" : "md-volume-high"} size={24} color="white" style={currentPlayingStyle.volumeIcon} onPress={toggleMute} />
-
               <Slider
                   style={currentPlayingStyle.volumeSlider}
                   value={getVolume()}
@@ -214,18 +196,14 @@ const closePlaying = () => {
                   maximumTrackTintColor={'white'}
                   thumbStyle={{ height: 20, width: 20, backgroundColor: 'rgba(255, 255, 255, 0.8)' }}
                   trackStyle={{ height: 5, backgroundColor: 'transparent' }}
-
               />
-
-
           </View>
-
                   <View style={currentPlayingStyle.controlButtons}>
                       <TouchableHighlight>
                           <Ionicons name="refresh-outline"  color="white"  style={currentPlayingStyle.controlIcon} onPress={reloadSong} />
                       </TouchableHighlight>
                       <TouchableHighlight
-                          underlayColor="rgba(255, 255, 255, 0.5)" // White glow on black background
+                          underlayColor="rgba(255, 255, 255, 0.5)"
                           onPress={() => replaceSong('next')}
                           style={currentPlayingStyle.controlButton}
                       >
@@ -233,32 +211,26 @@ const closePlaying = () => {
                       </TouchableHighlight>
 
                       <TouchableHighlight
-                          underlayColor="rgba(255, 255, 255, 0.5)" // White glow on black background
+                          underlayColor="rgba(255, 255, 255, 0.5)"
                           onPress={() =>{playMusic(currentSong)} }
                           style={currentPlayingStyle.controlButton }
                       >
                           <AntDesign name={pressedPlaying ? 'pausecircleo' : 'playcircleo'} size={50} style={{marginLeft:5,marginRight:5}} color="white" />
                       </TouchableHighlight>
-
                       <TouchableHighlight
-                          underlayColor="rgba(255, 255, 255, 0.2)" // White glow on black background
+                          underlayColor="rgba(255, 255, 255, 0.2)"
                           onPress={() => replaceSong('previous')}
                           style={currentPlayingStyle.controlButton}
                       >
                           <AntDesign name="banckward" color="white" style={currentPlayingStyle.controlIcon} />
                       </TouchableHighlight>
-
                   </View>
              {
               (messageCode !== 0) &&
               <ErrorAlert message={messageCode} />
             }
       </ImageBackground>
-
-
-
     );
-
 }
 
 export default CurrentPlaying;

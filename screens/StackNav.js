@@ -23,15 +23,12 @@ import {AntDesign, Ionicons} from "@expo/vector-icons";
 import { DrawerItem } from "@react-navigation/drawer";
 
 
-
 export default function StackNav (){
-
     const {username,token}= useSelector(state => state.reducer);
     const dispatch = useDispatch();
     const [messageCode, setMessageCode] = useState(0);
     const {isLoggedIn}= useSelector(state => state.reducer);
     const {picture}= useSelector(state => state.reducer);
-
     const Stack = createStackNavigator();
 
     useEffect(()=>{
@@ -48,26 +45,21 @@ export default function StackNav (){
             setMessageCode(PLAYLIST_NOT_EXIST)
         }
     }
+
     const getPlaylist=async ()=>{
         try {
            if (token!==""){
                const response = await axios.create({baseURL: LOCAL_SERVER_URL}).post('/get-playlist?token=' + token);
                if (response.data.success){
                    setThePlaylistInStore(response.data.playlist)
-
                }else{
                    console.log(response.data.errorCode)
                    setMessageCode(response.data.errorCode)
-
                }}
-
         }catch (error){
             console.log("error getting playlist "+ error)
         }
-
-
     }
-
 
 async function handleLout(){
         try {
@@ -80,9 +72,7 @@ async function handleLout(){
         }catch (error){
             console.log("error log out "+ error)
         }
-
 }
-
 
 const CustomDrawer = props => {
     const drawerItems = [
@@ -95,8 +85,8 @@ const CustomDrawer = props => {
         { name: "My Connections", screen: "My Connections", icon: "globe" },
         { name: "Friends Music", screen: "Friends Music", icon: "headset" },
         { name: "Recommendations", screen: "Recommendations", icon: "heart" },
-
     ];
+
     return (
         <ScrollView>
             <DrawerContentScrollView {...props}>
@@ -114,7 +104,6 @@ const CustomDrawer = props => {
                     isLoggedIn&&
                     drawerItems.map((item, index) => (
                             <DrawerItem
-
                                 key={index}
                                 label={item.name}
                                 labelStyle={StackNavStyle.labelStyle}
@@ -129,7 +118,6 @@ const CustomDrawer = props => {
                             />
                         ))
                 }
-
                 {
                     isLoggedIn &&
                     <TouchableOpacity style={StackNavStyle.logOutButton} onPress={handleLout}>
@@ -140,28 +128,22 @@ const CustomDrawer = props => {
             </ImageBackground>
             </DrawerContentScrollView>
         </ScrollView>
-
     );
 };
 
 const Drawer=createDrawerNavigator();
 
     return(
-
     <Drawer.Navigator
         screenOptions={{
-
             headerShown: true,
             headerStyle: {backgroundColor: 'black', shadowOpacity: 0},
             headerTitle: '',
             headerTintColor:'white',
             drawerStyle:{backgroundColor:'black'},
             drawerLabel:{color:'white'}
-
         }}
-
         drawerContent={props => <CustomDrawer {...props} /> }
-
     >
         {
             isLoggedIn &&
@@ -177,9 +159,7 @@ const Drawer=createDrawerNavigator();
                 <Stack.Screen name='Recommendations' component={PersonalRecommendations}/>
             </>
         }
-
         {
-
             !isLoggedIn &&
             <Stack.Screen name='login' component={Login} />
         }
@@ -187,11 +167,6 @@ const Drawer=createDrawerNavigator();
             messageCode !== 0 &&
             <ErrorAlert message={messageCode} />
         }
-
-
     </Drawer.Navigator>
-
-
     )
-
 }

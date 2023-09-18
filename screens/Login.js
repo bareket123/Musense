@@ -1,15 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import { KeyboardAvoidingView } from 'react-native';
-
-import {
-    ImageBackground,
-    ScrollView,
-    Text,
-    View,
-    Image,
-    TouchableHighlight,
-    TouchableOpacity
-} from 'react-native';
+import {ImageBackground, ScrollView, Text, View, Image, TouchableHighlight, TouchableOpacity} from 'react-native';
 import axios from "axios";
 import {Button, RadioButton, TextInput} from 'react-native-paper';
 import isEmail from 'validator/lib/isEmail';
@@ -39,7 +30,6 @@ export default function Login () {
 
     useEffect(()=>{
         setMessageCode(0)
-
     },[checked])
         const selectImage = async () => {
             setHasStartedFillingFields(true);
@@ -77,9 +67,11 @@ export default function Login () {
                 }
             }
         };
+
         const togglePasswordVisibility = () => {
             setPasswordVisible(!isPasswordVisible);
         };
+
         async function handleButtonPressed() {
             let res;
             try {
@@ -99,9 +91,7 @@ export default function Login () {
                     }else {
                         setMessageCode(res.data.errorCode)
                         console.log("already exist")
-
                     }
-
                 } else if (checked === 'login') {
                     console.log("enter login")
                     res = await axios.create({baseURL: LOCAL_SERVER_URL}).post('/login?username=' + usernameInput + '&password=' + password)
@@ -110,7 +100,6 @@ export default function Login () {
                     if (res.data.success){
                         const token=res.data.token;
                         registerIndieID(`${usernameInput}`, 11941, '7alrGeOddFsagJZ65YfsHS');
-
                         await AsyncStorage.setItem('token', token);
                         await AsyncStorage.setItem('username', usernameInput);
                         dispatch(setToken(token));
@@ -126,16 +115,13 @@ export default function Login () {
                 setMessageCode(error)
             }
             clearButton()
-
         }
-
 
         function emailValidation(userEmail){
             let valid;
             valid = !!isEmail(userEmail);
             return valid;
         }
-
 
         function checkValidation(){
             let validToPress=true;
@@ -145,11 +131,9 @@ export default function Login () {
             if ((checked==='signUp' )&&((!emailValidation(email) || password !== confirmPassword)||(password.length <6)||(uploadPic===null)))
             {
                 validToPress=false;
-
             }
             return validToPress;
         }
-
 
         function clearButton() {
             setUsernameInput("")
@@ -158,9 +142,7 @@ export default function Login () {
             setEmail("")
             setUploadPic(null)
             setHasStartedFillingFields(false)
-            // setMessageCode(0)
         }
-
 
         const setUserPic =async (token) => {
             const res = await axios.create({baseURL: LOCAL_SERVER_URL}).get('/get-user-picture-by-token?token=' + token);
@@ -171,23 +153,17 @@ export default function Login () {
 
         return (
             <KeyboardAvoidingView
-
                 style={{flex: 1}}
                 keyboardVerticalOffset={1} // Adjust the value as needed
             >
 
-
             <ImageBackground source={{uri:'https://media3.giphy.com/media/lKaeQAunM3hZaqsOpj/giphy.gif'}} style={loginStyle.background} >
                 <ScrollView style={loginStyle.container}>
-
                     <View>
-
-
                         {
                             checked!==''&&
                             <View>
                                 <View style={loginStyle.fuzzyFrame}>
-
                                     <Image source={{uri:'https://st4.depositphotos.com/4329009/19956/v/450/depositphotos_199564354-stock-illustration-creative-vector-illustration-default-avatar.jpg'}} style={{width:100,height:100,borderRadius:50}}/>
                                     <Text style={loginStyle.headerText}>Enter your {checked==='login' ? 'username and password' : 'details to sign up'}</Text>
                                     <View style={loginStyle.viewStyle}>
@@ -201,15 +177,11 @@ export default function Login () {
                                             underlineStyle={loginStyle.underlineStyle}
                                             onChangeText={(text) => {
                                                 setUsernameInput(text);
-                                                setHasStartedFillingFields(true); // Add this line
+                                                setHasStartedFillingFields(true);
                                             }}
                                             style={{ width: 300, backgroundColor: 'transparent' }}
                                         />
-
                                     </View>
-
-
-
                                     <View style={loginStyle.viewStyle}>
                                         <MaterialCommunityIcons name="lock" size={24} color="black" />
                                         <TextInput
@@ -220,7 +192,7 @@ export default function Login () {
                                             underlineStyle={loginStyle.underlineStyle}
                                             onChangeText={(text) => {
                                                 setPassword(text);
-                                                setHasStartedFillingFields(true); // Add this line
+                                                setHasStartedFillingFields(true);
                                             }}
                                             textColor={'white'}
                                             style={[loginStyle.textInput, checked==='login'&& {marginBottom: 20}]}
@@ -250,7 +222,7 @@ export default function Login () {
                                                     value={confirmPassword}
                                                     onChangeText={(text) => {
                                                         setConfirmPassword(text);
-                                                        setHasStartedFillingFields(true); // Add this line
+                                                        setHasStartedFillingFields(true);
                                                     }}
                                                     style={[loginStyle.textInput, ((password !== confirmPassword) && (password.length !== 0&& confirmPassword.length!==0)) && { backgroundColor: '#8B0000'}] }
                                                     secureTextEntry={true}
@@ -267,7 +239,7 @@ export default function Login () {
                                                     underlineStyle={loginStyle.underlineStyle}
                                                     onChangeText={(text) => {
                                                         setEmail(text);
-                                                        setHasStartedFillingFields(true); // Add this line
+                                                        setHasStartedFillingFields(true);
                                                     }}
                                                     style={[loginStyle.textInput,(!emailValidation(email)&&  email.length!==0)&&  { backgroundColor: '#8B0000'}]}
                                                     keyboardType={"email-address"}
@@ -285,7 +257,6 @@ export default function Login () {
                                             </View>
                                         </View>
                                     }
-
                                     <View style={{flexDirection:'column'}}>
                                         {(hasStartedFillingFields &&(usernameInput.length === 0 || usernameInput.trim() === '') )&& (
                                             <View style={[loginStyle.warningView]}>
@@ -339,7 +310,6 @@ export default function Login () {
 
                                         <Button style={[loginStyle.button,loginStyle.glow]} title={'clear'} labelStyle={loginStyle.buttonLabel} mode="contained" onPress={clearButton}>Clear</Button>
                                     </View>
-
                                 </View>
                             </View>
                         }
@@ -353,11 +323,7 @@ export default function Login () {
                                 <RadioButton.Item labelStyle={loginStyle.radioButtonLabel} color={'white'} style={loginStyle.radioButton} label="SignUp" value="signUp" />
                             </View>
                         </RadioButton.Group>
-
-
-
                     </View>
-
                 </ScrollView>
                 <View style={{position:'absolute',bottom:0,right:0 }}>
                     <Image source={require('../images/simpleLogoLogin.png')}   style={[loginStyle.imageLogo, checked === 'signUp' && { height: 80, width: 80 }]} />

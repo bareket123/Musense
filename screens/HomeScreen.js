@@ -1,8 +1,8 @@
 import {ScrollView, SafeAreaView, TouchableOpacity, Text, Image,View} from 'react-native';
 import  homeStyle from '../styles/homeStyle'
 
-
 const HomeScreen = ({ navigation }) => {
+
 
     return (
         <ScrollView style={homeStyle.container}>
@@ -46,6 +46,5 @@ const HomeScreen = ({ navigation }) => {
         </ScrollView>
     );
 };
-
 
 export default HomeScreen;

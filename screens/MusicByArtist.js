@@ -1,11 +1,5 @@
 import React, { useState} from 'react';
-import {
-    View,
-    TextInput,
-    Text,
-    ImageBackground,
-
-} from 'react-native';
+import {View, TextInput, Text, ImageBackground,} from 'react-native';
 import { Fontisto} from "@expo/vector-icons";
 import { X_RAPID_API_HOST7, X_RAPID_API_KEY} from "../redux/actions";
 import { useFocusEffect } from '@react-navigation/native';
@@ -15,12 +9,10 @@ import  musicByArtistStyle from '../styles/musicByArtistStyle'
 
 
 export default function MusicByArtist () {
-
     const [currentArray,setCurrentArray]=useState([]);
     const [searchText, setSearchText] = useState("");
     const [showSongs, setShowSongs] = useState(false);
     const [isFoundSearch, setIsFoundSearch] = useState(true);
-
 
     useFocusEffect(
         React.useCallback(() => {
@@ -29,11 +21,9 @@ export default function MusicByArtist () {
         }, [])
     );
 
-
     const handleSearch = (text) => {
         setSearchText(text);
     };
-
 
     function getAllSongByName(response) {
         let tempArray=[]
@@ -56,9 +46,7 @@ export default function MusicByArtist () {
         }else {
             setIsFoundSearch(false)
         }
-
     }
-
 
     const search= ()=> {
         setIsFoundSearch(true)
@@ -71,7 +59,6 @@ export default function MusicByArtist () {
                 'X-RapidAPI-Host': X_RAPID_API_HOST7
             }
         };
-
         fetch('https://shazam-api7.p.rapidapi.com/search?term='+searchText+'&limit=5', songs)
             .then(response => response.json())
             .then(response => getAllSongByName(response))
@@ -79,7 +66,6 @@ export default function MusicByArtist () {
         setShowSongs(true);
         setSearchText('');
     }
-
 
     function toggleFavorite(index) {
         const updatedArray = currentArray.map((song, i) => {
@@ -112,11 +98,7 @@ export default function MusicByArtist () {
                     <View>
                         {(currentArray.length===0&&isFoundSearch) &&<Logo/>}
                         {!isFoundSearch&&<Text style={{color:'white',fontSize:20 ,marginTop:30,alignSelf:'center'}}>Oops! Couldn't find what you're after. Give it another shot!</Text>}
-                        {/*{currentArray.length > 0 && (                 //תנאי שרק אם יש שיר יופיע מסגרת*/}
-                        {/*    <View style={musicByArtistStyle.cardContainer}>*/}
                         <Player songList={currentArray} page={'list'} toggleFavorite={toggleFavorite}/>
-                        {/*</View>*/}
-                        {/*)}*/}
                     </View>
                 }
             </View>

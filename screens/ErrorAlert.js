@@ -54,7 +54,7 @@ function ErrorAlert(props) {
             case 1014:
                 messageForUser='Not Found Followers'
                 break;
-            ///////////////////////////////constant
+            //constant
             case 1015:
                 messageForUser = 'Sign Up Successfully';
                 break;
@@ -76,11 +76,8 @@ function ErrorAlert(props) {
             case 1021:
                 messageForUser='Favorite Removed Successfully'
                 break;
-
-
         }
     }
-
 
     const handleClose = () => {
         setVisible(false);

@@ -1,7 +1,6 @@
 import {useSelector} from "react-redux";
 import React, { useState} from "react";
 import { ImageBackground, ScrollView, Text, TouchableOpacity, View} from "react-native";
-
 import {RadioButton,TextInput} from "react-native-paper";
 import  questionnaireStyle from '../styles/questionnaireStyle'
 import axios from "axios";
@@ -18,7 +17,6 @@ const Questionnaire = ({onSubmit}) => {
     const [suggestions, setSuggestions] = useState([]);
     const [showSuggestions1, setShowSuggestions1] = useState(true); // Flag to control visibility
     const [showSuggestions2, setShowSuggestions2] = useState(true); // Flag to control visibility
-
 
     const topSingers = [
         'Adele', 'Ed Sheeran', 'Beyoncé', 'Taylor Swift', 'Justin Bieber', 'Ariana Grande', 'Rihanna',
@@ -42,24 +40,21 @@ const Questionnaire = ({onSubmit}) => {
         const matchingArtists = topSingers.filter((artist) =>
             artist.toLowerCase().includes(text.toLowerCase())
         );
-
         setSuggestions(matchingArtists);
     };
+
     const handleArtistSelect = (selectedArtist,artist) => {
         if (artist===1){
             setArtist1(selectedArtist);
             setShowSuggestions1(false)
             setShowSuggestions2(false)
-
         }else if (artist===2) {
-
             setArtist2(selectedArtist)
             setShowSuggestions2(false)
             setShowSuggestions1(false)
         }
         setSuggestions([]);
     };
-
 
     const handleSubmit = async () => {
         if (token!==""){
@@ -77,11 +72,9 @@ const Questionnaire = ({onSubmit}) => {
             }else {
                 alert("you must fill everything")
             }
-
         }
-
-
     };
+
 const checkIfAllFilled = () => {
   let isComplete=true;
   if (favoriteSong===""&&artist1===""&&artist2===""&&genre===""){
@@ -91,14 +84,12 @@ const checkIfAllFilled = () => {
 }
 
     return (
-
         <ScrollView contentContainerStyle={{flex:0,alignItems:'center'}}>
             <View>
                 <ImageBackground source={{uri:'https://cdn.dribbble.com/users/1237300/screenshots/6478927/__-1_1_____.gif'}}>
                     <Text style={questionnaireStyle.mainTitle}>Let's create your perfect playlist!</Text>
                     <Text style={questionnaireStyle.subtitle}>Please fill out this form with your musical preferences</Text>
                     <View style={questionnaireStyle.cardContainer}>
-
                         <Text style={questionnaireStyle.title} >Favorite music style  </Text>
                         <RadioButton.Group onValueChange={value => setGenre(value)} value={genre}>
                             <RadioButton.Item  labelStyle={questionnaireStyle.radioButtonLabel} style={questionnaireStyle.radioButton} label="POP" value="POP" />
@@ -110,7 +101,6 @@ const checkIfAllFilled = () => {
                     </View>
                     <View style={questionnaireStyle.cardContainer}>
                         <Text style={questionnaireStyle.title}>Favorite music artist</Text>
-
                         <View style={questionnaireStyle.textInputView} >
                             <TextInput style={questionnaireStyle.answerInput} placeholder={"first choice"} value={artist1} onChangeText={(text) => handleInputChange(text, setArtist1)}/>
                             {
@@ -124,7 +114,6 @@ const checkIfAllFilled = () => {
                                 />
                             }
                         </View>
-
                         {(artist1.length > 0 && showSuggestions1)&& (
                             <View style={questionnaireStyle.artistMenu1}>
                                 {suggestions.map((suggestion) => (
@@ -137,7 +126,6 @@ const checkIfAllFilled = () => {
                                 ))}
                             </View>
                         )}
-
                         <View style={questionnaireStyle.textInputView}>
                             <TextInput style={questionnaireStyle.answerInput} placeholder={"second choice"} value={artist2} onChangeText={(text) => handleInputChange(text, setArtist2)}/>
                             {
@@ -151,23 +139,18 @@ const checkIfAllFilled = () => {
                                 />
                             }
                         </View>
-
                         {(artist2.length > 0 && showSuggestions2)&& (
                             <View style={questionnaireStyle.artist2menu}>
                                     {suggestions.map((suggestion) => (
                                         <TouchableOpacity
                                             key={suggestion}
                                             onPress={() => handleArtistSelect(suggestion, 2)}>
-
                                             <Text style={questionnaireStyle.artistText}>{suggestion}</Text>
                                         </TouchableOpacity>
                                     ))}
-
                             </View>
-
                         )}
                     </View>
-
                     <View style={questionnaireStyle.cardContainer}>
                         <Text style={questionnaireStyle.title}>a special song you can't go without</Text>
                         <TextInput style={questionnaireStyle.answerInput} placeholder={"name and artist"} value={favoriteSong} onChangeText={setFavoriteSong}/>
@@ -180,13 +163,8 @@ const checkIfAllFilled = () => {
                         <Text style={{color:'#8B0000',alignSelf:'center',fontSize:18}}>All fields must be completed. </Text>
                     }
                 </ImageBackground>
-
             </View>
-
         </ScrollView>
-
-
-
     );
 };
 

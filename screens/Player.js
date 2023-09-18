@@ -24,20 +24,17 @@ export default function Player ({ songList,page,toggleFavorite}) {
                 setCurrentlyPlaying(undefined);
         }, [])
     );
+
     const pressSong=async (song) => {
         setCurrentlyPlaying(song);
        dispatch(setIsSongPlaying(true));
         await pauseAudio();
-
     }
-
-
 
     function addLovedSongs(song) {
         if (!isSongInPlaylist(song.url)){
             sendPlaylistToServer(song).then(() => {dispatch(setPlaylist(song))})
         }
-
     }
 
     const renderSong = ({ item }) => (
@@ -52,7 +49,6 @@ export default function Player ({ songList,page,toggleFavorite}) {
                         </View>
                     </View>
                 </TouchableOpacity>
-
                 {page === 'list'  || page==='playlistFriends'  ?
                     <AntDesign onPress={() => { toggleFavorite(page==='playlistFriends'?item.id:item.songIndex); addLovedSongs(item); }}
                                name="heart" size={30} color={isSongInPlaylist(item.url) || item.isFavorite ? 'red' : 'green'} />
@@ -63,9 +59,9 @@ export default function Player ({ songList,page,toggleFavorite}) {
                     </TouchableOpacity>
                 }
             </View>
-
         </View>
     )
+
     const deleteSong=async (song) => {
         const response = await axios.create({baseURL: LOCAL_SERVER_URL}).post('/delete-song?songId=' + song.id);
             if (response.data.success){
@@ -74,8 +70,8 @@ export default function Player ({ songList,page,toggleFavorite}) {
             }else {
                 setMessageCode(response.data.errorCode)
             }
-
     }
+
     const sendPlaylistToServer = async (song) => {
         if (token !== null) {
             try {
@@ -83,11 +79,8 @@ export default function Player ({ songList,page,toggleFavorite}) {
                 const encodedArtist = encodeURIComponent(song.artist);
                 const encodedUrl = encodeURIComponent(song.url);
                 const encodedCoverImage = encodeURIComponent(song.coverImage);
-
                 const url = `${LOCAL_SERVER_URL}/add-song?token=${token}&title=${encodedTitle}&artist=${encodedArtist}&url=${encodedUrl}&coverImage=${encodedCoverImage}`;
-
                 const response = await axios.post(url);
-
                 if (response.data.success) {
                     console.log("Updated successfully");
                 } else {
@@ -105,35 +98,25 @@ export default function Player ({ songList,page,toggleFavorite}) {
         if (playList!==undefined){
             exist=playList.some(song => song.url === songUrl);
         }
-
         return exist;
     };
 
-
     return(
         <View>
-
             {
                 (currentlyPlaying!==undefined) ?
                         <CurrentPlaying currentSong={currentlyPlaying} setSong={setCurrentlyPlaying} allSongs={songList} />
                     :
-
                     <FlatList
                         data={songList}
                         renderItem={renderSong}
                         keyExtractor={(item, index) => index.toString()}
-
                     />
-
-
-
             }
-
             {
                 messageCode !== 0 &&
                 <ErrorAlert message={messageCode} />
             }
         </View>
     )
-
 }

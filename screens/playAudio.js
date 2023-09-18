@@ -18,16 +18,12 @@ export const playAudio = async (song, dispatch) => {
     if (sound) {
         await sound.unloadAsync();
     }
-
     try {
         const { sound: newSound } = await Audio.Sound.createAsync({ uri: song.url });
         sound = newSound;
-
         // Set the volume when playing the audio
         await sound.setVolumeAsync(volume);
-
         await sound.playAsync();
-       // dispatch(setPlayedRecently(song));
     } catch (error) {
         console.error("Error playing audio: ", error);
     }
@@ -53,4 +49,3 @@ export const setVolume = async (newVolume) => {
 export const getVolume = () => {
     return volume; // Return the current volume
 };
-

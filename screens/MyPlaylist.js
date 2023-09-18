@@ -8,6 +8,7 @@ import ErrorAlert from "./ErrorAlert";
 import myPlaylistStyle from '../styles/myPlaylistStyle';
 import globalStyles from "../styles/globalStyles";
 
+
 export default function MyPlaylist({ navigation }) {
     const { token } = useSelector(state => state.reducer);
     const [myPlaylist, setMyPlaylist] = useState([]);
@@ -25,7 +26,6 @@ export default function MyPlaylist({ navigation }) {
         }catch (error){
             console.log("error getting playlist "+error)
         }
-
     }
 
     useEffect(() => {
@@ -44,7 +44,6 @@ export default function MyPlaylist({ navigation }) {
                             <View style={globalStyles.flexProp}>
                                 <Player songList={myPlaylist} page={'playlist'} toggleFavorite={null} />
                             </View>
-
                     ) : (
                         <View>
                             <Text style={myPlaylistStyle.noPlaylist}>
@@ -59,9 +58,6 @@ export default function MyPlaylist({ navigation }) {
                     )}
                     {messageCode !== 0 && <ErrorAlert message={messageCode} />}
                 </View>
-
         </ImageBackground>
     );
 }
-
-

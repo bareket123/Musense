@@ -24,8 +24,8 @@ const PersonalRecommendations = () => {
 
     const [fontsLoaded] = useFonts({
         'loveYa': require('../assets/Fonts/LoveYaLikeASister-Regular.ttf'),
-
     });
+
     useEffect(()=>{
         if (fontsLoaded) {
             SplashScreen.hideAsync();
@@ -39,6 +39,7 @@ const PersonalRecommendations = () => {
     const handleQuestionnaireSubmit = (data) => {
         setQuestionnaireData(data);
     };
+
     useEffect(() => {
         if ((playlistByGenre.length > 0 || artist1Playlist.length > 0 || artist2Playlist.length > 0) || listByFavorite.length > 0) {
             const combinedList = [...playlistByGenre, ...artist1Playlist, ...artist2Playlist, ...listByFavorite];
@@ -47,13 +48,9 @@ const PersonalRecommendations = () => {
         }
     }, [playlistByGenre, artist1Playlist, artist2Playlist, listByFavorite]);
 
-
     useEffect(()=>{
         getAnswers().then(() => {});
-
-
     },[questionnaireData,token])
-
 
     useEffect(()=>{
         getPlaylistByGenre();
@@ -65,9 +62,7 @@ const PersonalRecommendations = () => {
         setTimeout(() => {
             clearTimeout(timeoutId);
         }, 5000);
-
     },[allAnswers])
-
 
     const getAnswers =async () => {
         try {
@@ -80,9 +75,7 @@ const PersonalRecommendations = () => {
         }catch (error){
             console.log("error getting answers from server: "+error )
         }
-
     }
-
 
     const getPlaylistByGenre=()=>{
         try {
@@ -95,7 +88,6 @@ const PersonalRecommendations = () => {
                         'X-RapidAPI-Host': X_RAPID_API_HOST7,
                     }
                 };
-
                 fetch('https://shazam-api7.p.rapidapi.com/charts/get-top-songs-in_world_by_genre?genre='+allAnswers.genre+'&limit=10', options)
                     .then(response => response.json())
                     .then(response =>setSongs(response))
@@ -104,10 +96,9 @@ const PersonalRecommendations = () => {
         }catch (error){
             console.log("error from playlist by genre "+ error);
         }
-
     }
-    const getArtist1Playlist=()=>{
 
+    const getArtist1Playlist=()=>{
         try {
             if (allAnswers!==null){
                 const artist1Songs = {
@@ -131,8 +122,8 @@ const PersonalRecommendations = () => {
         }catch (error){
             console.log("error fetching artist "+ error)
         }
-
     }
+
     const getArtist2Playlist=()=>{
         try {
             if (allAnswers!==null){
@@ -154,13 +145,12 @@ const PersonalRecommendations = () => {
                     .then(response => setArtistSong(response,2))
                     .catch(err => console.log("There is error in Artist fetching data: "+err));
             }
-
         }catch (error){
             console.log("error from fetching artist2 " +error);
         }
     }
-    const getFavoriteSong=()=>{
 
+    const getFavoriteSong=()=>{
         try {
             if (allAnswers!=null){
                 const favoriteSong = {
@@ -170,7 +160,6 @@ const PersonalRecommendations = () => {
                         'X-RapidAPI-Host': X_RAPID_API_HOST7,
                     }
                 };
-
                 fetch('https://shazam-api7.p.rapidapi.com/search?term='+allAnswers.favoriteSong+'&limit=5', favoriteSong)
                     .then((response) => {
                         if (response.status === 500 || response.status===404) {
@@ -182,12 +171,11 @@ const PersonalRecommendations = () => {
                     .then(response => getByFavorite(response?.tracks?.hits[0]?.key))
                     .catch(err => console.log("there is error in favoriteSong "+err));
             }
-
-
         }catch (error) {
             console.log("error from fetch favorite song "+ error)
         }
     }
+
     const getByFavorite=async (songKey) => {
         console.log(songKey)
         if (allAnswers != null && songKey) {
@@ -199,7 +187,6 @@ const PersonalRecommendations = () => {
                     'X-RapidAPI-Host': X_RAPID_API_HOST7,
                 }
             };
-
             fetch('https://shazam-api7.p.rapidapi.com/songs/list-recommendations?id='+songKey+'&limit=5', songList)
                 .then(response => response.json())
                 .then(response => setRelatedSongList(response))
@@ -224,24 +211,15 @@ const PersonalRecommendations = () => {
                     };
                     tempSongs.push(currentSong);
                 }
-
-
-
-
-
             })
             setListByFavorite(tempSongs)
         }else {
             console.log("favorite response is undefined")
         }
-
     }
 
-
     const setArtistSong=(response,artist)=>{
-       // console.log(response.tracks)
         let tempArray=[]
-
             if ( response&&response.tracks.hits){
                 response.tracks.hits.map((song,index) => {
                     const currentSong = {
@@ -251,30 +229,18 @@ const PersonalRecommendations = () => {
                         url: song?.stores?.apple?.previewurl?song.stores?.apple.previewurl : '',
                         coverImage: song?.images?.play? song.images.play :'',
                         isFavorite:false
-
-
                     };
-
                     tempArray.push(currentSong);
                     if (artist===1){
                         setArtist1Playlist(tempArray);
-                        // console.log(artist1Playlist)
                     }else {
                         setArtist2Playlist(tempArray);
-
                     }
-
                 });
             }else {
                 console.log("response is undefined")
             }
-
-
-
-
     }
-
-
 
     const setSongs=(response)=>{
         let tempArray = []
@@ -288,22 +254,16 @@ const PersonalRecommendations = () => {
                         url: song.hub.actions[1].uri,
                         coverImage: song.images.background,
                         isFavorite:false
-
-
-
                     };
-
                     tempArray.push(currentSong);
                 }
             });
-
             setPlaylistByGenre(tempArray);
         }else {
             console.log("Genre response is undefined ")
         }
-
-
     }
+
     function shuffleArray(array) {
         for (let i = array.length - 1; i > 0; i--) {
             const j = Math.floor(Math.random() * (i + 1));
@@ -329,18 +289,13 @@ const PersonalRecommendations = () => {
               alert('Delete')
               setAllAnswers(null)
                 setCombinedSongList([])
-
             } else {
                 console.log("something went wrong: " + response.data.errorCode)
             }
         } catch (error) {
             console.log("error delete answers from server: " + error)
         }
-
     }
-
-
-
 
     return (
         <View style={globalStyles.flexProp}>
@@ -349,11 +304,8 @@ const PersonalRecommendations = () => {
             <Questionnaire onSubmit={handleQuestionnaireSubmit}/>
             :
             combinedSongList.length>0?
-
                 <ImageBackground source={require('../images/recommendationsBackground.gif')} resizeMode={'cover'} style={globalStyles.flexProp} >
-
                     <View style={globalStyles.flexProp}>
-
                         {
                             fontsLoaded&&
                             <Text style={recommendationsStyle.mainTitle}>Your Personal Groove</Text>
@@ -364,19 +316,13 @@ const PersonalRecommendations = () => {
                         </TouchableOpacity>
                         <View style={globalStyles.flexProp}>
                             <Player songList={combinedSongList} page={'list'} toggleFavorite={toggleFavorite}/>
-
                         </View>
                     </View>
-
-
-
                 </ImageBackground>
-
                 :
                 <Logo/>
         }
 </View>
-
     );
 };
 

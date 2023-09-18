@@ -3,6 +3,7 @@ import {Image, View, Text} from "react-native";
 import logoStyle from "../styles/logoStyle";
 
 export default function Logo() {
+
     const [showNote, setShowNote] = useState(false);
 
     useEffect(() => {
@@ -16,7 +17,6 @@ export default function Logo() {
     }, []);
 
     return (
-
          <View>
             <Image
                 source={require('../images/Logo.gif')}
@@ -24,9 +24,5 @@ export default function Logo() {
             />
              {showNote && <Text style={logoStyle.text}>it might take a while we apologize for the inconvenience...</Text>}
          </View>
-
-
     );
 }
-
-

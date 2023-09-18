@@ -26,6 +26,7 @@ const FindFriends = () => {
             setUsersFromServer();
         }, [])
     );
+
     const handleClearSearch = () => {
         setSearchFriend('');
         setFoundUser(false);
@@ -35,7 +36,7 @@ const FindFriends = () => {
     useEffect(() => {
         const timer = setTimeout(() => {
             setShowLogo(false);
-        }, 5000); // 10000 milliseconds = 10 seconds
+        }, 5000);// 10000 milliseconds = 10 seconds
 
         return () => {
             clearTimeout(timer);
@@ -72,10 +73,7 @@ const FindFriends = () => {
         } else {
             console.log("token is empty")
         }
-
     }
-
-
 
     const followingRequest = async (user) => {
         try {
@@ -95,7 +93,6 @@ const FindFriends = () => {
                     }catch (error){
                         console.log("error in send notification "+error)
                     }
-
                 } else {
                     setMessageCode(response.data.errorCode);
                 }
@@ -103,11 +100,9 @@ const FindFriends = () => {
                 console.log("token is empty")
             }
             setMessageCode(0)
-
         }catch (error){
             console.log("error in following "+ error)
         }
-
     }
 
     const unfollowFriend = async (friend) => {
@@ -130,7 +125,6 @@ const FindFriends = () => {
                 </View>
                 <View>
                     <View style={searchFriendsStyle.searchStyle}>
-
                         <TextInput
                             placeholder="Search Friends...🔎"
                             onChangeText={handleSearch}
@@ -143,7 +137,6 @@ const FindFriends = () => {
                             onPress={handleClearSearch}
                         />
                     </View>
-
                         {
                             filteredUsers.length !== 0 &&
                             filteredUsers.map((user, index) => (
@@ -175,7 +168,6 @@ const FindFriends = () => {
                                 </View>
                             ))
                         }
-
                     {
                         (messageCode !== 0 ) &&
                         <ErrorAlert message={messageCode} />
@@ -187,4 +179,3 @@ const FindFriends = () => {
 };
 
 export default FindFriends;
-

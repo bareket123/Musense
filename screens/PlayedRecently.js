@@ -30,12 +30,11 @@ const PlayedRecently = ( ) => {
             } else {
                 console.log("not found playedRecently list, error code: "+response.data.errorCode)
             }
-
-
         } catch (error) {
             console.log("error getting playedRecently "+error)
         }
     }
+
     const deletePlayedRecently = async () => {
         setMessageCode(0)
         try {
@@ -45,12 +44,9 @@ const PlayedRecently = ( ) => {
             } else {
                setMessageCode(response.data.errorCode)
             }
-
-
         } catch (error) {
             console.log("error from delete playedRecently "+error)
         }
-
     }
 
     useEffect(() => {
@@ -59,7 +55,6 @@ const PlayedRecently = ( ) => {
         );
         setFilterSongs(filteredSongs);
     }, [searchSong, playedRecently]);
-
 
     return (
         <View style={playedRecentlyStyle.backgroundView} >
@@ -84,10 +79,8 @@ const PlayedRecently = ( ) => {
                         placeholderTextColor={'black'}
                         maxLength={10}
                         style={playedRecentlyStyle.searchTextInput}
-
                     />
                 </View>
-
             }
             {
                 (filterSongs.length===0&& playedRecently.length>0)&&
@@ -96,22 +89,16 @@ const PlayedRecently = ( ) => {
                         The song you're searching for was not found 😭
                     </Text>
                 </View>
-
             }
             <View style={globalStyles.flexProp}>
                 <Player songList={searchSong.length > 0 ? filterSongs : playedRecently} page={'recently'} toggleFavorite={null}/>
-
             </View>
             {
                 (messageCode !== 0) &&
                 <ErrorAlert message={messageCode} />
             }
-
         </View>
     );
-
-
-
 }
 
 export default PlayedRecently;

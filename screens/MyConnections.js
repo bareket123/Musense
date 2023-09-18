@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { FlatList, Image, ImageBackground, Text, TouchableOpacity, View } from "react-native";
-
 import axios from "axios";
 import { Entypo} from "@expo/vector-icons";
 import { LOCAL_SERVER_URL} from "../redux/actions";
@@ -10,13 +9,13 @@ import myConnectionsStyle from '../styles/myConnectionsStyle'
 import globalStyles from "../styles/globalStyles";
 import {DELETE} from "./Constans";
 
+
 const MyConnections = ({ navigation }) => {
     const [myFriends, setMyFriends] = useState([]);
     const [myFollowers, setMyFollowers] = useState([]);
     const [showFollowing, setShowFollowing] = useState(true);
     const { token } = useSelector(state => state.reducer);
     const [messageCode, setMessageCode] = useState(0);
-
 
     useEffect(()=>{
         fetchMyFriends().then();
@@ -35,20 +34,18 @@ const MyConnections = ({ navigation }) => {
         }catch (error){
             console.log("error getting friends "+error)
         }
-
     }
 
     const deleteFriend = async (friend,status) => {
-
         const response = await axios.create({ baseURL: LOCAL_SERVER_URL }).post('/delete-friend?token=' + token + '&friendUsername=' + friend.username+'&deleteStatus='+status);
         console.log(response.data)
         if (response.data.success) {
-
             setMessageCode(DELETE);
         } else {
             setMessageCode(response.data.errorCode)
         }
     }
+
     const gettingUserFollower = async () => {
         try {
             const response = await axios.create({baseURL: LOCAL_SERVER_URL}).get('/get-followers?token=' + token);
@@ -60,8 +57,6 @@ const MyConnections = ({ navigation }) => {
         }catch (error){
             console.log("error getting followers "+error)
         }
-
-
     }
 
     const renderItem = ({ item }) => (
@@ -88,21 +83,14 @@ const MyConnections = ({ navigation }) => {
 
     return (
         <ImageBackground source={require('../images/myFriends.gif')} resizeMode={'cover'} style={globalStyles.flexProp}>
-
                 <View style={globalStyles.flexProp}>
-
-
                             <View style={globalStyles.flexProp}>
                                 <View style={[globalStyles.flexProp,myConnectionsStyle.textTitle]} >
                                     {(
-
                                             showFollowing ?
                                                 <Text style={myConnectionsStyle.textHeader}>my Friends: </Text>
                                                 :
-
                                                 <Text style={myConnectionsStyle.textHeader}>my Followers: </Text>
-
-
                                     )}
                                     <View style={myConnectionsStyle.viewNavigation}>
                                         <TouchableOpacity onPress={() => setShowFollowing(true)}>
@@ -139,19 +127,10 @@ const MyConnections = ({ navigation }) => {
                                                             <Text style={myConnectionsStyle.noFollowers}>No one's hit that follow button... yet!" 😄👤👀</Text>
                                                         </View>
                                                 }
-
-
                                             </View>
-
                                     }
-
-
                                 </View>
                             </View>
-
-
-
-
                 </View>
             {
                 messageCode !== 0 &&
@@ -162,4 +141,3 @@ const MyConnections = ({ navigation }) => {
 };
 
 export default MyConnections;
-

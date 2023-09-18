@@ -3,18 +3,20 @@ import {View, Text, ImageBackground} from 'react-native';
 import   { useFonts } from 'expo-font';
 import Player from "./Player";
 import {X_RAPID_API_HOST, X_RAPID_API_KEY} from "../redux/actions";
-import Logo from "./Logo"; // Import useSelector and useDispatch from react-redux
+import Logo from "./Logo";// Import useSelector and useDispatch from react-redux
 import * as SplashScreen from "expo-splash-screen";
 import popularStyle from "../styles/popularStyle";
 import globalStyles from "../styles/globalStyles";
 import {SOMETHING_WENT_WRONG} from "./Constans";
 import ErrorAlert from "./ErrorAlert";
+
+
 const PopularNow = () => {
     const [songsArray, setSongsArray] = useState([]); // Initialize songsArray as a state
+    const [messageCode, setMessageCode] = useState(0);
     const [fontsLoaded] = useFonts({
         'RammettoOne': require('../assets/Fonts/RammettoOne-Regular.ttf')
     });
-    const [messageCode, setMessageCode] = useState(0);
 
     useEffect(() => {
         try {
@@ -35,8 +37,6 @@ const PopularNow = () => {
         await SplashScreen.preventAutoHideAsync();
     }
 
-
-
         function getSong(response) {
             let tempArray = []
             if (response){
@@ -47,22 +47,16 @@ const PopularNow = () => {
                         artist: song.subtitle?song.subtitle:'',
                         url: song?.hub?.actions[1]?.uri? song.hub.actions[1].uri:'',
                         coverImage: song?.images?.background?song.images.background:'',
-                        isFavorite: false // Initialize as not favorite//////////////////////////////////
-
+                        isFavorite: false
                     };
-
                     tempArray.push(currentSong);
                 });
-
                 setSongsArray(tempArray)
-
             }else {
                 console.log("Error from Popular,something wrong with fetching songs ")
                 setMessageCode(SOMETHING_WENT_WRONG)
             }
-
         }
-
 
         const fetchPlaylist = async () => {
             const options = {
@@ -79,9 +73,7 @@ const PopularNow = () => {
                 .catch(err =>  console.error(err));
         }
 
-
         function toggleFavorite(index) {
-
             const updatedArray = songsArray.map((song, i) => {
                 if (i === index) {
                     return {...song, isFavorite: !song.isFavorite};
@@ -91,9 +83,7 @@ const PopularNow = () => {
             setSongsArray(updatedArray);
         }
 
-
         return (
-
             songsArray.length>0?
                 <ImageBackground source={require('../images/popularNow.png')} resizeMode={'cover'} style={globalStyles.flexProp}  >
                     <View style={popularStyle.viewStyle}>
@@ -104,7 +94,6 @@ const PopularNow = () => {
                     </View>
                     <View style={globalStyles.flexProp}>
                     <Player songList={songsArray} page={'list'} toggleFavorite={toggleFavorite}/>
-
                    </View>
                 </ImageBackground>
                 :
@@ -115,10 +104,6 @@ const PopularNow = () => {
                     }
                     <Logo/>
                 </View>
-
-
-
-
         );
 }
 
