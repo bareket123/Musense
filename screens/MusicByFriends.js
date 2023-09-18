@@ -2,9 +2,8 @@ import React, {useEffect, useState} from 'react';
 import {
     View,
     Text,
-    Button,
     TouchableOpacity,
-    Image, ImageBackground
+    ImageBackground
 } from 'react-native';
 import axios from "axios";
 import {useSelector} from "react-redux";
@@ -63,12 +62,12 @@ export default function MusicByFriends ({ navigation }) {
 
 
     useEffect(()=>{
-        getPlaylistByFriends().then(r => {})
+        getPlaylistByFriends().then(() => {})
     })
 
     function toggleFavorite(id) {
 
-        const updatedArray = playlistByFriends.map((song, i) => {
+        const updatedArray = playlistByFriends.map((song) => {
             if (song.id === id) {
                 return {...song, isFavorite: !song.isFavorite};
             }

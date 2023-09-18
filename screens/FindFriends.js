@@ -1,25 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import { View, TextInput, StyleSheet, ImageBackground, TouchableOpacity, Text, Image, ScrollView } from 'react-native';
-import { Fontisto, Ionicons, SimpleLineIcons } from '@expo/vector-icons';
+import { View, TextInput, ImageBackground, TouchableOpacity, Text, Image, ScrollView } from 'react-native';
+import {  Ionicons, SimpleLineIcons } from '@expo/vector-icons';
 import axios from "axios";
-import { LOCAL_SERVER_URL, setToken } from "../redux/actions";
+import { LOCAL_SERVER_URL } from "../redux/actions";
 import { useSelector } from "react-redux";
 import ErrorAlert from "./ErrorAlert";
 import {DELETE, FOLLOWING} from "./Constans";
 import { useFocusEffect } from '@react-navigation/native';
-import EventSource from "react-native-event-source";
-import Logo from "./Logo";
 import searchFriendsStyle from "../styles/searchFriendsStyle";
 import globalStyles from "../styles/globalStyles";
-import {registerIndieID} from "native-notify";
 
 
-const FindFriends = ({ navigation }) => {
+const FindFriends = () => {
     const [searchFriend, setSearchFriend] = useState('');
-    const [foundUser, setFoundUser] = useState(false);
+    const [, setFoundUser] = useState(false);
     const [messageCode, setMessageCode] = useState(0);
-    const [isAlertShown, setIsAlertShown] = useState(false);
-    const [showLogo, setShowLogo] = useState(true);
+    const [, setShowLogo] = useState(true);
     const { token,username } = useSelector(state => state.reducer);
     const [allUsers, setAllUsers] = useState([]);
     const [filteredUsers, setFilteredUsers] = useState([]);
@@ -58,7 +54,7 @@ const FindFriends = ({ navigation }) => {
     }
 
     useEffect(() => {
-        setUsersFromServer().then(r => { })
+        setUsersFromServer().then(() => { })
     }, [token]);
 
     useEffect(() => {
@@ -117,7 +113,7 @@ const FindFriends = ({ navigation }) => {
     const unfollowFriend = async (friend) => {
         const response = await axios.create({ baseURL: LOCAL_SERVER_URL }).post('/delete-friend?token=' + token + '&friendUsername=' + friend.username+'&deleteStatus=1');
         if (response.data.success) {
-            setUsersFromServer().then(r => { });
+            setUsersFromServer().then(() => { });
             setMessageCode(DELETE);
         } else {
             setMessageCode(response.data.errorCode);
@@ -181,7 +177,7 @@ const FindFriends = ({ navigation }) => {
                         }
 
                     {
-                        (messageCode !== 0 && !isAlertShown) &&
+                        (messageCode !== 0 ) &&
                         <ErrorAlert message={messageCode} />
                     }
                 </View>

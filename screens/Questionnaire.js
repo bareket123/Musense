@@ -1,8 +1,8 @@
 import {useSelector} from "react-redux";
-import React, {useEffect, useState} from "react";
-import {FlatList, ImageBackground, ScrollView, Text, TouchableOpacity, View} from "react-native";
+import React, { useState} from "react";
+import { ImageBackground, ScrollView, Text, TouchableOpacity, View} from "react-native";
 
-import {RadioButton,TextInput,Button,Checkbox} from "react-native-paper";
+import {RadioButton,TextInput} from "react-native-paper";
 import  questionnaireStyle from '../styles/questionnaireStyle'
 import axios from "axios";
 import {LOCAL_SERVER_URL} from "../redux/actions";
@@ -34,9 +34,9 @@ const Questionnaire = ({onSubmit}) => {
 
     const handleInputChange = (text, setterFunction) => {
         setterFunction(text);
-        artist1==''&&
+        artist1===''&&
         setShowSuggestions1(true)
-         artist2==''&&
+         artist2===''&&
         setShowSuggestions2(true)
         // Filter the top singers based on user input
         const matchingArtists = topSingers.filter((artist) =>
@@ -46,12 +46,12 @@ const Questionnaire = ({onSubmit}) => {
         setSuggestions(matchingArtists);
     };
     const handleArtistSelect = (selectedArtist,artist) => {
-        if (artist==1){
+        if (artist===1){
             setArtist1(selectedArtist);
             setShowSuggestions1(false)
             setShowSuggestions2(false)
 
-        }else if (artist==2) {
+        }else if (artist===2) {
 
             setArtist2(selectedArtist)
             setShowSuggestions2(false)

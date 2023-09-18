@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {View, Text, TextInput} from 'react-native';
 import { Ionicons, MaterialCommunityIcons} from '@expo/vector-icons';
-import { useDispatch, useSelector} from 'react-redux';
+import { useSelector} from 'react-redux';
 import Player from "./Player";
 import  playedRecentlyStyle from '../styles/playedRecentlyStyle'
 import {LOCAL_SERVER_URL} from "../redux/actions";
@@ -19,7 +19,7 @@ const PlayedRecently = ( ) => {
     const [messageCode,setMessageCode]=useState(0);
 
     useEffect(()=>{
-        getPlayedRecently().then(r=>{})
+        getPlayedRecently().then(()=>{})
     },[playedRecently,token])
 
     const getPlayedRecently = async () => {

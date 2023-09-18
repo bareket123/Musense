@@ -4,7 +4,7 @@ import {useSelector} from "react-redux";
 import Questionnaire from "./Questionnaire";
 import axios from "axios";
 import Player from "./Player";
-import {LOCAL_SERVER_URL, X_RAPID_API_HOST7, X_RAPID_API_KEY, X_RAPID_API_KEY2} from "../redux/actions";
+import {LOCAL_SERVER_URL, X_RAPID_API_HOST7, X_RAPID_API_KEY2} from "../redux/actions";
 import Logo from "./Logo";
 import {useFonts} from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
@@ -49,7 +49,7 @@ const PersonalRecommendations = () => {
 
 
     useEffect(()=>{
-        getAnswers().then(r => {});
+        getAnswers().then(() => {});
 
 
     },[questionnaireData,token])

@@ -1,14 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Video } from "expo-av";
-import { FlatList, Image, ScrollView, ImageBackground, Text, TouchableOpacity, View } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { FlatList, Image, ImageBackground, Text, TouchableOpacity, View } from "react-native";
+
 import axios from "axios";
-import { Entypo, MaterialCommunityIcons, SimpleLineIcons } from "@expo/vector-icons";
-import { LOCAL_SERVER_URL, setToken } from "../redux/actions";
-import { useDispatch, useSelector } from "react-redux";
+import { Entypo} from "@expo/vector-icons";
+import { LOCAL_SERVER_URL} from "../redux/actions";
+import { useSelector } from "react-redux";
 import ErrorAlert from "./ErrorAlert";
-import Logo from "./Logo";
 import myConnectionsStyle from '../styles/myConnectionsStyle'
 import globalStyles from "../styles/globalStyles";
 import {DELETE} from "./Constans";
@@ -79,7 +76,7 @@ const MyConnections = ({ navigation }) => {
                     />
                 </View>
                 <Text style={myConnectionsStyle.username}>{item.username}</Text>
-                <TouchableOpacity style={{ height: 50, width: 100, alignItems: 'center', marginLeft: 100 }} onPress={() => { deleteFriend(item,showFollowing?1:2).then(r => console.log("delete friend")) }} >
+                <TouchableOpacity style={{ height: 50, width: 100, alignItems: 'center', marginLeft: 100 }} onPress={() => { deleteFriend(item,showFollowing?1:2).then(() => console.log("delete friend")) }} >
                     <View style={myConnectionsStyle.removeUser}>
                         <Entypo name="remove-user" size={24} color="white" style={myConnectionsStyle.removeIcon} />
                         <Text style={myConnectionsStyle.removeText}>remove user</Text>

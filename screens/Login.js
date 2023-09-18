@@ -4,7 +4,6 @@ import { KeyboardAvoidingView } from 'react-native';
 import {
     ImageBackground,
     ScrollView,
-    StyleSheet,
     Text,
     View,
     Image,
@@ -14,17 +13,14 @@ import {
 import axios from "axios";
 import {Button, RadioButton, TextInput} from 'react-native-paper';
 import isEmail from 'validator/lib/isEmail';
-import {AntDesign, Ionicons, MaterialCommunityIcons, MaterialIcons} from '@expo/vector-icons';
-import pic from '../images/musicBackGround.jpg';
+import {AntDesign, MaterialCommunityIcons, MaterialIcons} from '@expo/vector-icons';
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import {LOCAL_SERVER_URL, setToken, setUsername, setPicture, deletePlayedRecently} from "../redux/actions";
+import {LOCAL_SERVER_URL, setToken, setUsername, setPicture} from "../redux/actions";
 import {useDispatch, useSelector} from "react-redux";
 import ErrorAlert from "./ErrorAlert";
 import {LOGIN_SUCCESSFULLY, SIGN_UP_SUCCESSFULLY} from "./Constans";
 import * as ImagePicker from 'expo-image-picker';
 import  loginStyle from '../styles/loginStyle'
-import {Animated, Easing } from 'react-native';
-import playedRecentlyStyle from "../styles/playedRecentlyStyle";
 import {registerIndieID} from "native-notify";
 
 

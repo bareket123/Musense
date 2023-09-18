@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, Modal,StyleSheet  } from 'react-native';
-// import { Alert } from 'react-native';
+import { View, Text, TouchableOpacity, Modal  } from 'react-native';
 import  alertStyle from '../styles/alertStyle'
-//
+
 function ErrorAlert(props) {
     let messageForUser='';
     const [visible, setVisible] = useState(true);

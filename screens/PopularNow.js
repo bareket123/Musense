@@ -1,5 +1,5 @@
-import React, {useCallback, useEffect, useState} from 'react';
-import {View, Text, ImageBackground, SafeAreaView} from 'react-native';
+import React, { useEffect, useState} from 'react';
+import {View, Text, ImageBackground} from 'react-native';
 import   { useFonts } from 'expo-font';
 import Player from "./Player";
 import {X_RAPID_API_HOST, X_RAPID_API_KEY} from "../redux/actions";

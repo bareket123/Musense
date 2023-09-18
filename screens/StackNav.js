@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import {createStackNavigator} from "@react-navigation/stack";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {Image, ImageBackground, ScrollView, Text, TouchableOpacity, View} from "react-native";
-import {createDrawerNavigator, DrawerContentScrollView, DrawerItemList} from "@react-navigation/drawer";
+import {createDrawerNavigator, DrawerContentScrollView} from "@react-navigation/drawer";
 import HomeScreen from "./HomeScreen";
 import Login from "./Login";
 import PopularNow from "./PopularNow";

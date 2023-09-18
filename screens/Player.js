@@ -1,7 +1,7 @@
 import {LOCAL_SERVER_URL, setPlaylist,setDeleteSong,setIsSongPlaying} from "../redux/actions";
-import React, {useEffect, useState} from "react";
-import {Button, FlatList, Image, SafeAreaView, Text, TouchableOpacity, View} from "react-native";
-import {AntDesign, Feather, Ionicons, MaterialIcons} from "@expo/vector-icons";
+import React, { useState} from "react";
+import { FlatList, Image, Text, TouchableOpacity, View} from "react-native";
+import {AntDesign} from "@expo/vector-icons";
 import {useSelector,useDispatch} from "react-redux";
 import {useFocusEffect} from "@react-navigation/native";
 import axios from "axios";
@@ -9,7 +9,7 @@ import CurrentPlaying from "./CurrentPlaying";
 import {pauseAudio} from "./playAudio";
 import playerStyle from "../styles/playerStyle";
 import globalStyles from "../styles/globalStyles";
-import {DELETE, FAVORITE_REMOVED} from "./Constans";
+import {DELETE} from "./Constans";
 import ErrorAlert from "./ErrorAlert";
 
 export default function Player ({ songList,page,toggleFavorite}) {
@@ -35,9 +35,7 @@ export default function Player ({ songList,page,toggleFavorite}) {
 
     function addLovedSongs(song) {
         if (!isSongInPlaylist(song.url)){
-            sendPlaylistToServer(song).then(r => {dispatch(setPlaylist(song))})
-        }else {
-           // setMessageCode(FAVORITE_REMOVED)
+            sendPlaylistToServer(song).then(() => {dispatch(setPlaylist(song))})
         }
 
     }

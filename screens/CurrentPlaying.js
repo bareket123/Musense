@@ -1,5 +1,5 @@
-import {Image, Text, TouchableOpacity, View, TouchableHighlight, Dimensions, ImageBackground,StyleSheet} from "react-native";
-import {AntDesign, FontAwesome, Ionicons} from "@expo/vector-icons";
+import { Text, TouchableOpacity, View, TouchableHighlight, ImageBackground} from "react-native";
+import {AntDesign, Ionicons} from "@expo/vector-icons";
 import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import { playAudio, pauseAudio,setVolume,getVolume,reloadSong} from "./playAudio";
@@ -8,11 +8,9 @@ import * as SplashScreen from "expo-splash-screen";
 import { Animated, Easing } from 'react-native';
 import  currentPlayingStyle from '../styles/currentPlayingStyle';
 import {LOCAL_SERVER_URL, setIsSongPlaying} from '../redux/actions'
-import globalStyles from "../styles/globalStyles";
 import axios from "axios";
 import ErrorAlert from "./ErrorAlert";
 import {Slider} from "@rneui/themed";
-// import {Slider} from "@rneui/themed";
 
 
 const spinValue = new Animated.Value(0);
@@ -111,7 +109,7 @@ const CurrentPlaying= ({ currentSong, setSong, allSongs })=>{
     const replaceSong=(action)=> {
         const currentIndex = allSongs.findIndex(song=>song.url ===currentSong.url);
         let newIndex;
-        pauseSound().then(r => {});
+        pauseSound().then(() => {});
 
         if (action==='next'){
             newIndex = (currentIndex+1) % allSongs.length;
@@ -205,19 +203,19 @@ const closePlaying = () => {
           <View style={currentPlayingStyle.volumeControls}>
               <Ionicons name={mute ? "volume-mute" : "md-volume-high"} size={24} color="white" style={currentPlayingStyle.volumeIcon} onPress={toggleMute} />
 
-              {/*<Slider*/}
-              {/*    style={currentPlayingStyle.volumeSlider}*/}
-              {/*    value={getVolume()}*/}
-              {/*    minimumValue={0}*/}
-              {/*    maximumValue={1}*/}
-              {/*    step={0.05}*/}
-              {/*    onValueChange={handleVolumeChange}*/}
-              {/*    minimumTrackTintColor={'black'}*/}
-              {/*    maximumTrackTintColor={'white'}*/}
-              {/*    thumbStyle={{ height: 20, width: 20, backgroundColor: 'rgba(255, 255, 255, 0.8)' }}*/}
-              {/*    trackStyle={{ height: 5, backgroundColor: 'transparent' }}*/}
+              <Slider
+                  style={currentPlayingStyle.volumeSlider}
+                  value={getVolume()}
+                  minimumValue={0}
+                  maximumValue={1}
+                  step={0.05}
+                  onValueChange={handleVolumeChange}
+                  minimumTrackTintColor={'black'}
+                  maximumTrackTintColor={'white'}
+                  thumbStyle={{ height: 20, width: 20, backgroundColor: 'rgba(255, 255, 255, 0.8)' }}
+                  trackStyle={{ height: 5, backgroundColor: 'transparent' }}
 
-              {/*/>*/}
+              />
 
 
           </View>

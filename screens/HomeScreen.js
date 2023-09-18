@@ -1,4 +1,4 @@
-import {ScrollView, SafeAreaView, TouchableOpacity, Text, StyleSheet, Image,View} from 'react-native';
+import {ScrollView, SafeAreaView, TouchableOpacity, Text, Image,View} from 'react-native';
 import  homeStyle from '../styles/homeStyle'
 
 

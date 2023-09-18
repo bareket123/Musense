@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Image, StyleSheet, View, Dimensions, Text} from "react-native";
+import {Image, View, Text} from "react-native";
 import logoStyle from "../styles/logoStyle";
 
 export default function Logo() {

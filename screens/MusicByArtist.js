@@ -1,28 +1,20 @@
-import React, {useEffect, useState} from 'react';
+import React, { useState} from 'react';
 import {
     View,
     TextInput,
     Text,
-    ScrollView,
-    FlatList,
-    StyleSheet,
     ImageBackground,
-    Button,
-    TouchableOpacity,
-    TouchableHighlight
+
 } from 'react-native';
-import {AntDesign, FontAwesome, Fontisto} from "@expo/vector-icons";
-import { Audio } from 'expo-av';
-import { useSelector, useDispatch } from 'react-redux';
-import {useContext} from "react";
-import {setPlayedRecently, setPlaylist, X_RAPID_API_HOST, X_RAPID_API_HOST7, X_RAPID_API_KEY} from "../redux/actions";
+import { Fontisto} from "@expo/vector-icons";
+import { X_RAPID_API_HOST7, X_RAPID_API_KEY} from "../redux/actions";
 import { useFocusEffect } from '@react-navigation/native';
 import Player from "./Player";
 import Logo from "./Logo";
 import  musicByArtistStyle from '../styles/musicByArtistStyle'
 
 
-export default function MusicByArtist ({ navigation }) {
+export default function MusicByArtist () {
 
     const [currentArray,setCurrentArray]=useState([]);
     const [searchText, setSearchText] = useState("");
@@ -58,7 +50,7 @@ export default function MusicByArtist ({ navigation }) {
                 tempArray.push(currentSong);
             });
             setCurrentArray(tempArray)
-            currentArray.map((song,index) =>{
+            currentArray.map((song) =>{
                 console.log(song)
             })
         }else {
@@ -83,7 +75,7 @@ export default function MusicByArtist ({ navigation }) {
         fetch('https://shazam-api7.p.rapidapi.com/search?term='+searchText+'&limit=5', songs)
             .then(response => response.json())
             .then(response => getAllSongByName(response))
-             .catch(err => {setIsFoundSearch(false), console.log("there is error in search "+err)});
+             .catch(err => {setIsFoundSearch(false); console.log("there is error in search "+err)});
         setShowSongs(true);
         setSearchText('');
     }
