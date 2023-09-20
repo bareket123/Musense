@@ -6,7 +6,6 @@ function ErrorAlert(props) {
     let messageForUser='';
     const [visible, setVisible] = useState(true);
     let message = props.message;
-    let type=message<1013? 'ERROR':'SUCCESS';
     if (visible){
         switch (message) {
             case 1000:
@@ -71,10 +70,13 @@ function ErrorAlert(props) {
                 messageForUser = 'Something went Wrong 🥹';
                 break;
             case 1020:
-                messageForUser = 'Permission to access camera roll is required❗';
+                messageForUser = 'Updated Successfully👍🏻';
                 break;
             case 1021:
-                messageForUser='Favorite Removed Successfully'
+                messageForUser='we sorry, but we couldn\'t find the artist you were searching for. You can try rephrasing your query for better results'
+                break;
+            case 1022:
+                messageForUser='we sorry, but we couldn\'t find the song you were searching for. You can try rephrasing your query for better results'
                 break;
         }
     }

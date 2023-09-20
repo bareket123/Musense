@@ -1,8 +1,7 @@
 import { Audio } from "expo-av";
 
 let sound = null;
-let volume = 0.5; // Initial volume
-
+let volume = 0.5;
 export const reloadSong=async ()=> {
     try {
         if (sound._loaded) {
@@ -13,16 +12,20 @@ export const reloadSong=async ()=> {
         console.error('Error reloading the song:', error);
     }
 }
-
-export const playAudio = async (song, dispatch) => {
+export const playAudio = async (song,spinValue,setPressedPlaying) => {
     if (sound) {
         await sound.unloadAsync();
     }
     try {
         const { sound: newSound } = await Audio.Sound.createAsync({ uri: song.url });
         sound = newSound;
-        // Set the volume when playing the audio
         await sound.setVolumeAsync(volume);
+        sound.setOnPlaybackStatusUpdate((status) => {
+            if (status.isLoaded && !status.isPlaying && status.didJustFinish) {
+                spinValue.stopAnimation();
+                setPressedPlaying(false);
+            }
+        });
         await sound.playAsync();
     } catch (error) {
         console.error("Error playing audio: ", error);
@@ -39,7 +42,7 @@ export const setVolume = async (newVolume) => {
     if (sound) {
         try {
             await sound.setVolumeAsync(newVolume);
-            volume = newVolume; // Update the volume variable
+            volume = newVolume;
         } catch (error) {
             console.error("Error setting volume: ", error);
         }
@@ -47,5 +50,18 @@ export const setVolume = async (newVolume) => {
 };
 
 export const getVolume = () => {
-    return volume; // Return the current volume
+    return volume;
 };
+export const waitForSongCompletion = () => {
+    return new Promise((resolve) => {
+        const listener = (status) => {
+            if (status.isLoaded && !status.isPlaying && status.didJustFinish) {
+                sound.setOnPlaybackStatusUpdate(null); // Remove the listener
+                resolve();
+            }
+        };
+
+        sound.setOnPlaybackStatusUpdate(listener);
+    });
+};
+

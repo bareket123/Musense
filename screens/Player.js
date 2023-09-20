@@ -6,11 +6,11 @@ import {useSelector,useDispatch} from "react-redux";
 import {useFocusEffect} from "@react-navigation/native";
 import axios from "axios";
 import CurrentPlaying from "./CurrentPlaying";
-import {pauseAudio} from "./playAudio";
+import {pauseAudio} from "../Utilities/playAudio";
 import playerStyle from "../styles/playerStyle";
 import globalStyles from "../styles/globalStyles";
-import {DELETE} from "./Constans";
-import ErrorAlert from "./ErrorAlert";
+import {DELETE} from "../Utilities/Constans";
+import ErrorAlert from "../Utilities/ErrorAlert";
 
 export default function Player ({ songList,page,toggleFavorite}) {
     const dispatch = useDispatch();
@@ -24,19 +24,18 @@ export default function Player ({ songList,page,toggleFavorite}) {
                 setCurrentlyPlaying(undefined);
         }, [])
     );
-
     const pressSong=async (song) => {
         setCurrentlyPlaying(song);
        dispatch(setIsSongPlaying(true));
         await pauseAudio();
-    }
 
+    }
     function addLovedSongs(song) {
         if (!isSongInPlaylist(song.url)){
-            sendPlaylistToServer(song).then(() => {dispatch(setPlaylist(song))})
+            sendPlaylistToServer(song).then(r => {dispatch(setPlaylist(song))})
         }
-    }
 
+    }
     const renderSong = ({ item }) => (
         <View style={[playerStyle.mainView,{backgroundColor: page === 'recently' ? 'rgba(128, 128, 128, 0.3)':'rgba(0, 0, 0, 0.5)'}]}>
             <View style={playerStyle.secondView}>
@@ -49,6 +48,7 @@ export default function Player ({ songList,page,toggleFavorite}) {
                         </View>
                     </View>
                 </TouchableOpacity>
+
                 {page === 'list'  || page==='playlistFriends'  ?
                     <AntDesign onPress={() => { toggleFavorite(page==='playlistFriends'?item.id:item.songIndex); addLovedSongs(item); }}
                                name="heart" size={30} color={isSongInPlaylist(item.url) || item.isFavorite ? 'red' : 'green'} />
@@ -59,9 +59,9 @@ export default function Player ({ songList,page,toggleFavorite}) {
                     </TouchableOpacity>
                 }
             </View>
+
         </View>
     )
-
     const deleteSong=async (song) => {
         const response = await axios.create({baseURL: LOCAL_SERVER_URL}).post('/delete-song?songId=' + song.id);
             if (response.data.success){
@@ -70,8 +70,8 @@ export default function Player ({ songList,page,toggleFavorite}) {
             }else {
                 setMessageCode(response.data.errorCode)
             }
-    }
 
+    }
     const sendPlaylistToServer = async (song) => {
         if (token !== null) {
             try {
@@ -101,6 +101,7 @@ export default function Player ({ songList,page,toggleFavorite}) {
         return exist;
     };
 
+
     return(
         <View>
             {
@@ -112,6 +113,7 @@ export default function Player ({ songList,page,toggleFavorite}) {
                         renderItem={renderSong}
                         keyExtractor={(item, index) => index.toString()}
                     />
+
             }
             {
                 messageCode !== 0 &&

@@ -7,6 +7,8 @@ import axios from "axios";
 import {LOCAL_SERVER_URL} from "../redux/actions";
 import {Ionicons} from "@expo/vector-icons";
 import playedRecentlyStyle from "../styles/playedRecentlyStyle";
+import ErrorAlert from "../Utilities/ErrorAlert";
+import {UPDATED} from "../Utilities/Constans";
 
 const Questionnaire = ({onSubmit}) => {
     const {token} = useSelector(state => state.reducer);
@@ -17,6 +19,7 @@ const Questionnaire = ({onSubmit}) => {
     const [suggestions, setSuggestions] = useState([]);
     const [showSuggestions1, setShowSuggestions1] = useState(true); // Flag to control visibility
     const [showSuggestions2, setShowSuggestions2] = useState(true); // Flag to control visibility
+    const[messageCode, setMessageCode] = useState(0);
 
     const topSingers = [
         'Adele', 'Ed Sheeran', 'Beyoncé', 'Taylor Swift', 'Justin Bieber', 'Ariana Grande', 'Rihanna',
@@ -62,15 +65,13 @@ const Questionnaire = ({onSubmit}) => {
                 const response = await axios.create({baseURL: LOCAL_SERVER_URL}).post('/send-user-preferences?token=' + token + '&genre=' + genre + '&artist1=' + artist1 +
                     "&artist2=" + artist2 +'&favoriteSong='+ favoriteSong)
                 if (response.data.success){
-                    alert("update")
+                    setMessageCode(UPDATED)
                     onSubmit({
                         res:true
                     });
                 }else {
-                    alert(response.data.errorCode)
+                    console.log("there is an server error "+response.data.errorCode)
                 }
-            }else {
-                alert("you must fill everything")
             }
         }
     };
@@ -164,6 +165,10 @@ const checkIfAllFilled = () => {
                     }
                 </ImageBackground>
             </View>
+            {
+                messageCode!==0&&
+                <ErrorAlert message={messageCode}/>
+            }
         </ScrollView>
     );
 };

@@ -3,12 +3,12 @@ import {View, Text, ImageBackground} from 'react-native';
 import   { useFonts } from 'expo-font';
 import Player from "./Player";
 import {X_RAPID_API_HOST, X_RAPID_API_KEY} from "../redux/actions";
-import Logo from "./Logo";// Import useSelector and useDispatch from react-redux
+import Logo from "./Logo";
 import * as SplashScreen from "expo-splash-screen";
 import popularStyle from "../styles/popularStyle";
 import globalStyles from "../styles/globalStyles";
-import {SOMETHING_WENT_WRONG} from "./Constans";
-import ErrorAlert from "./ErrorAlert";
+import {SOMETHING_WENT_WRONG} from "../Utilities/Constans";
+import ErrorAlert from "../Utilities/ErrorAlert";
 
 
 const PopularNow = () => {

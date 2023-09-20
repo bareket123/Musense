@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import axios from "axios";
 import Player from "./Player";
 import { LOCAL_SERVER_URL } from "../redux/actions";
-import ErrorAlert from "./ErrorAlert";
+import ErrorAlert from "../Utilities/ErrorAlert";
 import myPlaylistStyle from '../styles/myPlaylistStyle';
 import globalStyles from "../styles/globalStyles";
 

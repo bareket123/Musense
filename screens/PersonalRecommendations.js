@@ -11,6 +11,8 @@ import * as SplashScreen from "expo-splash-screen";
 import recommendationsStyle from '../styles/personalRecommendationsStyle'
 import globalStyles from "../styles/globalStyles";
 import {FontAwesome} from "@expo/vector-icons";
+import ErrorAlert from "../Utilities/ErrorAlert";
+import {ARTIST_NOT_FOUND, DELETE, SONG_NOT_FOUND} from "../Utilities/Constans";
 
 const PersonalRecommendations = () => {
     const {token} = useSelector(state => state.reducer);
@@ -21,6 +23,7 @@ const PersonalRecommendations = () => {
     const [listByFavorite,setListByFavorite]=useState([])
     const [combinedSongList, setCombinedSongList] = useState([]);
     const [questionnaireData, setQuestionnaireData] = useState(null);
+    const[messageCode, setMessageCode] = useState(0);
 
     const [fontsLoaded] = useFonts({
         'loveYa': require('../assets/Fonts/LoveYaLikeASister-Regular.ttf'),
@@ -30,10 +33,10 @@ const PersonalRecommendations = () => {
         if (fontsLoaded) {
             SplashScreen.hideAsync();
         }
-        async function prepare() {
+        async function hideSplashScreenIfNeeded() {
             await SplashScreen.preventAutoHideAsync();
         }
-        prepare();
+        hideSplashScreenIfNeeded();
     },[fontsLoaded])
 
     const handleQuestionnaireSubmit = (data) => {
@@ -112,13 +115,14 @@ const PersonalRecommendations = () => {
                     .then((response) => {
                         if (response.status === 500 || response.status===404) {
                             console.log('Internal server error. Please try again later.');
-                            alert('we sorry, but we couldn\'t find the artist you were searching for. You can try rephrasing your query for better results')
+                            setMessageCode(ARTIST_NOT_FOUND);
                         }
                         return response.json();
                     })
                     .then(response => setArtistSong(response,1))
                     .catch(err => console.log("There is error in fetching data: "+err));
             }
+
         }catch (error){
             console.log("error fetching artist "+ error)
         }
@@ -138,13 +142,14 @@ const PersonalRecommendations = () => {
                     .then((response) => {
                         if (response.status === 500 || response.status===404) {
                             console.log('Internal server error. Please try again later.');
-                            alert('we sorry, but we couldn\'t find the artist you were searching for. You can try rephrasing your query for better results')
+                            setMessageCode(ARTIST_NOT_FOUND)
                         }
                         return response.json();
                     })
                     .then(response => setArtistSong(response,2))
                     .catch(err => console.log("There is error in Artist fetching data: "+err));
             }
+            setMessageCode(0)
         }catch (error){
             console.log("error from fetching artist2 " +error);
         }
@@ -164,7 +169,7 @@ const PersonalRecommendations = () => {
                     .then((response) => {
                         if (response.status === 500 || response.status===404) {
                            console.log('Internal server error. Please try again later.');
-                           alert('we sorry, but we couldn\'t find the song you were searching for. You can try rephrasing your query for better results')
+                           setMessageCode(SONG_NOT_FOUND);
                         }
                         return response.json();
                     })
@@ -283,10 +288,11 @@ const PersonalRecommendations = () => {
     }
 
     const deleteAnswers = async () => {
+        setMessageCode(0)
         try {
             const response = await axios.create({baseURL: LOCAL_SERVER_URL}).get('/delete-answers?token=' + token)
             if (response.data.success) {
-              alert('Delete')
+              setMessageCode(DELETE)
               setAllAnswers(null)
                 setCombinedSongList([])
             } else {
@@ -322,6 +328,12 @@ const PersonalRecommendations = () => {
                 :
                 <Logo/>
         }
+            {
+
+                messageCode!==0&&
+
+                <ErrorAlert message={messageCode}/>
+            }
 </View>
     );
 };

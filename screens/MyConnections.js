@@ -4,11 +4,10 @@ import axios from "axios";
 import { Entypo} from "@expo/vector-icons";
 import { LOCAL_SERVER_URL} from "../redux/actions";
 import { useSelector } from "react-redux";
-import ErrorAlert from "./ErrorAlert";
+import ErrorAlert from "../Utilities/ErrorAlert";
 import myConnectionsStyle from '../styles/myConnectionsStyle'
 import globalStyles from "../styles/globalStyles";
-import {DELETE} from "./Constans";
-
+import {DELETE} from "../Utilities/Constans";
 
 const MyConnections = ({ navigation }) => {
     const [myFriends, setMyFriends] = useState([]);

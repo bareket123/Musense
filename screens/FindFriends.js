@@ -4,8 +4,8 @@ import {  Ionicons, SimpleLineIcons } from '@expo/vector-icons';
 import axios from "axios";
 import { LOCAL_SERVER_URL } from "../redux/actions";
 import { useSelector } from "react-redux";
-import ErrorAlert from "./ErrorAlert";
-import {DELETE, FOLLOWING} from "./Constans";
+import ErrorAlert from "../Utilities/ErrorAlert";
+import {DELETE, FOLLOWING} from "../Utilities/Constans";
 import { useFocusEffect } from '@react-navigation/native';
 import searchFriendsStyle from "../styles/searchFriendsStyle";
 import globalStyles from "../styles/globalStyles";
@@ -15,7 +15,6 @@ const FindFriends = () => {
     const [searchFriend, setSearchFriend] = useState('');
     const [, setFoundUser] = useState(false);
     const [messageCode, setMessageCode] = useState(0);
-    const [, setShowLogo] = useState(true);
     const { token,username } = useSelector(state => state.reducer);
     const [allUsers, setAllUsers] = useState([]);
     const [filteredUsers, setFilteredUsers] = useState([]);
@@ -32,16 +31,6 @@ const FindFriends = () => {
         setFoundUser(false);
         setUsersFromServer();
     }
-
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            setShowLogo(false);
-        }, 5000);// 10000 milliseconds = 10 seconds
-
-        return () => {
-            clearTimeout(timer);
-        };
-    }, []);
 
     const handleSearch = (text) => {
         setSearchFriend(text);

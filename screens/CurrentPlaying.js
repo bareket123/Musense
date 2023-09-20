@@ -1,27 +1,36 @@
 import { Text, TouchableOpacity, View, TouchableHighlight, ImageBackground} from "react-native";
-import {AntDesign, Ionicons} from "@expo/vector-icons";
+import {AntDesign, Ionicons, MaterialCommunityIcons} from "@expo/vector-icons";
 import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import { playAudio, pauseAudio,setVolume,getVolume,reloadSong} from "./playAudio";
+import {playAudio, pauseAudio, setVolume, getVolume, reloadSong, waitForSongCompletion} from "../Utilities/playAudio";
 import {useFonts} from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { Animated, Easing } from 'react-native';
 import  currentPlayingStyle from '../styles/currentPlayingStyle';
 import {LOCAL_SERVER_URL, setIsSongPlaying} from '../redux/actions'
 import axios from "axios";
-import ErrorAlert from "./ErrorAlert";
-import {Slider} from "@rneui/themed";
+import ErrorAlert from "../Utilities/ErrorAlert";
+// import {Slider} from "@rneui/themed";
 
 
 const spinValue = new Animated.Value(0);
+const spinningAnimation = Animated.loop(
+    Animated.timing(spinValue, {
+        toValue: 1,
+        duration: 5000,
+        easing: Easing.linear,
+        useNativeDriver: true,
+    })
+);
 const CurrentPlaying= ({ currentSong, setSong, allSongs })=>{
     const {token} = useSelector(state => state.reducer);
     const [previousVolume, setPreviousVolume] = useState(0.5);
     const [pressedPlaying, setPressedPlaying] = useState(false);
     const [mute, setMute] = useState(false);
-    const [spinAnimation, setSpinAnimation] = useState(null);
     const [messageCode,setMessageCode]=useState(0);
+
     const dispatch = useDispatch();
+
 
     const sendPlayedRecentlyToServer = async (song) => {
         setMessageCode(0)
@@ -32,9 +41,10 @@ const CurrentPlaying= ({ currentSong, setSong, allSongs })=>{
                 const encodedUrl = encodeURIComponent(song.url);
                 const encodedCoverImage = encodeURIComponent(song.coverImage);
                 const encodedIsPlayed = encodeURIComponent(true);
-                const url = `${LOCAL_SERVER_URL}/add-song?token=${token}&title=${encodedTitle}&artist=${encodedArtist}&url=${encodedUrl}&coverImage=${encodedCoverImage}&isPlayed=${encodedIsPlayed}`;
 
+                const url = `${LOCAL_SERVER_URL}/add-song?token=${token}&title=${encodedTitle}&artist=${encodedArtist}&url=${encodedUrl}&coverImage=${encodedCoverImage}&isPlayed=${encodedIsPlayed}`;
                 const response = await axios.post(url);
+
                 if (response.data.success) {
                     console.log("Updated successfully");
                 } else {
@@ -67,21 +77,19 @@ const CurrentPlaying= ({ currentSong, setSong, allSongs })=>{
         setSong(song)
         await sendPlayedRecentlyToServer(song)
         startSpin();
-        await playAudio(song, dispatch); // Dispatch the action to add the song to playedRecently state in redux
-    }
+        await playAudio(song,spinValue,setPressedPlaying);
 
+    }
     async function pauseSound() {
         setPressedPlaying(false);
         stopSpin();
         await pauseAudio();
     }
-
     const handleVolumeChange = async (newVolume) => {
         if (!mute) {
             await setVolume(newVolume);
         }
     };
-
     const toggleMute = () => {
         if (mute) {
             setMute(false);
@@ -92,19 +100,19 @@ const CurrentPlaying= ({ currentSong, setSong, allSongs })=>{
             handleVolumeChange(0); // Mute by setting volume to 0
         }
     };
-
     const playMusic= (song) => {
+
         if (pressedPlaying) {
             pauseSound()
         } else {
             playSound(song)
         }
     }
-
     const replaceSong=(action)=> {
         const currentIndex = allSongs.findIndex(song=>song.url ===currentSong.url);
         let newIndex;
-        pauseSound().then(() => {});
+        pauseSound().then(r => {});
+
         if (action==='next'){
             newIndex = (currentIndex+1) % allSongs.length;
         }else {
@@ -112,47 +120,53 @@ const CurrentPlaying= ({ currentSong, setSong, allSongs })=>{
         }
         setSong(allSongs[newIndex]);
     }
-
     const startSpin = () => {
         try {
-            if (spinAnimation) {
-                spinAnimation.stop();
-            }
-            // Create a new spinning animation
-            const animation = Animated.loop(
-                Animated.timing(spinValue, {
-                    toValue: 1,
-                    duration: 5000, // Adjust the duration as needed
-                    easing: Easing.linear,
-                    useNativeDriver: true,
-                })
-            );
-
-            setSpinAnimation(animation);
-            // Start the animation
-            animation.start();
+            if (spinningAnimation)
+            spinningAnimation.start();
         }catch (error){
             console.log("error in spinning "+ error)
         }
+
     };
 
     const stopSpin = () => {
         try {
-            if (spinAnimation) {
-                spinAnimation.stop();
+            if (spinningAnimation) {
+                spinningAnimation.stop();
             }
         }catch (error){
             console.log("error in stop spinning "+ error)
         }
-    };
 
+    };
 const closePlaying = () => {
     setSong(undefined);
+    stopSpin();
     dispatch(setIsSongPlaying(false));
         pauseAudio();
 }
 
+     const playPlaylist = async () => {
+    let currentIndex=allSongs.findIndex(song=>song.url ===currentSong.url);
+    console.log(currentIndex);
+    try{
+        if (currentIndex<allSongs.length &&currentIndex>=0){
+            for (let i = currentIndex; i < allSongs.length; i++) {
+                await playSound(allSongs[i]);
+                await waitForSongCompletion();
+
+            }
+        }
+
+    }catch (error){
+        console.log("error playing playlist: "+error)
+    }
+    };
+
+
     return (
+
       <ImageBackground source={{uri:currentSong.coverImage}} >
           {
               fontsLoaded &&
@@ -165,6 +179,7 @@ const closePlaying = () => {
                   <Text style={currentPlayingStyle.closeButtonText} >X</Text>
               </TouchableOpacity>
           </View>
+
           <Animated.Image source={{ uri: currentSong.coverImage }} style={[
                       currentPlayingStyle.overlayImage,
                       {
@@ -174,6 +189,7 @@ const closePlaying = () => {
                               }) }],
                       },
                   ]} />
+
                           <View style={currentPlayingStyle.middleContainer}>
                               {
                                   fontsLoaded&&
@@ -182,28 +198,34 @@ const closePlaying = () => {
                                       <Text style={currentPlayingStyle.songArtist}>{currentSong.artist}</Text>
                                   </View>
                               }
+
                       </View>
           <View style={currentPlayingStyle.volumeControls}>
               <Ionicons name={mute ? "volume-mute" : "md-volume-high"} size={24} color="white" style={currentPlayingStyle.volumeIcon} onPress={toggleMute} />
-              <Slider
-                  style={currentPlayingStyle.volumeSlider}
-                  value={getVolume()}
-                  minimumValue={0}
-                  maximumValue={1}
-                  step={0.05}
-                  onValueChange={handleVolumeChange}
-                  minimumTrackTintColor={'black'}
-                  maximumTrackTintColor={'white'}
-                  thumbStyle={{ height: 20, width: 20, backgroundColor: 'rgba(255, 255, 255, 0.8)' }}
-                  trackStyle={{ height: 5, backgroundColor: 'transparent' }}
-              />
+
+              {/*<Slider*/}
+              {/*    style={currentPlayingStyle.volumeSlider}*/}
+              {/*    value={getVolume()}*/}
+              {/*    minimumValue={0}*/}
+              {/*    maximumValue={1}*/}
+              {/*    step={0.05}*/}
+              {/*    onValueChange={handleVolumeChange}*/}
+              {/*    minimumTrackTintColor={'black'}*/}
+              {/*    maximumTrackTintColor={'white'}*/}
+              {/*    thumbStyle={{ height: 20, width: 20, backgroundColor: 'rgba(255, 255, 255, 0.8)' }}*/}
+              {/*    trackStyle={{ height: 5, backgroundColor: 'transparent' }}*/}
+
+              {/*/>*/}
+
+
           </View>
+
                   <View style={currentPlayingStyle.controlButtons}>
                       <TouchableHighlight>
                           <Ionicons name="refresh-outline"  color="white"  style={currentPlayingStyle.controlIcon} onPress={reloadSong} />
                       </TouchableHighlight>
                       <TouchableHighlight
-                          underlayColor="rgba(255, 255, 255, 0.5)"
+                          underlayColor="rgba(255, 255, 255, 0.5)" // White glow on black background
                           onPress={() => replaceSong('next')}
                           style={currentPlayingStyle.controlButton}
                       >
@@ -211,18 +233,27 @@ const closePlaying = () => {
                       </TouchableHighlight>
 
                       <TouchableHighlight
-                          underlayColor="rgba(255, 255, 255, 0.5)"
+                          underlayColor="rgba(255, 255, 255, 0.5)" // White glow on black background
                           onPress={() =>{playMusic(currentSong)} }
                           style={currentPlayingStyle.controlButton }
                       >
                           <AntDesign name={pressedPlaying ? 'pausecircleo' : 'playcircleo'} size={50} style={{marginLeft:5,marginRight:5}} color="white" />
                       </TouchableHighlight>
+
                       <TouchableHighlight
-                          underlayColor="rgba(255, 255, 255, 0.2)"
+                          underlayColor="rgba(255, 255, 255, 0.2)" // White glow on black background
                           onPress={() => replaceSong('previous')}
                           style={currentPlayingStyle.controlButton}
                       >
                           <AntDesign name="banckward" color="white" style={currentPlayingStyle.controlIcon} />
+                      </TouchableHighlight>
+
+                      <TouchableHighlight
+                          underlayColor="rgba(255, 255, 255, 0.2)" // White glow on black background
+                          onPress={() => replaceSong('previous')}
+                          style={currentPlayingStyle.controlButton}
+                      >
+                          <MaterialCommunityIcons name="repeat-variant" size={50} color="white" onPress={()=>{playPlaylist(allSongs).then(r => {})}} />
                       </TouchableHighlight>
                   </View>
              {

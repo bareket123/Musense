@@ -4,7 +4,7 @@ import axios from "axios";
 import {useSelector} from "react-redux";
 import Player from "./Player";
 import {LOCAL_SERVER_URL} from "../redux/actions";
-import ErrorAlert from "./ErrorAlert";
+import ErrorAlert from "../Utilities/ErrorAlert";
 import {useFonts} from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import {FontAwesome} from "@expo/vector-icons";

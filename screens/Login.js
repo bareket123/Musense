@@ -8,8 +8,8 @@ import {AntDesign, MaterialCommunityIcons, MaterialIcons} from '@expo/vector-ico
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {LOCAL_SERVER_URL, setToken, setUsername, setPicture} from "../redux/actions";
 import {useDispatch, useSelector} from "react-redux";
-import ErrorAlert from "./ErrorAlert";
-import {LOGIN_SUCCESSFULLY, SIGN_UP_SUCCESSFULLY} from "./Constans";
+import ErrorAlert from "../Utilities/ErrorAlert";
+import {LOGIN_SUCCESSFULLY, SIGN_UP_SUCCESSFULLY} from "../Utilities/Constans";
 import * as ImagePicker from 'expo-image-picker';
 import  loginStyle from '../styles/loginStyle'
 import {registerIndieID} from "native-notify";

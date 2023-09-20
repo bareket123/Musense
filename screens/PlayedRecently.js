@@ -7,8 +7,8 @@ import  playedRecentlyStyle from '../styles/playedRecentlyStyle'
 import {LOCAL_SERVER_URL} from "../redux/actions";
 import axios from "axios";
 import globalStyles from "../styles/globalStyles";
-import {DELETE} from "./Constans";
-import ErrorAlert from "./ErrorAlert";
+import {DELETE} from "../Utilities/Constans";
+import ErrorAlert from "../Utilities/ErrorAlert";
 
 
 const PlayedRecently = ( ) => {
